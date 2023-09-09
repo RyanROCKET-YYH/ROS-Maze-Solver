@@ -44,8 +44,7 @@ enum currentState {
 
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
   ROS_INFO("Turtle update Called  w=%f", w);
-  ROS_INFO("Current value of cs: %f", cs);
-  ROS_INFO("Orientation=%f", nw_or);
+  
   mod = true;
   if (w == 0) {
     fx1 = pos_.x();
@@ -69,6 +68,8 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	ROS_INFO("bumped?: %s", bp ? "ture" : "false");
     aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
 	ROS_INFO("at end?: %s", aend ? "ture" : "false");
+	ROS_INFO("Current value of cs: %f", cs);
+  	ROS_INFO("Orientation=%f", nw_or);
 	ROS_INFO("Current direction: %d", nw_or);
     if (nw_or == west) {
       if (cs == 2) {	// not sure what makes cs means and nw_or=3 didn't happened
