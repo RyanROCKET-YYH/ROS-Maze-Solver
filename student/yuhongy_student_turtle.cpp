@@ -18,7 +18,7 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 
 // OK TO MODIFY BELOW THIS LINE
 
-#define TIMEOUT 40 // bigger number slows down simulation so you can see what's happening
+#define TIMEOUT 2 // bigger number slows down simulation so you can see what's happening
 float w, cs;              // w: countdown time. cs: current state.
 float fx1, fy1, fx2, fy2; // current position of turtle
 float z, aend, mod, bp, q;
