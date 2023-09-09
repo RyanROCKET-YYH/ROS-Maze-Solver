@@ -65,7 +65,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			fy2 += 1;
 			nw_or == south ? fx1++ : fy1++;
     	}*/
-    	
+    	// right hand rule
 		if (nw_or == south || nw_or == west) {
       		nw_or == south ? fy2++ : fx2++;
     	} else {
