@@ -18,7 +18,7 @@ turtleMove studentTurtleStep(bool bumped) {return MOVE;}
 
 // OK TO MODIFY BELOW THIS LINE
 
-#define TIMEOUT 40    // bigger number slows down simulation so you can see what's happening
+#define TIMEOUT 10    // bigger number slows down simulation so you can see what's happening
 float w, cs;    // w: countdown time. cs: current state.
 float fx1, fy1, fx2, fy2;    // current position of turtle( not sure why do we need 2 set of x&y yet)
 float z, aend, mod, bp, q;	
@@ -28,7 +28,7 @@ float z, aend, mod, bp, q;
 // Ground rule -- you are only allowed to call the helper functions "bumped(..)" and "atend(..)",
 // and NO other turtle methods or maze methods (no peeking at the maze!)
 bool studentMoveTurtle(QPointF& pos_, int& nw_or)
-{   ROS_INFO("Turtle update Called  w=%f", w);
+{   //ROS_INFO("Turtle update Called  w=%f", w);
 	mod = true;
     if(w == 0) {
 		fx1 = pos_.x(); fy1 = pos_.y();
