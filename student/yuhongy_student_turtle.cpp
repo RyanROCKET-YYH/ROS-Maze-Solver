@@ -29,11 +29,18 @@ float z, aend, mod, bp, q;
 // and "atend(..)", and NO other turtle methods or maze methods (no peeking at
 // the maze!)
 
-enum TurtleOrientation {
+/*enum TurtleOrientation {
 	north = 0,
 	east = 1,
 	south = 2,
 	west = 3,
+};*/
+
+enum TurtleOrientation {
+	south = 0,
+	west = 1,
+	north = 2,
+	east = 3,
 };
 
 enum TurtleState {
@@ -64,30 +71,30 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
 		//ROS_INFO("at end?: %s", aend ? "ture" : "false");
 		ROS_INFO("Current state: %f, Orientation: %d", cs, nw_or);
-		switch(nw_or) {
-			case north:
-				cs == moving_forward ? (nw_or = west, cs = turned_forward) :
-				bp ? (nw_or = east, cs = turned_bumped) : cs = moving_forward;
-				break;
-			
-			case east:
-				cs == moving_forward ? (nw_or = north, cs = turned_forward) :
-				bp ? (nw_or = south, cs = turned_bumped) : cs = moving_forward;
-				break;
-
-			case south:
-				cs == moving_forward ? (nw_or = east, cs = turned_forward) :
-				bp ? (nw_or = west, cs = turned_bumped) : cs = moving_forward;
-				break;
-
-			case west:
-				cs == moving_forward ? (nw_or = south, cs = turned_forward) :
-				bp ? (nw_or = north, cs = turned_bumped) : cs = moving_forward;
-				break;
-		}
-		// right hand rule
 		/*switch(nw_or) {
 			case north:
+				cs == moving_forward ? (nw_or = west, cs = turned_forward) :
+				bp ? (nw_or = east, cs = turned_bumped) : cs = moving_forward;
+				break;
+			
+			case east:
+				cs == moving_forward ? (nw_or = north, cs = turned_forward) :
+				bp ? (nw_or = south, cs = turned_bumped) : cs = moving_forward;
+				break;
+
+			case south:
+				cs == moving_forward ? (nw_or = east, cs = turned_forward) :
+				bp ? (nw_or = west, cs = turned_bumped) : cs = moving_forward;
+				break;
+
+			case west:
+				cs == moving_forward ? (nw_or = south, cs = turned_forward) :
+				bp ? (nw_or = north, cs = turned_bumped) : cs = moving_forward;
+				break;
+		}*/
+		// right hand rule
+		switch(nw_or) {
+			case north:
 				cs == moving_forward ? (nw_or = east, cs = turned_forward) :
 				bp ? (nw_or = west, cs = turned_bumped) : cs = moving_forward;
 				break;
@@ -106,7 +113,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 				cs == moving_forward ? (nw_or = north, cs = turned_forward) :
 				bp ? (nw_or = south, cs = turned_bumped) : cs = moving_forward;
 				break;
-		}*/
+		}
 	
 		/*	
 		if (nw_or == north) {
@@ -146,10 +153,12 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		} else
 			cs = moving_forward;
 		}*/
+
+
 		ROS_INFO("Orientation=%f  STATE=%f", nw_or, cs);
 		z = cs == 2;
 		mod = true;
-		if (z == true && aend == false) {    // when intend to move forward
+		/*if (z == true && aend == false) {    // when intend to move forward
 			if (nw_or == east)
 				pos_.setY(pos_.y() - 1);    // or = 1, turn left (y-1), or = 1 is east
 			if (nw_or == south)
@@ -160,20 +169,21 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 				pos_.setX(pos_.x() - 1);    // north nw_or = 0, x-1
 			z = false;
 			mod = true;
-		}
+		}*/
 
-		/*if (z == true && aend == false) {    // when intend to move forward
-			if (nw_or == east)
-				pos_.setY(pos_.y() + 1);    // or = 1, turn right (y+1), or = 1 is east
-			if (nw_or == south)
-				pos_.setX(pos_.x() - 1);    // south nw_or = 2, x-1
-			if (nw_or == west)
-				pos_.setY(pos_.y() - 1);    // west nw_or = 3, y-1
-			if (nw_or == north)
-				pos_.setX(pos_.x() + 1);    // north nw_or = 0, x+1
+		if(z == true && aend == false) {
+			if (nw_or == west) 
+				pos_.setY(pos_.y() - 1);    // west y-1
+			if (nw_or == north) 
+				pos_.setX(pos_.x() + 1);    // north
+			if (nw_or == east) 
+				pos_.setY(pos_.y() + 1);    // east
+			if (nw_or == south) 
+				pos_.setX(pos_.x() - 1);    // south
 			z = false;
 			mod = true;
-		}*/
+    	}
+		
   	}
 	if (aend) return false; // don't submit change if reaches destination
   	if (wait == 0) {
