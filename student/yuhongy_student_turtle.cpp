@@ -142,9 +142,9 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
   }
   if (aend)
     return false; // don't submit change if reaches destination
-  if (w == 0)
-    w = TIMEOUT; // countdown to 0 and reset to TIMEOUT
+  if (wait == 0)
+    wait = TIMEOUT; // countdown to 0 and reset to TIMEOUT
   else
-    w -= 1;
+    wait -= 1;
   return wait == TIMEOUT;
 }
