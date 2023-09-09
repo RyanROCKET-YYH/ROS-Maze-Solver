@@ -36,6 +36,12 @@ enum TurtleOrientation {
 	north = 3,
 };
 
+enum currentState {
+	stay_static = 0,
+	moving_forward = 1,
+	turning_right = 2,
+};
+
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
   ROS_INFO("Turtle update Called  w=%f", w);
   ROS_INFO("Current value of cs: %f", cs);
@@ -62,13 +68,14 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	ROS_INFO("bumped?: %s", bp ? "ture" : "false");
     aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
 	ROS_INFO("at end?: %s", aend ? "ture" : "false");
+	ROS_INFO("Current direction: %d", nw_or);
     if (nw_or == west) {
       if (cs == 2) {	// not sure what makes cs means and nw_or=3 didn't happened
         nw_or = north;    // cs = 2, turn right
-        cs = 1;
+        cs = 1;    // everytime turtle turned right, cs will become 1
       } else if (bp) {    //  if bumped, cs becomes 0 turtle turn left
         nw_or = south;
-        cs = 0;
+        cs = 0;    // cs = 0 indicate the turtle follows the left-hand rule
       } else
         cs = 2;
     } else if (nw_or == south) {    // 
