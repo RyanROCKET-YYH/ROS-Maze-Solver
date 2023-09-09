@@ -18,8 +18,8 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 
 // OK TO MODIFY BELOW THIS LINE
 
-#define TIMEOUT 2 // bigger number slows down simulation so you can see what's happening
-float w, cs;              // w: countdown time. cs: current state.
+#define TIMEOUT 40 // bigger number slows down simulation so you can see what's happening
+float wait, cs;              // w: countdown time. cs: current state.
 float fx1, fy1, fx2, fy2; // current position of turtle
 float z, aend, mod, bp, q;
 
@@ -30,97 +30,112 @@ float z, aend, mod, bp, q;
 // the maze!)
 
 enum TurtleOrientation {
-	west = 0,
-	south = 1,
-	east = 2,
-	north = 3,
+	north = 0,
+	east = 1,
+	south = 2,
+	west = 3,
 };
 
-enum currentState {
-	stay_static = 0,
-	moving_forward = 1,
-	turning_right = 2,
+enum TurtleState {
+	turned_bumped = 0,
+	turned_forward = 1,
+	moving_forward = 2,
 };
 
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
-  ROS_INFO("Turtle update Called  w=%f", w);
+  ROS_INFO("Turtle update Called  w=%f", wait);
   
   mod = true;
-  if (w == 0) {
+  if (wait == 0) {
     fx1 = pos_.x();
     fy1 = pos_.y(); // initialize the position and used to check for bump
     fx2 = pos_.x();
     fy2 = pos_.y();
-    if (nw_or < 2) { // magic number what does nw_or point to at 0,1,2,3 
-      if (nw_or == west)
-        fy2 += 1; //
-      else    // when nw_or = 1, fx += 1
-        fx2 += 1; //
+    if (nw_or == north || nw_or == east) {
+      nw_or == north ? fy2++ : fx2++;
     } else {
       fx2 += 1;
       fy2 += 1;
-      if (nw_or == east)
-        fx1 += 1;
-      else
-        fy1 += 1;
+      nw_or == south ? fx1++ : fy1++;
     }
-    bp = bumped(fx1, fy1, fx2, fy2);  // see if there is a bump (boolean)
-	ROS_INFO("bumped?: %s", bp ? "ture" : "false");
-    aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
-	ROS_INFO("at end?: %s", aend ? "ture" : "false");
-	ROS_INFO("Current value of cs: %f", cs);
-  	ROS_INFO("Orientation=%f", nw_or);
-	ROS_INFO("Current direction: %d", nw_or);
-    if (nw_or == west) {
-      if (cs == 2) {	// not sure what makes cs means and nw_or=3 didn't happened
-        nw_or = north;    // 
-        cs = 1;    // everytime turtle turned right, cs will become 1
-      } else if (bp) {    //  if bumped, cs becomes 0 turtle turn left
-        nw_or = south;
-        cs = 0;    //
-      } else
-        cs = 2;
-    } else if (nw_or == south) {    // 
-      if (cs == 2) {
-        nw_or = west;    // turn right
-        cs = 1;
-      } else if (bp) {
-        nw_or = east;    // bumped, turn left which is east
-        cs = 0;
-      } else
-        cs = 2;
-    } else if (nw_or == east) {
-      if (cs == 2) {
-        nw_or = south;    // turn right
-        cs = 1;
-      } else if (bp) {
-        nw_or = north;    // bumped, turn left which is north
-        cs = 0;
-      } else
-        cs = 2;
-    } else if (nw_or == north) {
-      if (cs == 2) {
-        nw_or = east;    // turn right
-        cs = 1;
-      } else if (bp) {
-        nw_or = west;    // turn left, west
-        cs = 0;
-      } else
-        cs = 2;
-    }
-	ROS_INFO("Orientation=%f  STATE=%f", nw_or, cs);
 
-    z = cs == 2;
+    bp = bumped(fx1, fy1, fx2, fy2);  // see if there is a bump (boolean)
+	//ROS_INFO("bumped?: %s", bp ? "ture" : "false");
+    aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
+	//ROS_INFO("at end?: %s", aend ? "ture" : "false");
+	ROS_INFO("Current state: %f, Orientation: %d", cs, nw_or);
+	switch(nw_or) {
+        case north:
+			cs == moving_forward ? (nw_or = west, cs = turned_forward) :
+			bp ? (nw_or = east, cs = turned_bumped) : cs = moving_forward;
+            break;
+		
+		case east:
+			cs == moving_forward ? (nw_or = north, cs = turned_forward) :
+			bp ? (nw_or = south, cs = turned_bumped) : cs = moving_forward;
+			break;
+
+		case south:
+			cs == moving_forward ? (nw_or = east, cs = turned_forward) :
+			bp ? (nw_or = west, cs = turned_bumped) : cs = moving_forward;
+			break;
+
+		case west:
+			cs == moving_forward ? (nw_or = south, cs = turned_forward) :
+			bp ? (nw_or = north, cs = turned_bumped) : cs = moving_forward;
+			break;
+	}
+	
+	/*	
+    if (nw_or == north) {
+      if (cs == moving_forward) {	// intend to move forward
+        nw_or = west;    // turn left 0->3 is turning left
+        cs = turned_forward;    // recently turned
+      } else if (bp) {    // if bumped, means can't move foward
+        nw_or = east;    // since left hand rule, it will turn right, 0->1 turning right
+        cs = turned_bumped;    // turned and bumped
+      } else
+        cs = moving_forward;    //intend to move forward
+    } else if (nw_or == east) {   
+      if (cs == moving_forward) {
+        nw_or = north;  
+        cs = turned_forward;
+      } else if (bp) {
+        nw_or = south;    
+        cs = turned_bumped;
+      } else
+        cs = moving_forward;
+    } else if (nw_or == south) {
+      if (cs == moving_forward) {
+        nw_or = east;    
+        cs = turned_forward;
+      } else if (bp) {
+        nw_or = west;    
+        cs = turned_bumped;
+      } else
+        cs = moving_forward;
+    } else if (nw_or == west) {
+      if (cs == moving_forward) {
+        nw_or = south;    
+        cs = turned_forward;
+      } else if (bp) {
+        nw_or = north;    
+        cs = turned_bumped;
+      } else
+        cs = moving_forward;
+    }*/
+	ROS_INFO("Orientation=%f  STATE=%f", nw_or, cs);
+	z = cs == 2;
     mod = true;
-    if (z == true && aend == false) {
-      if (nw_or == south)
-        pos_.setY(pos_.y() - 1);    // move south when nw_or = 1
+    if (z == true && aend == false) {    // when intend to move forward
       if (nw_or == east)
-        pos_.setX(pos_.x() + 1);    // move east when nw_or = 2
-      if (nw_or == north)
-        pos_.setY(pos_.y() + 1);    // move north when nw_or = 3
+        pos_.setY(pos_.y() - 1);    // or = 1, turn left (y-1), or = 1 is east
+      if (nw_or == south)
+        pos_.setX(pos_.x() + 1);    // south nw_or = 2, x+1
       if (nw_or == west)
-        pos_.setX(pos_.x() - 1);    // move west when nw_or = 0
+        pos_.setY(pos_.y() + 1);    // east nw_or = 3, y+1
+      if (nw_or == north)
+        pos_.setX(pos_.x() - 1);    // north nw_or = 0, x-1
       z = false;
       mod = true;
     }
@@ -131,7 +146,5 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
     w = TIMEOUT; // countdown to 0 and reset to TIMEOUT
   else
     w -= 1;
-  if (w == TIMEOUT)
-    return true; // submit change
-  return false;
+  return wait == TIMEOUT;
 }
