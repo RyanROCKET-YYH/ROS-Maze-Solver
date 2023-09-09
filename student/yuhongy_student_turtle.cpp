@@ -36,8 +36,9 @@ enum TurtleOrientation {
 	north = 3,
 };
 
-bool studentMoveTurtle(QPointF &pos_, TurtleOrientation &nw_or) {
+bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
   ROS_INFO("Turtle update Called  w=%f", w);
+  ROS_INFO("Current value of cs: %f", cs);
   mod = true;
   if (w == 0) {
     fx1 = pos_.x();
