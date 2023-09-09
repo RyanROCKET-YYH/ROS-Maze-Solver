@@ -2,8 +2,8 @@
  * Originally by Philip Koopman (koopman@cmu.edu)
  * and Milda Zizyte (milda@cmu.edu)
  *
- * STUDENT NAME:
- * ANDREW ID:
+ * STUDENT NAME: Yuhong YAO
+ * ANDREW ID: yuhongy
  * LAST UPDATE:
  *
  * This file is an algorithm to solve the ece642rtle maze
@@ -19,9 +19,9 @@ turtleMove studentTurtleStep(bool bumped) {return MOVE;}
 // OK TO MODIFY BELOW THIS LINE
 
 #define TIMEOUT 40    // bigger number slows down simulation so you can see what's happening
-float w, cs;
-float fx1, fy1, fx2, fy2;
-float z, aend, mod, bp, q;
+float w, cs;    // w: countdown time. cs: current state.
+float fx1, fy1, fx2, fy2;    // current position of turtle( not sure why do we need 2 set of x&y yet)
+float z, aend, mod, bp, q;	
 		 
 // this procedure takes the current turtle position and orientation and returns
 // true=submit changes, false=do not submit changes
@@ -34,31 +34,40 @@ bool studentMoveTurtle(QPointF& pos_, int& nw_or)
 	{ fx1 = pos_.x(); fy1 = pos_.y();
       fx2 = pos_.x(); fy2 = pos_.y();
 	  if (nw_or < 2)
-		if (nw_or == 0) fy2+=1;
-		else            fx2+=1;
+		if (nw_or == 0) fy2+=1;    // 
+		else            fx2+=1;    //
 		else
 		{ fx2+=1; fy2+=1; 
 		  if (nw_or == 2) fx1+=1;  
 		  else            fy1+=1; 
 		}
-		bp = bumped(fx1,fy1,fx2,fy2);
-		aend = atend(pos_.x(), pos_.y());
-		if(nw_or == 0)
-		if(cs == 2)  { nw_or = 3;  cs = 1; }
-		else if (bp) { nw_or = 1;  cs = 0; }
-		else cs = 2;
-		else if(nw_or == 1)
-		if(cs == 2)  { nw_or = 0;  cs = 1; }
-		else if (bp) { nw_or = 2;  cs = 0; }
-		else cs = 2;
-		else if(nw_or == 2)
-		if(cs == 2)  { nw_or = 1;  cs = 1; }
-		else if (bp) { nw_or = 3;  cs = 0; }
-		else cs = 2;
-		else if(nw_or == 3)
-		if(cs == 2)  { nw_or = 2;  cs = 1; }
-		else if (bp) { nw_or = 0;  cs = 0; }
-		else cs = 2;
+		bp = bumped(fx1,fy1,fx2,fy2);    // see if there is a bump (boolean)
+		aend = atend(pos_.x(), pos_.y());    // check if arrvies at end (boolean)
+		if(nw_or == 0) {
+			if (cs == 2) {
+				nw_or = 3;  cs = 1;
+			} else if (bp) {
+				nw_or = 1;  cs = 0;
+			} else cs = 2;
+		} else if(nw_or == 1) {
+			if (cs == 2) {
+				nw_or = 0;  cs = 1; 
+			} else if (bp) {
+				nw_or = 2;  cs = 0;
+			} else cs = 2;
+		} else if(nw_or == 2) {
+			if(cs == 2) {
+				nw_or = 1;  cs = 1; 
+			} else if (bp) {
+				nw_or = 3;  cs = 0;
+			} else cs = 2;
+		} else if(nw_or == 3) {
+			if(cs == 2) {
+				nw_or = 2;  cs = 1;
+			} else if (bp) {
+				nw_or = 0;  cs = 0;
+			} else cs = 2;
+		}
 	 ROS_INFO("Orientation=%f  STATE=%f", nw_or, cs);
      z = cs == 2;
      mod = true;
@@ -70,8 +79,8 @@ bool studentMoveTurtle(QPointF& pos_, int& nw_or)
      z = false;
      mod = true;
     }}
-    if (aend) return false;
-    if (w==0) w  = TIMEOUT; else w -= 1;
-    if (w==TIMEOUT) return true;
- return false;
+    if (aend) return false;    // don't submit change if reaches destination
+    if (w==0) w  = TIMEOUT;    // countdown to 0 and reset to TIMEOUT
+	else w -= 1;
+    if (w==TIMEOUT) return true;    // submit change
 }
