@@ -30,16 +30,16 @@ float z, aend, mod, bp, q;
 bool studentMoveTurtle(QPointF& pos_, int& nw_or)
 {   ROS_INFO("Turtle update Called  w=%f", w);
 	mod = true;
-    if(w == 0) 
-	{ fx1 = pos_.x(); fy1 = pos_.y();
-      fx2 = pos_.x(); fy2 = pos_.y();
-	  if (nw_or < 2)
-		if (nw_or == 0) fy2+=1;    // 
-		else            fx2+=1;    //
-		else
-		{ fx2+=1; fy2+=1; 
-		  if (nw_or == 2) fx1+=1;  
-		  else            fy1+=1; 
+    if(w == 0) {
+		fx1 = pos_.x(); fy1 = pos_.y();
+      	fx2 = pos_.x(); fy2 = pos_.y();
+	  	if (nw_or < 2) {
+			if (nw_or == 0) fy2+=1;    // 
+			else            fx2+=1;    //
+		} else {
+			fx2+=1; fy2+=1; 
+		  	if (nw_or == 2) fx1+=1;  
+		  	else            fy1+=1; 
 		}
 		bp = bumped(fx1,fy1,fx2,fy2);    // see if there is a bump (boolean)
 		aend = atend(pos_.x(), pos_.y());    // check if arrvies at end (boolean)
