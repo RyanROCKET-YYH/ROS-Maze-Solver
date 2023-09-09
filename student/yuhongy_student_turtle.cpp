@@ -58,12 +58,20 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		fy1 = pos_.y(); // initialize the position and used to check for bump
 		fx2 = pos_.x();
 		fy2 = pos_.y();
-    	if (nw_or == north || nw_or == east) {
+		/*if (nw_or == north || nw_or == east) {
       		nw_or == north ? fy2++ : fx2++;
     	} else {
       		fx2 += 1;
 			fy2 += 1;
 			nw_or == south ? fx1++ : fy1++;
+    	}*/
+    	
+		if (nw_or == south || nw_or == west) {
+      		nw_or == south ? fy2++ : fx2++;
+    	} else {
+      		fx2 += 1;
+			fy2 += 1;
+			nw_or == north ? fx1++ : fy1++;
     	}
 
 		bp = bumped(fx1, fy1, fx2, fy2);  // see if there is a bump (boolean)
