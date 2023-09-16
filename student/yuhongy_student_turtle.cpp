@@ -61,7 +61,7 @@ enum TurtleState {
 
 
 // module that determine turtle's next state
-void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &state, bool bumped) {
+void turtleNextDir(TurtleOrientation &direction, TurtleState &state, bool bumped) {
     TurtleOrientation turnDirection;
     TurtleState nextState;
     // Define the turn directions for each orientation
@@ -211,7 +211,9 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 				break;
 		}
 		*/
-		determineNextDirectionAndState(static_cast<TurtleOrientation>(nw_or), cs, bp); 
+		nw_or = static_cast<TurtleOrientation>(nw_or);
+		turtleNextDir(nw_or, cs, bp);
+
 
 		/*	
 		if (nw_or == north) {
