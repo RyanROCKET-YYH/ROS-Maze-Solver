@@ -18,7 +18,8 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 
 // OK TO MODIFY BELOW THIS LINE
 
-const int32_t TIMEOUT = 20;  // bigger number slows down simulation so you can see what's happening       // w: countdown time. cs: current state.
+
+int32_t wait; // w: countdown time.
 int32_t startX, startY, endX, endY; // current position of turtle
 
 
@@ -91,8 +92,8 @@ void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &s
 
 
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
+	const int32_t TIMEOUT = 20;  // bigger number slows down simulation so you can see what's happening       
 	// call in everyloops to return wait time
-	int32_t wait; 
 	ROS_INFO("Turtle update Called  w=%f", wait);
 	bool aend;
   	bool mod = true;
