@@ -27,6 +27,8 @@ struct Point2D {
     Cord x;
     Cord y;
 };
+Point2D startPoint;
+Point2D endPoint;
 
 // this procedure takes the current turtle position and orientation and returns
 // true=submit changes, false=do not submit changes
@@ -102,8 +104,6 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	bool aend;
   	bool mod = true;
   	if (!wait) {
-		Point2D startPoint;
-    	Point2D endPoint;
 		startPoint.x = pos_.x();
     	startPoint.y = pos_.y();
 
