@@ -38,6 +38,7 @@ bool moving_flag, bp, aend, mod;
 };*/
 
 enum TurtleOrientation {
+	// enum for turtle's orientation
 	south = 0,
 	west = 1,
 	north = 2,
@@ -45,6 +46,7 @@ enum TurtleOrientation {
 };
 
 enum TurtleState {
+	// enum for turtle's current state
 	turned_bumped = 0,
 	turned_forward = 1,
 	moving_forward = 2,
