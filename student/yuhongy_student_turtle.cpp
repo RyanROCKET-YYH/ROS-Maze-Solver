@@ -18,7 +18,7 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 
 // OK TO MODIFY BELOW THIS LINE
 
-const int32_t TIMEOUT = 20;  // bigger number slows down simulation so you can see what's happening   
+#define TIMEOUT 20  // bigger number slows down simulation so you can see what's happening   
 int32_t wait; // w: countdown time.
 
 // Define the Coordinate type
