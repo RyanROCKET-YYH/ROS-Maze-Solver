@@ -94,7 +94,7 @@ void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &s
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	// call in everyloops to return wait time
 	ROS_INFO("Turtle update Called  w=%f", wait);
-  
+	bool aend;
   	bool mod = true;
   	if (!wait) {
 		startX = pos_.x();
@@ -120,7 +120,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 
 		bool bp = bumped(startX, startY, endX, endY);  // see if there is a bump (boolean)
 		//ROS_INFO("bumped?: %s", bp ? "ture" : "false");
-		bool aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
+		aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
 		//ROS_INFO("at end?: %s", aend ? "ture" : "false");
 		ROS_INFO("Current state: %f, Orientation: %d", cs, nw_or);
 		//left hand rule
