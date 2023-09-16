@@ -19,9 +19,8 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 // OK TO MODIFY BELOW THIS LINE
 
 const int32_t TIMEOUT = 20;  // bigger number slows down simulation so you can see what's happening
-float wait, cs;              // w: countdown time. cs: current state.
-float fx1, fy1, fx2, fy2; // current position of turtle
-float z, aend, mod, bp;
+int32_t wait;        // w: countdown time. cs: current state.
+bool moving_flag, bp, aend, mod;
 
 // this procedure takes the current turtle position and orientation and returns
 // true=submit changes, false=do not submit changes
@@ -48,8 +47,10 @@ enum TurtleState {
 	turned_forward = 1,
 	moving_forward = 2,
 };
+TurtleState cs;
 
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
+	int fx1, fy1, fx2, fy2; // current position of turtle
 	ROS_INFO("Turtle update Called  w=%f", wait);
 
   
@@ -169,7 +170,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 
 
 		ROS_INFO("Orientation=%f  STATE=%f", nw_or, cs);
-		z = cs == 2;
+		moving_flag = cs == 2;
 		mod = true;
 		/*if (z == true && aend == false) {    // when intend to move forward
 			if (nw_or == east)
@@ -184,7 +185,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			mod = true;
 		}*/
 
-		if(z == true && aend == false) {
+		if(moving_flag == true && aend == false) {
 			switch(nw_or) {
 				case west:
 					pos_.setY(pos_.y() - 1);    // west y-1
