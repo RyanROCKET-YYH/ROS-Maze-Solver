@@ -18,10 +18,16 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 
 // OK TO MODIFY BELOW THIS LINE
 
-
+const int32_t TIMEOUT = 20;  // bigger number slows down simulation so you can see what's happening   
 int32_t wait; // w: countdown time.
-int32_t startX, startY, endX, endY; // current position of turtle
+//int32_t startX, startY, endX, endY; // current position of turtle
 
+// Define the Coordinate type
+typedef double Cord;
+struct Point2D {
+    Cord x;
+    Cord y;
+};
 
 // this procedure takes the current turtle position and orientation and returns
 // true=submit changes, false=do not submit changes
@@ -91,17 +97,16 @@ void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &s
 }
 
 
-bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
-	const int32_t TIMEOUT = 20;  // bigger number slows down simulation so you can see what's happening       
+bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
 	// call in everyloops to return wait time
 	ROS_INFO("Turtle update Called  w=%f", wait);
 	bool aend;
   	bool mod = true;
   	if (!wait) {
-		startX = pos_.x();
-		startY = pos_.y(); // initialize the position and used to check for bump
-		endX = pos_.x();
-		endY = pos_.y();
+		int32_t startX = pos_.x();
+		int32_t startY = pos_.y(); // initialize the position and used to check for bump
+		int32_t endX = pos_.x();
+		int32_t endY = pos_.y();
 		/*if (nw_or == north || nw_or == east) {
       		nw_or == north ? fy2++ : fx2++;
     	} else {
@@ -257,8 +262,6 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			moving_flag = false;
 			mod = true;
 		}
-
-		
   	}
 	if (aend) {
 		return false; // don't submit change if reaches destination
