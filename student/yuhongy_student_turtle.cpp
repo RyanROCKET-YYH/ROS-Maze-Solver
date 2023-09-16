@@ -98,7 +98,7 @@ void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &s
 
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
 	// call in everyloops to return wait time
-	ROS_INFO("Turtle update Called  w=%f", wait);
+	ROS_INFO("Turtle update Called  w=%d", wait);
 	bool aend;
   	bool mod = true;
   	if (!wait) {
