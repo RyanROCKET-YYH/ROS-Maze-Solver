@@ -181,17 +181,24 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		}*/
 
 		if(z == true && aend == false) {
-			if (nw_or == west) 
-				pos_.setY(pos_.y() - 1);    // west y-1
-			if (nw_or == north) 
-				pos_.setX(pos_.x() + 1);    // north
-			if (nw_or == east) 
-				pos_.setY(pos_.y() + 1);    // east
-			if (nw_or == south) 
-				pos_.setX(pos_.x() - 1);    // south
+			switch(nw_or) {
+				case west:
+					pos_.setY(pos_.y() - 1);    // west y-1
+					break;
+				case north:
+					pos_.setX(pos_.x() + 1);    // north
+					break;
+				case east:
+					pos_.setY(pos_.y() + 1);    // east
+					break;
+				case south:
+					pos_.setX(pos_.x() - 1);    // south
+					break;
+			}
 			z = false;
 			mod = true;
-    	}
+		}
+
 		
   	}
 	if (aend) return false; // don't submit change if reaches destination
