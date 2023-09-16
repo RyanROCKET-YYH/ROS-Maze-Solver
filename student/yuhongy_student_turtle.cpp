@@ -61,7 +61,7 @@ enum TurtleState {
 
 
 // module that determine turtle's next state
-void turtleNextDir(TurtleOrientation direction, TurtleState &state, bool bumped) {
+void turtleNextDir(TurtleOrientation &direction, TurtleState &state, bool bumped) {
     TurtleOrientation turnDirection;
     TurtleState nextState;
     // Define the turn directions for each orientation
