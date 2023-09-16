@@ -132,7 +132,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		//ROS_INFO("bumped?: %s", bp ? "ture" : "false");
 		aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
 		//ROS_INFO("at end?: %s", aend ? "ture" : "false");
-		ROS_INFO("Current state: %f, Orientation: %d", cs, nw_or);
+		ROS_INFO("Current state: %d, Orientation: %d", cs, nw_or);
 		//left hand rule
 		/*switch(nw_or) {
 			case north:
@@ -228,7 +228,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		}*/
 
 
-		ROS_INFO("Orientation=%f  STATE=%f", nw_or, cs);
+		ROS_INFO("Orientation=%d  STATE=%d", nw_or, cs);
 		bool moving_flag = cs == 2;
 		mod = true;
 		/*if (z == true && aend == false) {    // when intend to move forward
