@@ -203,7 +203,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 					ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 					break;
 			}
-			z = false;
+			moving_flag = false;
 			mod = true;
 		}
 
