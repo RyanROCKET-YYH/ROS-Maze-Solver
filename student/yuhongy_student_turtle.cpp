@@ -122,6 +122,10 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 				cs == moving_forward ? (nw_or = north, cs = turned_forward) :
 				bp ? (nw_or = south, cs = turned_bumped) : cs = moving_forward;
 				break;
+			
+			default:
+				ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
+				break;
 		}
 	
 		/*	
@@ -193,6 +197,9 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 					break;
 				case south:
 					pos_.setX(pos_.x() - 1);    // south
+					break;
+				default:
+					ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 					break;
 			}
 			z = false;
