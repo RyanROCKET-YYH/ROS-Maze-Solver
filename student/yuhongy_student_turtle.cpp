@@ -18,7 +18,7 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 
 // OK TO MODIFY BELOW THIS LINE
 
-#define TIMEOUT 20  // bigger number slows down simulation so you can see what's happening   
+const int32_t TIMEOUT = 20;  // bigger number slows down simulation so you can see what's happening   
 int32_t wait; // w: countdown time.
 
 // Define the Coordinate type
@@ -101,7 +101,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	ROS_INFO("Turtle update Called  w=%f", wait);
 	bool aend;
   	bool mod = true;
-  	if (!wait) {
+  	if (wait == 0) {
 		Point2D startPoint;
     	Point2D endPoint;
 		startPoint.x = pos_.x();
@@ -273,7 +273,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	if (aend) {
 		return false; // don't submit change if reaches destination
 	}
-  	if (!wait) {
+  	if (wait == 0) {
 		wait = TIMEOUT;
 	} else {
 		wait -= 1;
