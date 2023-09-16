@@ -181,7 +181,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 				break;
 		}*/
 		// right hand rule
-		
+		/*
 		switch(nw_or) {
 			// according to turtle's current direction, and currentstate for bumped and aend
 			// decide which direction or action with turtle do at next time tick
@@ -210,8 +210,8 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 				ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 				break;
 		}
-		
-		// determineNextDirectionAndState(nw_or, cs, bp); right now it doesn't work
+		*/
+		determineNextDirectionAndState(nw_or, cs, bp); //right now it doesn't work
 
 		/*	
 		if (nw_or == north) {
@@ -256,7 +256,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		ROS_INFO("Orientation=%d  STATE=%d", nw_or, cs);
 		bool moving_flag = cs == 2;
 		mod = true;
-		/*if (z == true && aend == false) {    // when intend to move forward
+		/*if (moving_flag == true && aend == false) {    // when intend to move forward
 			if (nw_or == east)
 				pos_.setY(pos_.y() - 1);    // or = 1, turn left (y-1), or = 1 is east
 			if (nw_or == south)
@@ -270,7 +270,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		}*/
 		// update the turtle's coordination in the maze for next loop
 		// input: flag(z), aend, nw_or. output: pos
-		/*
+		
 		if(moving_flag == true && aend == false) {
 			switch(nw_or) {
 				case west:
@@ -291,8 +291,8 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			}
 			moving_flag = false;
 			mod = true;
-		}*/
-		turtleMovement(pos_, static_cast<TurtleOrientation>(nw_or), moving_flag, aend, mod);
+		}
+		//turtleMovement(pos_, static_cast<TurtleOrientation>(nw_or), moving_flag, aend, mod);
 
   	}
 	if (aend) {
