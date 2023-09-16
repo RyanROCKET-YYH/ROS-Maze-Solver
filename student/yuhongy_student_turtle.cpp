@@ -102,6 +102,8 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	bool aend;
   	bool mod = true;
   	if (!wait) {
+		Point2D startPoint;
+    	Point2D endPoint;
 		startPoint.x = pos_.x();
     	startPoint.y = pos_.y();
 
