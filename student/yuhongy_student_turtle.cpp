@@ -21,7 +21,7 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 const int32_t TIMEOUT = 20;  // bigger number slows down simulation so you can see what's happening
 int32_t wait;        // w: countdown time. cs: current state.
 int8_t cs;
-int fx1, fy1, fx2, fy2; // current position of turtle
+int32_t startX, startY, endX, endY; // current position of turtle
 bool moving_flag, bp, aend, mod;
 
 // this procedure takes the current turtle position and orientation and returns
@@ -54,15 +54,16 @@ enum TurtleState {
 
 
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
+	// call in everyloops to return wait time
 	ROS_INFO("Turtle update Called  w=%f", wait);
 
   
   	mod = true;
   	if (!wait) {
-		fx1 = pos_.x();
-		fy1 = pos_.y(); // initialize the position and used to check for bump
-		fx2 = pos_.x();
-		fy2 = pos_.y();
+		startX = pos_.x();
+		startY = pos_.y(); // initialize the position and used to check for bump
+		endX = pos_.x();
+		endY = pos_.y();
 		/*if (nw_or == north || nw_or == east) {
       		nw_or == north ? fy2++ : fx2++;
     	} else {
@@ -71,19 +72,21 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			nw_or == south ? fx1++ : fy1++;
     	}*/
     	// right hand rule
+		//get updated coordination
 		if (nw_or == south || nw_or == west) {
-      		nw_or == south ? fy2++ : fx2++;
+      		nw_or == south ? endY++ : endX++;
     	} else {
-      		fx2 += 1;
-			fy2 += 1;
-			nw_or == north ? fx1++ : fy1++;
+      		endX += 1;
+			endY += 1;
+			nw_or == north ? startX++ : startY++;
     	}
 
-		bp = bumped(fx1, fy1, fx2, fy2);  // see if there is a bump (boolean)
+		bp = bumped(startX, startY, endX, endY);  // see if there is a bump (boolean)
 		//ROS_INFO("bumped?: %s", bp ? "ture" : "false");
 		aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
 		//ROS_INFO("at end?: %s", aend ? "ture" : "false");
 		ROS_INFO("Current state: %f, Orientation: %d", cs, nw_or);
+		//left hand rule
 		/*switch(nw_or) {
 			case north:
 				cs == moving_forward ? (nw_or = west, cs = turned_forward) :
@@ -107,6 +110,9 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		}*/
 		// right hand rule
 		switch(nw_or) {
+			// according to turtle's current direction, and currentstate for bumped and aend
+			// decide which direction or action with turtle do at next time tick
+			// input: nw_or, cs, bp. output: cs, nw_or
 			case north:
 				cs == moving_forward ? (nw_or = east, cs = turned_forward) :
 				bp ? (nw_or = west, cs = turned_bumped) : cs = moving_forward;
@@ -187,7 +193,8 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			z = false;
 			mod = true;
 		}*/
-
+		// update the turtle's coordination in the maze for next loop
+		// input: flag(z), aend, nw_or. output: pos
 		if(moving_flag == true && aend == false) {
 			switch(nw_or) {
 				case west:
