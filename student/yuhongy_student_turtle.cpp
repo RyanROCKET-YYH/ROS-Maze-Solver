@@ -181,7 +181,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 				break;
 		}*/
 		// right hand rule
-		/*
+		
 		switch(nw_or) {
 			// according to turtle's current direction, and currentstate for bumped and aend
 			// decide which direction or action with turtle do at next time tick
@@ -210,9 +210,10 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 				ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 				break;
 		}
-		*/
-		nw_or = static_cast<TurtleOrientation>(nw_or);
-		turtleNextDir(nw_or, cs, bp);
+		
+		// module for repetive code
+		//nw_or = static_cast<TurtleOrientation>(nw_or);
+		//turtleNextDir(nw_or, cs, bp);
 
 
 		/*	
