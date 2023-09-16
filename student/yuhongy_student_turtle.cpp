@@ -95,6 +95,30 @@ void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &s
     state = nextState;
 }
 
+void moveTurtleBasedOnOrientation(QPointF &pos, TurtleOrientation orientation, bool &moving_flag, bool aend, bool &mod) {
+    if(moving_flag && !aend) {
+        switch(orientation) {
+            case west:
+                pos.setY(pos.y() - 1);
+                break;
+            case north:
+                pos.setX(pos.x() + 1);
+                break;
+            case east:
+                pos.setY(pos.y() + 1);
+                break;
+            case south:
+                pos.setX(pos.x() - 1);
+                break;
+            default:
+                ROS_ERROR("Unexpected value for turtle's direction: %d", orientation);
+                break;
+        }
+        moving_flag = false;
+        mod = true;
+    }
+}
+
 
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
 	// call in everyloops to return wait time
@@ -245,6 +269,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		}*/
 		// update the turtle's coordination in the maze for next loop
 		// input: flag(z), aend, nw_or. output: pos
+		/*
 		if(moving_flag == true && aend == false) {
 			switch(nw_or) {
 				case west:
@@ -265,7 +290,9 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			}
 			moving_flag = false;
 			mod = true;
-		}
+		}*/
+		moveTurtleBasedOnOrientation(pos_, nw_or, moving_flag, aend, mod);
+
   	}
 	if (aend) {
 		return false; // don't submit change if reaches destination
