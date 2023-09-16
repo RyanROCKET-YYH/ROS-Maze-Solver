@@ -58,7 +58,7 @@ enum TurtleState {
 	turned_forward = 1,
 	moving_forward = 2,
 };
-TurtleState cs;
+
 
 // module that determine turtle's next state
 void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &state, bool bumped) {
@@ -95,9 +95,9 @@ void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &s
     state = nextState;
 }
 
-void turtleMovement(QPointF &pos, TurtleOrientation orientation, bool &moving_flag, bool aend, bool &mod) {
+void turtleMovement(QPointF &pos, TurtleOrientation direction, bool &moving_flag, bool aend, bool &mod) {
     if(moving_flag && !aend) {
-        switch(orientation) {
+        switch(direction) {
             case west:
                 pos.setY(pos.y() - 1);
                 break;
@@ -111,7 +111,7 @@ void turtleMovement(QPointF &pos, TurtleOrientation orientation, bool &moving_fl
                 pos.setX(pos.x() - 1);
                 break;
             default:
-                ROS_ERROR("Unexpected value for turtle's direction: %d", orientation);
+                ROS_ERROR("Unexpected value for turtle's direction: %d", direction);
                 break;
         }
         moving_flag = false;
@@ -156,6 +156,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		//ROS_INFO("bumped?: %s", bp ? "ture" : "false");
 		aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
 		//ROS_INFO("at end?: %s", aend ? "ture" : "false");
+		TurtleState cs;
 		ROS_INFO("Current state: %d, Orientation: %d", cs, nw_or);
 		//left hand rule
 		/*switch(nw_or) {
