@@ -101,7 +101,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	ROS_INFO("Turtle update Called  w=%f", wait);
 	bool aend;
   	bool mod = true;
-  	if (wait == 0) {
+  	if (!wait) {
 		Point2D startPoint;
     	Point2D endPoint;
 		startPoint.x = pos_.x();
@@ -273,7 +273,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	if (aend) {
 		return false; // don't submit change if reaches destination
 	}
-  	if (wait == 0) {
+  	if (!wait) {
 		wait = TIMEOUT;
 	} else {
 		wait -= 1;
