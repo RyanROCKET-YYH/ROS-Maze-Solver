@@ -30,6 +30,8 @@ bool moving_flag, bp, aend, mod;
 // and "atend(..)", and NO other turtle methods or maze methods (no peeking at
 // the maze!)
 
+
+// left hand orientation enum
 /*enum TurtleOrientation {
 	north = 0,
 	east = 1,
@@ -37,6 +39,7 @@ bool moving_flag, bp, aend, mod;
 	west = 3,
 };*/
 
+// right hand orientation enum
 enum TurtleOrientation {
 	// enum for turtle's orientation
 	south = 0,
@@ -51,6 +54,44 @@ enum TurtleState {
 	turned_forward = 1,
 	moving_forward = 2,
 };
+
+// module that determine turtle's next state
+void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &state, bool bumped) {
+    TurtleOrientation turnDirection;
+    TurtleState nextState;
+
+    // Define the turn directions for each orientation
+    switch(direction) {
+        case north:
+            turnDirection = east;
+            break;
+        case east:
+            turnDirection = south;
+            break;
+        case south:
+            turnDirection = west;
+            break;
+        case west:
+            turnDirection = north;
+            break;
+        default:
+            ROS_ERROR("Unexpected value for turtle's direction: %d", direction);
+            return;
+    }
+
+    if (state == moving_forward) {
+        direction = turnDirection;
+        nextState = turned_forward;
+    } else if (bumped) {
+        direction = static_cast<TurtleOrientation>((direction + 2) % 4);  // Opposite direction
+		direction = static_cast<TurtleOrientation>((direction + 3) % 4);  // then turn left
+        nextState = turned_bumped;
+    } else {
+        nextState = moving_forward;
+    }
+
+    state = nextState;
+}
 
 
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
@@ -109,6 +150,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 				break;
 		}*/
 		// right hand rule
+		/*
 		switch(nw_or) {
 			// according to turtle's current direction, and currentstate for bumped and aend
 			// decide which direction or action with turtle do at next time tick
@@ -137,6 +179,9 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 				ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 				break;
 		}
+		*/
+		determineNextDirectionAndState(nw_or, cs, bp);
+
 	
 		/*	
 		if (nw_or == north) {
@@ -219,10 +264,14 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 
 		
   	}
-	if (aend) return false; // don't submit change if reaches destination
+	if (aend) {
+		return false; // don't submit change if reaches destination
+	}
   	if (!wait) {
 		wait = TIMEOUT;
-	} else wait -= 1;
+	} else {
+		wait -= 1;
+	}
 
 	return wait == TIMEOUT;
 }
