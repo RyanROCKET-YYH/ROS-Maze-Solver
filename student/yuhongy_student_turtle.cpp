@@ -94,7 +94,7 @@ void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &s
 }
 
 
-bool studentMoveTurtle(QPointF &pos_, TurtleOrientation &nw_or) {
+bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	// call in everyloops to return wait time
 	ROS_INFO("Turtle update Called  w=%f", wait);
 
@@ -150,7 +150,7 @@ bool studentMoveTurtle(QPointF &pos_, TurtleOrientation &nw_or) {
 				break;
 		}*/
 		// right hand rule
-		/*
+		
 		switch(nw_or) {
 			// according to turtle's current direction, and currentstate for bumped and aend
 			// decide which direction or action with turtle do at next time tick
@@ -179,9 +179,7 @@ bool studentMoveTurtle(QPointF &pos_, TurtleOrientation &nw_or) {
 				ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 				break;
 		}
-		*/
-		determineNextDirectionAndState(nw_or, cs, bp);
-
+		
 	
 		/*	
 		if (nw_or == north) {
