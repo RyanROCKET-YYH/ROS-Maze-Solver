@@ -20,6 +20,7 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 
 const int32_t TIMEOUT = 20;  // bigger number slows down simulation so you can see what's happening   
 int32_t wait; // w: countdown time.
+//int32_t startX, startY, endX, endY; // current position of turtle
 
 // Define the Coordinate type
 typedef double Cord;
@@ -27,8 +28,6 @@ struct Point2D {
     Cord x;
     Cord y;
 };
-Point2D startPoint;
-Point2D endPoint;
 
 // this procedure takes the current turtle position and orientation and returns
 // true=submit changes, false=do not submit changes
@@ -104,16 +103,10 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	bool aend;
   	bool mod = true;
   	if (!wait) {
-		startPoint.x = pos_.x();
-    	startPoint.y = pos_.y();
-
-    	endPoint.x = pos_.x();
-    	endPoint.y = pos_.y();
-
-		/*int32_t startX = pos_.x();
+		int32_t startX = pos_.x();
 		int32_t startY = pos_.y(); // initialize the position and used to check for bump
 		int32_t endX = pos_.x();
-		int32_t endY = pos_.y();*/
+		int32_t endY = pos_.y();
 		/*if (nw_or == north || nw_or == east) {
       		nw_or == north ? fy2++ : fx2++;
     	} else {
@@ -124,14 +117,14 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
     	// right hand rule
 		//get updated coordination
 		if (nw_or == south || nw_or == west) {
-      		nw_or == south ? endPoint.y++ : endPoint.x++;
+      		nw_or == south ? endY++ : endX++;
     	} else {
-      		endPoint.x += 1;
-			endPoint.y += 1;
-			nw_or == north ? startPoint.x++ : startPoint.y++;
+      		endX += 1;
+			endY += 1;
+			nw_or == north ? startX++ : startY++;
     	}
 
-		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // see if there is a bump (boolean)
+		bool bp = bumped(startX, startY, endX, endY);  // see if there is a bump (boolean)
 		//ROS_INFO("bumped?: %s", bp ? "ture" : "false");
 		aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
 		//ROS_INFO("at end?: %s", aend ? "ture" : "false");
