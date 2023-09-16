@@ -18,10 +18,9 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 
 // OK TO MODIFY BELOW THIS LINE
 
-#define TIMEOUT 2 // bigger number slows down simulation so you can see what's happening
-float wait, cs;              // w: countdown time. cs: current state.
-float fx1, fy1, fx2, fy2; // current position of turtle
-float z, aend, mod, bp, q;
+#define TIMEOUT 20 // bigger number slows down simulation so you can see what's happening
+
+
 
 // this procedure takes the current turtle position and orientation and returns
 // true=submit changes, false=do not submit changes
@@ -50,10 +49,14 @@ enum TurtleState {
 };
 
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
+	float wait, cs;	            // w: countdown time. cs: current state.
+	float fx1, fy1, fx2, fy2; // current position of turtle
+	float z, aend, mod, bp;
 	ROS_INFO("Turtle update Called  w=%f", wait);
+
   
   	mod = true;
-  	if (wait == 0) {
+  	if (!wait) {
 		fx1 = pos_.x();
 		fy1 = pos_.y(); // initialize the position and used to check for bump
 		fx2 = pos_.x();
@@ -194,7 +197,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		
   	}
 	if (aend) return false; // don't submit change if reaches destination
-  	if (wait == 0) {
+  	if (!wait) {
 		wait = TIMEOUT;
 	} else wait -= 1;
 
