@@ -20,7 +20,6 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 
 const int32_t TIMEOUT = 20;  // bigger number slows down simulation so you can see what's happening
 int32_t wait;        // w: countdown time. cs: current state.
-int8_t cs;
 int32_t startX, startY, endX, endY; // current position of turtle
 bool moving_flag, bp, aend, mod;
 
@@ -54,6 +53,7 @@ enum TurtleState {
 	turned_forward = 1,
 	moving_forward = 2,
 };
+TurtleState cs;
 
 // module that determine turtle's next state
 void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &state, bool bumped) {
