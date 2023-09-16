@@ -211,7 +211,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 				break;
 		}
 		*/
-		determineNextDirectionAndState(nw_or, cs, bp); //right now it doesn't work
+		determineNextDirectionAndState(static_cast<TurtleOrientation>(nw_or), cs, bp); 
 
 		/*	
 		if (nw_or == north) {
