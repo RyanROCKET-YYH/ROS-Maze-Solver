@@ -291,7 +291,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			moving_flag = false;
 			mod = true;
 		}*/
-		turtleMovement(pos_, nw_or, moving_flag, aend, mod);
+		turtleMovement(pos_, static_cast<TurtleOrientation>(nw_or), moving_flag, aend, mod);
 
   	}
 	if (aend) {
