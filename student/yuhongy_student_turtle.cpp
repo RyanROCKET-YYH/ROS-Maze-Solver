@@ -225,7 +225,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		ROS_INFO("Orientation=%d  STATE=%d", nw_or, cs);
 		bool moving_flag = (cs == 2);
 		mod = true;
-		if (z == true && aend == false) {    // when intend to move forward
+		if (moving_flag == true && aend == false) {    // when intend to move forward
 			switch (nw_or)
 			{
 			case east:
