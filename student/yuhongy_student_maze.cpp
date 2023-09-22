@@ -59,6 +59,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
     setVisits(currentX, currentY);
     int8_t currentVisits = getVisits(currentX, currentY);
     displayVisits(currentVisits);
+    lastPosition = pos_;
   }
   return studentMoveTurtle(pos_, nw_or);
 }
