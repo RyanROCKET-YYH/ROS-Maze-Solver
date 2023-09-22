@@ -160,24 +160,53 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		//left hand rule
 		switch(nw_or) {
 		case north:
-			cs == moving_forward ? (nw_or = west, cs = turned_forward) :
-			bp ? (nw_or = east, cs = turned_bumped) : cs = moving_forward;
+			if (cs == moving_forward) {
+				nw_or = west;
+				cs = turned_forward;
+			} else if (bp) {
+				nw_or = east;
+				cs = turned_bumped;
+			} else {
+				cs = moving_forward;
+			}
 			break;
 		
 		case east:
-			cs == moving_forward ? (nw_or = north, cs = turned_forward) :
-			bp ? (nw_or = south, cs = turned_bumped) : cs = moving_forward;
+			if (cs == moving_forward) {
+				nw_or = north;
+				cs = turned_forward;
+			} else if (bp) {
+				nw_or = south;
+				cs = turned_bumped;
+			} else {
+				cs = moving_forward;
+			}
 			break;
 
 		case south:
-			cs == moving_forward ? (nw_or = east, cs = turned_forward) :
-			bp ? (nw_or = west, cs = turned_bumped) : cs = moving_forward;
+			if (cs == moving_forward) {
+				nw_or = east;
+				cs = turned_forward;
+			} else if (bp) {
+				nw_or = west;
+				cs = turned_bumped;
+			} else {
+				cs = moving_forward;
+			}
 			break;
 
 		case west:
-			cs == moving_forward ? (nw_or = south, cs = turned_forward) :
-			bp ? (nw_or = north, cs = turned_bumped) : cs = moving_forward;
+			if (cs == moving_forward) {
+				nw_or = south;
+				cs = turned_forward;
+			} else if (bp) {
+				nw_or = north;
+				cs = turned_bumped;
+			} else {
+				cs = moving_forward;
+			}
 			break;
+			
 		default:
 			ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 			break;
