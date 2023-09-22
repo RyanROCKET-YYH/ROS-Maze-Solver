@@ -49,7 +49,6 @@ enum TurtleState {				 // enum for turtle's current state
 	turned_forward = 1,
 	moving_forward = 2,
 };
-TurtleState cs;
 
 // module that determine turtle's next state
 void turtleNextDir(TurtleOrientation &direction, TurtleState &state, bool bumped) {
@@ -117,7 +116,8 @@ void turtleMovement(QPointF &pos, TurtleOrientation direction, bool &moving_flag
  */
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
 	// call in everyloops to return wait time 
-	static int32_t wait;	
+	static int32_t wait;
+	static TurtleState cs;	
 	const int32_t TIMEOUT = 2; 	 // bigger number slows down simulation so you can see what's happening
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	bool aend, moving_flag;
