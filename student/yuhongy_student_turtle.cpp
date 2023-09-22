@@ -23,7 +23,6 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 // and "atend(..)", and NO other turtle methods or maze methods (no peeking at
 // the maze!)
 
-const int32_t TIMEOUT = 20; 	 // bigger number slows down simulation so you can see what's happening   
 int32_t wait; 				     // w: countdown time.
 typedef double Cord;			 // Define the Coordinate type
 struct Point2D {
@@ -32,13 +31,13 @@ struct Point2D {
 };
 
 // left hand orientation enum
-/*enum TurtleOrientation {
+enum TurtleOrientation {
 	north = 0,
 	east = 1,
 	south = 2,
 	west = 3,
-};*/
-
+};
+/*
 // right hand orientation enum
 enum TurtleOrientation {		 // enum for turtle's orientation
 	south = 0,
@@ -46,7 +45,7 @@ enum TurtleOrientation {		 // enum for turtle's orientation
 	north = 2,
 	east = 3,
 };
-
+*/
 enum TurtleState {				 // enum for turtle's current state
 	turned_bumped = 0,
 	turned_forward = 1,
@@ -118,6 +117,7 @@ void turtleMovement(QPointF &pos, TurtleOrientation direction, bool &moving_flag
 
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
 	// call in everyloops to return wait time
+	const int32_t TIMEOUT = 20; 	 // bigger number slows down simulation so you can see what's happening   
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	bool aend;
   	bool mod = true;
@@ -131,6 +131,14 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
     	endPoint.x = pos_.x();
     	endPoint.y = pos_.y();	
 
+		if (nw_or == north || nw_or == east) {
+      		nw_or == north ? endPoint.y++ : endPoint.x++;
+    	} else {
+      		endPoint.x += 1;
+			endPoint.y += 1;
+			nw_or == south ? startPoint.x++ : startPoint.y++;
+    	}
+
 		/*if (nw_or == north || nw_or == east) {
       		nw_or == north ? fy2++ : fx2++;
     	} else {
@@ -140,6 +148,9 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
     	}*/
     	// right hand rule
 		//get updated coordination
+
+
+		/*
 		if (nw_or == south || nw_or == west) {
       		nw_or == south ? endPoint.y++ : endPoint.x++;
     	} else {
@@ -147,13 +158,14 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			endPoint.y += 1;
 			nw_or == north ? startPoint.x++ : startPoint.y++;
     	}
+		*/
 
 		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // if there is a bump (boolean)
 		aend = atend(pos_.x(), pos_.y()); 									   // if arrvies at end (boolean)
 		ROS_INFO("Current state: %d, Orientation: %d", cs, nw_or);
 
 		//left hand rule
-		/*switch(nw_or) {
+		switch(nw_or) {
 		case north:
 			cs == moving_forward ? (nw_or = west, cs = turned_forward) :
 			bp ? (nw_or = east, cs = turned_bumped) : cs = moving_forward;
@@ -176,10 +188,10 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		default:
 			ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 			break;
-		}*/
+		}
 
 		// right hand rule
-		switch(nw_or) {
+		/*switch(nw_or) {
 			// according to turtle's current direction, and currentstate for bumped and aend
 			// decide which direction or action with turtle do at next time tick
 			// input: nw_or, cs, bp. output: cs, nw_or
@@ -207,13 +219,13 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 			break;
 		}
-		
+		*/
 		// determineNextDirectionAndState(nw_or, cs, bp); right now it doesn't work
 
 		ROS_INFO("Orientation=%d  STATE=%d", nw_or, cs);
 		bool moving_flag = (cs == 2);
 		mod = true;
-	/*  if (z == true && aend == false) {    // when intend to move forward
+		if (z == true && aend == false) {    // when intend to move forward
 			switch (nw_or)
 			{
 			case east:
@@ -235,10 +247,9 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			moving_flag = false;
 			mod = true;
 		}
-		*/
 		// update the turtle's coordination in the maze for next loop
 		// input: flag(z), aend, nw_or. output: pos
-		if(moving_flag == true && aend == false) {			// right-hand rule
+		/*if(moving_flag == true && aend == false) {			// right-hand rule
 			switch(nw_or) 
 			{
 			case west:
@@ -259,7 +270,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			}
 			moving_flag = false;
 			mod = true;
-		}	
+		}*/	
   	}
 	if (aend) {
 		return false; // don't submit change if reaches destination
