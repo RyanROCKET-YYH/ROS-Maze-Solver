@@ -28,7 +28,21 @@
  * Ground rule -- you are only allowed to call the three helper functions defined in student.h, and NO other turtle methods or maze methods (no peeking at the maze!)
  * This file interfaces with functions in student_turtle.cpp
  */
-int8_t visits = 1;
+// Local map to keep track of number of visits for each square
+static int8_t localMap[23][23] = {0};
+const int START_X = 11;
+const int START_Y = 11;
+
+// Getter method to get number of visits
+int8_t getVisits(int x, int y) {
+    return localMap[x][y];
+}
+
+// Setter method to update the number of visits
+void setVisits(int x, int y, int8_t visits) {
+    localMap[x][y] = visits;
+}
+
 bool moveTurtle(QPointF& pos_, int& nw_or)
 {
   bool bumped = true; // Replace with your own procedure
@@ -36,7 +50,11 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
   pos_ = translatePos(pos_, nextMove);
   nw_or = translateOrnt(nw_or, nextMove);
   // REPLACE THE FOLLOWING LINE IN PROJECT 5
-  displayVisits(visits);
+  int8_t currentX = START_X + pos_.x();
+  int8_t currentY = START_Y + pos_.y();
+  int8_t currentVisits = getVisits(currentX, currentY);
+  setVisits(currentX, currentY, currentVisits);
+  displayVisits(currentVisits + 1);     
   return studentMoveTurtle(pos_, nw_or);
 }
 
