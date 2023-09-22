@@ -139,17 +139,8 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			nw_or == south ? startPoint.x++ : startPoint.y++;
     	}
 
-		/*if (nw_or == north || nw_or == east) {
-      		nw_or == north ? fy2++ : fx2++;
-    	} else {
-      		fx2 += 1;
-			fy2 += 1;
-			nw_or == south ? fx1++ : fy1++;
-    	}*/
     	// right hand rule
 		//get updated coordination
-
-
 		/*
 		if (nw_or == south || nw_or == west) {
       		nw_or == south ? endPoint.y++ : endPoint.x++;
@@ -163,6 +154,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // if there is a bump (boolean)
 		aend = atend(pos_.x(), pos_.y()); 									   // if arrvies at end (boolean)
 		ROS_INFO("Current state: %d, Orientation: %d", cs, nw_or);
+		ROS_INFO("Current position: x = %f, y = %f", pos_.x(), pos_.y());
 
 		//left hand rule
 		switch(nw_or) {
@@ -220,7 +212,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			break;
 		}
 		*/
-		// determineNextDirectionAndState(nw_or, cs, bp); right now it doesn't work
+		// determineNextDirectionAndState(nw_or, cs, bp); 
 
 		ROS_INFO("Orientation=%d  STATE=%d", nw_or, cs);
 		bool moving_flag = (cs == 2);
