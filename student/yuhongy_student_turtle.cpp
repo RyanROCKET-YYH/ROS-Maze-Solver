@@ -118,7 +118,7 @@ void turtleMovement(QPointF &pos, TurtleOrientation direction, bool &moving_flag
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
 	// call in everyloops to return wait time 
 	static int32_t wait;	
-	const int32_t TIMEOUT = 20; 	 // bigger number slows down simulation so you can see what's happening
+	const int32_t TIMEOUT = 2; 	 // bigger number slows down simulation so you can see what's happening
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	bool aend, moving_flag;
   	bool mod = true;
