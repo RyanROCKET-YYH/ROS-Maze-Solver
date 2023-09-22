@@ -28,14 +28,15 @@
  * Ground rule -- you are only allowed to call the three helper functions defined in student.h, and NO other turtle methods or maze methods (no peeking at the maze!)
  * This file interfaces with functions in student_turtle.cpp
  */
+int8_t visits;
 bool moveTurtle(QPointF& pos_, int& nw_or)
 {
   bool bumped = true; // Replace with your own procedure
   turtleMove nextMove = studentTurtleStep(bumped); // define your own turtleMove enum or structure
   pos_ = translatePos(pos_, nextMove);
   nw_or = translateOrnt(nw_or, nextMove);
-
   // REPLACE THE FOLLOWING LINE IN PROJECT 5
+  displayVisits(visits);
   return studentMoveTurtle(pos_, nw_or);
 }
 
