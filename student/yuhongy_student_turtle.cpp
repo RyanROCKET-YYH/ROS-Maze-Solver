@@ -17,23 +17,19 @@
 turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 
 // OK TO MODIFY BELOW THIS LINE
-
-const int32_t TIMEOUT = 20;  // bigger number slows down simulation so you can see what's happening   
-int32_t wait; // w: countdown time.
-
-// Define the Coordinate type
-typedef double Cord;
-struct Point2D {
-    Cord x;
-    Cord y;
-};
-
 // this procedure takes the current turtle position and orientation and returns
 // true=submit changes, false=do not submit changes
 // Ground rule -- you are only allowed to call the helper functions "bumped(..)"
 // and "atend(..)", and NO other turtle methods or maze methods (no peeking at
 // the maze!)
 
+const int32_t TIMEOUT = 20; 	 // bigger number slows down simulation so you can see what's happening   
+int32_t wait; 				     // w: countdown time.
+typedef double Cord;			 // Define the Coordinate type
+struct Point2D {
+    Cord x;
+    Cord y;
+};
 
 // left hand orientation enum
 /*enum TurtleOrientation {
@@ -44,43 +40,41 @@ struct Point2D {
 };*/
 
 // right hand orientation enum
-enum TurtleOrientation {
-	// enum for turtle's orientation
+enum TurtleOrientation {		 // enum for turtle's orientation
 	south = 0,
 	west = 1,
 	north = 2,
 	east = 3,
 };
 
-enum TurtleState {
-	// enum for turtle's current state
+enum TurtleState {				 // enum for turtle's current state
 	turned_bumped = 0,
 	turned_forward = 1,
 	moving_forward = 2,
 };
-TurtleState cs;
 
 // module that determine turtle's next state
-void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &state, bool bumped) {
+void turtleNextDir(TurtleOrientation &direction, TurtleState &state, bool bumped) {
     TurtleOrientation turnDirection;
     TurtleState nextState;
     // Define the turn directions for each orientation
-    switch(direction) {
-        case north:
-            turnDirection = east;
-            break;
-        case east:
-            turnDirection = south;
-            break;
-        case south:
-            turnDirection = west;
-            break;
-        case west:
-            turnDirection = north;
-            break;
-        default:
-            ROS_ERROR("Unexpected value for turtle's direction: %d", direction);
-            return;
+    switch(direction) 
+	{
+	case north:
+		turnDirection = east;
+		break;
+	case east:
+		turnDirection = south;
+		break;
+	case south:
+		turnDirection = west;
+		break;
+	case west:
+		turnDirection = north;
+		break;
+	default:
+		ROS_ERROR("Unexpected value for turtle's direction: %d", direction);
+		return;
     }
     if (state == moving_forward) {
         direction = turnDirection;
@@ -93,6 +87,31 @@ void determineNextDirectionAndState(TurtleOrientation &direction, TurtleState &s
         nextState = moving_forward;
     }
     state = nextState;
+}
+
+void turtleMovement(QPointF &pos, TurtleOrientation direction, bool &moving_flag, bool aend, bool &mod) {
+    if(moving_flag && !aend) {
+        switch(direction)
+		{
+		case west:
+			pos.setY(pos.y() - 1);
+			break;
+		case north:
+			pos.setX(pos.x() + 1);
+			break;
+		case east:
+			pos.setY(pos.y() + 1);
+			break;
+		case south:
+			pos.setX(pos.x() - 1);
+			break;
+		default:
+			ROS_ERROR("Unexpected value for turtle's direction: %d", direction);
+			break;
+        }
+        moving_flag = false;
+        mod = true;
+    }
 }
 
 
@@ -128,144 +147,119 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			nw_or == north ? startPoint.x++ : startPoint.y++;
     	}
 
-		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // see if there is a bump (boolean)
-		//ROS_INFO("bumped?: %s", bp ? "ture" : "false");
-		aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
-		//ROS_INFO("at end?: %s", aend ? "ture" : "false");
+		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // if there is a bump (boolean)
+		aend = atend(pos_.x(), pos_.y()); 									   // if arrvies at end (boolean)
+		TurtleState cs;
 		ROS_INFO("Current state: %d, Orientation: %d", cs, nw_or);
+
 		//left hand rule
 		/*switch(nw_or) {
-			case north:
-				cs == moving_forward ? (nw_or = west, cs = turned_forward) :
-				bp ? (nw_or = east, cs = turned_bumped) : cs = moving_forward;
-				break;
-			
-			case east:
-				cs == moving_forward ? (nw_or = north, cs = turned_forward) :
-				bp ? (nw_or = south, cs = turned_bumped) : cs = moving_forward;
-				break;
-
-			case south:
-				cs == moving_forward ? (nw_or = east, cs = turned_forward) :
-				bp ? (nw_or = west, cs = turned_bumped) : cs = moving_forward;
-				break;
-
-			case west:
-				cs == moving_forward ? (nw_or = south, cs = turned_forward) :
-				bp ? (nw_or = north, cs = turned_bumped) : cs = moving_forward;
-				break;
-		}*/
-		// right hand rule
+		case north:
+			cs == moving_forward ? (nw_or = west, cs = turned_forward) :
+			bp ? (nw_or = east, cs = turned_bumped) : cs = moving_forward;
+			break;
 		
+		case east:
+			cs == moving_forward ? (nw_or = north, cs = turned_forward) :
+			bp ? (nw_or = south, cs = turned_bumped) : cs = moving_forward;
+			break;
+
+		case south:
+			cs == moving_forward ? (nw_or = east, cs = turned_forward) :
+			bp ? (nw_or = west, cs = turned_bumped) : cs = moving_forward;
+			break;
+
+		case west:
+			cs == moving_forward ? (nw_or = south, cs = turned_forward) :
+			bp ? (nw_or = north, cs = turned_bumped) : cs = moving_forward;
+			break;
+		default:
+			ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
+			break;
+		}*/
+
+		// right hand rule
 		switch(nw_or) {
 			// according to turtle's current direction, and currentstate for bumped and aend
 			// decide which direction or action with turtle do at next time tick
 			// input: nw_or, cs, bp. output: cs, nw_or
-			case north:
-				cs == moving_forward ? (nw_or = east, cs = turned_forward) :
-				bp ? (nw_or = west, cs = turned_bumped) : cs = moving_forward;
-				break;
-			
-			case east:
-				cs == moving_forward ? (nw_or = south, cs = turned_forward) :
-				bp ? (nw_or = north, cs = turned_bumped) : cs = moving_forward;
-				break;
+		case north:
+			cs == moving_forward ? (nw_or = east, cs = turned_forward) :
+			bp ? (nw_or = west, cs = turned_bumped) : cs = moving_forward;
+			break;
+		
+		case east:
+			cs == moving_forward ? (nw_or = south, cs = turned_forward) :
+			bp ? (nw_or = north, cs = turned_bumped) : cs = moving_forward;
+			break;
 
-			case south:
-				cs == moving_forward ? (nw_or = west, cs = turned_forward) :
-				bp ? (nw_or = east, cs = turned_bumped) : cs = moving_forward;
-				break;
+		case south:
+			cs == moving_forward ? (nw_or = west, cs = turned_forward) :
+			bp ? (nw_or = east, cs = turned_bumped) : cs = moving_forward;
+			break;
 
-			case west:
-				cs == moving_forward ? (nw_or = north, cs = turned_forward) :
-				bp ? (nw_or = south, cs = turned_bumped) : cs = moving_forward;
-				break;
-			
-			default:
-				ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
-				break;
+		case west:
+			cs == moving_forward ? (nw_or = north, cs = turned_forward) :
+			bp ? (nw_or = south, cs = turned_bumped) : cs = moving_forward;
+			break;
+		
+		default:
+			ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
+			break;
 		}
 		
 		// determineNextDirectionAndState(nw_or, cs, bp); right now it doesn't work
 
-		/*	
-		if (nw_or == north) {
-		if (cs == moving_forward) {	// intend to move forward
-			nw_or = west;    // turn left 0->3 is turning left
-			cs = turned_forward;    // recently turned
-		} else if (bp) {    // if bumped, means can't move foward
-			nw_or = east;    // since left hand rule, it will turn right, 0->1 turning right
-			cs = turned_bumped;    // turned and bumped
-		} else
-			cs = moving_forward;    //intend to move forward
-		} else if (nw_or == east) {   
-		if (cs == moving_forward) {
-			nw_or = north;  
-			cs = turned_forward;
-		} else if (bp) {
-			nw_or = south;    
-			cs = turned_bumped;
-		} else
-			cs = moving_forward;
-		} else if (nw_or == south) {
-		if (cs == moving_forward) {
-			nw_or = east;    
-			cs = turned_forward;
-		} else if (bp) {
-			nw_or = west;    
-			cs = turned_bumped;
-		} else
-			cs = moving_forward;
-		} else if (nw_or == west) {
-		if (cs == moving_forward) {
-			nw_or = south;    
-			cs = turned_forward;
-		} else if (bp) {
-			nw_or = north;    
-			cs = turned_bumped;
-		} else
-			cs = moving_forward;
-		}*/
-
-
 		ROS_INFO("Orientation=%d  STATE=%d", nw_or, cs);
-		bool moving_flag = cs == 2;
+		bool moving_flag = (cs == 2);
 		mod = true;
-		/*if (z == true && aend == false) {    // when intend to move forward
-			if (nw_or == east)
-				pos_.setY(pos_.y() - 1);    // or = 1, turn left (y-1), or = 1 is east
-			if (nw_or == south)
-				pos_.setX(pos_.x() + 1);    // south nw_or = 2, x+1
-			if (nw_or == west)
-				pos_.setY(pos_.y() + 1);    // east nw_or = 3, y+1
-			if (nw_or == north)
-				pos_.setX(pos_.x() - 1);    // north nw_or = 0, x-1
-			z = false;
-			mod = true;
-		}*/
-		// update the turtle's coordination in the maze for next loop
-		// input: flag(z), aend, nw_or. output: pos
-		if(moving_flag == true && aend == false) {
-			switch(nw_or) {
-				case west:
-					pos_.setY(pos_.y() - 1);    // west y-1
-					break;
-				case north:
-					pos_.setX(pos_.x() + 1);    // north
-					break;
-				case east:
-					pos_.setY(pos_.y() + 1);    // east
-					break;
-				case south:
-					pos_.setX(pos_.x() - 1);    // south
-					break;
-				default:
-					ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
-					break;
-			}
+	/*  if (z == true && aend == false) {    // when intend to move forward
+			switch (nw_or)
+			{
+			case east:
+				pos_.setY(pos_.y() - 1);	// or = 1, turn left (y-1), or = 1 is east
+				break;
+			case south:
+				pos_.setX(pos_.x() + 1);	// south nw_or = 2, x+1
+				break;
+			case west:
+				pos_.setY(pos_.y() + 1);	// east nw_or = 3, y+1
+				break;
+			case north:
+				pos_.setX(pos_.x() - 1);	// north nw_or = 0, x-1
+				break;
+			default:
+				ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
+				break;
+			}  
 			moving_flag = false;
 			mod = true;
 		}
+		*/
+		// update the turtle's coordination in the maze for next loop
+		// input: flag(z), aend, nw_or. output: pos
+		if(moving_flag == true && aend == false) {			// right-hand rule
+			switch(nw_or) 
+			{
+			case west:
+				pos_.setY(pos_.y() - 1);    // west y-1
+				break;
+			case north:
+				pos_.setX(pos_.x() + 1);    // north
+				break;
+			case east:
+				pos_.setY(pos_.y() + 1);    // east
+				break;
+			case south:
+				pos_.setX(pos_.x() - 1);    // south
+				break;
+			default:
+				ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
+				break;
+			}
+			moving_flag = false;
+			mod = true;
+		}	
   	}
 	if (aend) {
 		return false; // don't submit change if reaches destination
@@ -275,6 +269,5 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	} else {
 		wait -= 1;
 	}
-
 	return wait == TIMEOUT;
 }
