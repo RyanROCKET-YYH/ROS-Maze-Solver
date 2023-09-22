@@ -251,16 +251,16 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			switch (nw_or)
 			{
 			case east:
-				pos_.setY(pos_.y() - 1);	// or = 1, turn left (y-1), or = 1 is east
+				pos_.setY(--pos_.ry());	// or = 1, turn left (y-1), or = 1 is east
 				break;
 			case south:
-				pos_.setX(pos_.x() + 1);	// south nw_or = 2, x+1
+				pos_.setX(++pos_.rx());	// south nw_or = 2, x+1
 				break;
 			case west:
-				pos_.setY(pos_.y() + 1);	// east nw_or = 3, y+1
+				pos_.setY(++pos_.ry());	// east nw_or = 3, y+1
 				break;
 			case north:
-				pos_.setX(pos_.x() - 1);	// north nw_or = 0, x-1
+				pos_.setX(--pos_.rx());	// north nw_or = 0, x-1
 				break;
 			default:
 				ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
