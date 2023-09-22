@@ -118,7 +118,7 @@ void turtleMovement(QPointF &pos, TurtleOrientation direction, bool &moving_flag
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
 	// call in everyloops to return wait time   
 	ROS_INFO("Turtle update Called  w=%d", wait);
-	bool aend;
+	bool aend, moving_flag;
   	bool mod = true;
   	if (!wait) {
 		Point2D startPoint;
@@ -214,7 +214,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		// determineNextDirectionAndState(nw_or, cs, bp); 
 
 		ROS_INFO("Orientation=%d  STATE=%d", nw_or, cs);
-		bool moving_flag = (cs == 2);
+		moving_flag = (cs == 2);
 		mod = true;
 		if (moving_flag == true && aend == false) {    // when intend to move forward
 			switch (nw_or)

@@ -30,8 +30,8 @@
  */
 // Local map to keep track of number of visits for each square
 static int8_t localMap[23][23] = {0};
-const int START_X = 11;
-const int START_Y = 11;
+const int8_t START_X = 11;
+const int8_t START_Y = 11;
 
 // Getter method to get number of visits
 int8_t getVisits(int x, int y) {
@@ -43,6 +43,9 @@ void setVisits(int8_t x, int8_t y) {
     localMap[x][y]++;
 }
 
+// Initialize an invalid position
+static QPointF lastPosition(-1, -1); 
+
 bool moveTurtle(QPointF& pos_, int& nw_or)
 {
   bool bumped = true; // Replace with your own procedure
@@ -52,9 +55,11 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
   // REPLACE THE FOLLOWING LINE IN PROJECT 5
   int8_t currentX = START_X + pos_.x();
   int8_t currentY = START_Y + pos_.y();
-  setVisits(currentX, currentY);
-  int8_t currentVisits = getVisits(currentX, currentY);
-  displayVisits(currentVisits);     
+  if (lastPosition != pos_) {
+    setVisits(currentX, currentY);
+    int8_t currentVisits = getVisits(currentX, currentY);
+    displayVisits(currentVisits);
+  }
   return studentMoveTurtle(pos_, nw_or);
 }
 
