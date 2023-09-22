@@ -117,7 +117,6 @@ void turtleMovement(QPointF &pos, TurtleOrientation direction, bool &moving_flag
 
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
 	// call in everyloops to return wait time   
-	int8_t visits;
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	bool aend;
   	bool mod = true;
