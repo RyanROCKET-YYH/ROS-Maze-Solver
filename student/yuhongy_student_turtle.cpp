@@ -52,6 +52,7 @@ enum TurtleState {				 // enum for turtle's current state
 	turned_forward = 1,
 	moving_forward = 2,
 };
+TurtleState cs;
 
 // module that determine turtle's next state
 void turtleNextDir(TurtleOrientation &direction, TurtleState &state, bool bumped) {
@@ -149,7 +150,6 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 
 		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // if there is a bump (boolean)
 		aend = atend(pos_.x(), pos_.y()); 									   // if arrvies at end (boolean)
-		TurtleState cs;
 		ROS_INFO("Current state: %d, Orientation: %d", cs, nw_or);
 
 		//left hand rule
