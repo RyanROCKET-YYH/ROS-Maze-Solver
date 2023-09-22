@@ -153,7 +153,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // if there is a bump (boolean)
 		aend = atend(pos_.x(), pos_.y()); 									   // if arrvies at end (boolean)
 		ROS_INFO("Current state: %d, Orientation: %d", cs, nw_or);
-		// ROS_INFO("Current position: x = %f, y = %f", pos_.x(), pos_.y());
+		ROS_INFO("Current position: x = %f, y = %f", pos_.x(), pos_.y());
 
 		//left hand rule
 		switch(nw_or) {
