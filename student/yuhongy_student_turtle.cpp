@@ -23,7 +23,7 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 // and "atend(..)", and NO other turtle methods or maze methods (no peeking at
 // the maze!)
 const int32_t TIMEOUT = 20; 	 // bigger number slows down simulation so you can see what's happening
-int32_t wait; 				     // w: countdown time.
+int32_t wait;   				 // w: countdown time.
 typedef double Cord;			 // Define the Coordinate type
 struct Point2D {
     Cord x;
@@ -116,7 +116,8 @@ void turtleMovement(QPointF &pos, TurtleOrientation direction, bool &moving_flag
 
 
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
-	// call in everyloops to return wait time   
+	// call in everyloops to return wait time 
+
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	bool aend, moving_flag;
   	bool mod = true;
@@ -262,14 +263,12 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			moving_flag = false;
 			mod = true;
 		}*/	
-  	}
+		wait = TIMEOUT;
+  	} else {
+		wait -= 1;
+	}
 	if (aend) {
 		return false; // don't submit change if reaches destination
-	}
-  	if (!wait) {
-		wait = TIMEOUT;
-	} else {
-		wait -= 1;
 	}
 	return wait == TIMEOUT;
 }
