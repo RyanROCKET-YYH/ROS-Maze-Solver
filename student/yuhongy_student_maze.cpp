@@ -39,8 +39,8 @@ int8_t getVisits(int x, int y) {
 }
 
 // Setter method to update the number of visits
-void setVisits(int x, int y, int8_t visits) {
-    localMap[x][y] = ++visits;
+void setVisits(int8_t x, int8_t y) {
+    localMap[x][y]++;
 }
 
 bool moveTurtle(QPointF& pos_, int& nw_or)
@@ -52,7 +52,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
   // REPLACE THE FOLLOWING LINE IN PROJECT 5
   int8_t currentX = START_X + pos_.x();
   int8_t currentY = START_Y + pos_.y();
-  setVisits(currentX, currentY, currentVisits);
+  setVisits(currentX, currentY);
   int8_t currentVisits = getVisits(currentX, currentY);
   displayVisits(currentVisits);     
   return studentMoveTurtle(pos_, nw_or);
