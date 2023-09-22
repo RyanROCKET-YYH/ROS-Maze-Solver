@@ -48,20 +48,21 @@ static QPointF lastPosition(-1, -1);
 
 bool moveTurtle(QPointF& pos_, int& nw_or)
 {
-  bool bumped = true; // Replace with your own procedure
-  turtleMove nextMove = studentTurtleStep(bumped); // define your own turtleMove enum or structure
-  pos_ = translatePos(pos_, nextMove);
-  nw_or = translateOrnt(nw_or, nextMove);
-  // REPLACE THE FOLLOWING LINE IN PROJECT 5
-  int8_t currentX = START_X + pos_.x();
-  int8_t currentY = START_Y + pos_.y();
-  if (lastPosition != pos_) {
-    setVisits(currentX, currentY);
-    int8_t currentVisits = getVisits(currentX, currentY);
-    displayVisits(currentVisits);
-    lastPosition = pos_;
-  }
-  return studentMoveTurtle(pos_, nw_or);
+	bool bumped = true; // Replace with your own procedure
+	turtleMove nextMove = studentTurtleStep(bumped); // define your own turtleMove enum or structure
+	pos_ = translatePos(pos_, nextMove);
+	nw_or = translateOrnt(nw_or, nextMove);
+	// REPLACE THE FOLLOWING LINE IN PROJECT 5
+	int8_t currentX = START_X + pos_.x();
+	int8_t currentY = START_Y + pos_.y();
+	if (lastPosition != pos_) {
+		setVisits(currentX, currentY);
+		int8_t currentVisits = getVisits(currentX, currentY);
+		displayVisits(currentVisits);
+		lastPosition = pos_;
+  	}
+
+  	return studentMoveTurtle(pos_, nw_or);
 }
 
 /*
@@ -69,7 +70,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or)
  * based on the move
  */
 QPointF translatePos(QPointF pos_, turtleMove nextMove) {
-  return pos_;
+  	return pos_;
 }
 
 /*
@@ -77,5 +78,5 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove) {
  * based on the move
  */
 int translateOrnt(int orientation, turtleMove nextMove) {
-  return orientation;
+  	return orientation;
 }

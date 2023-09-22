@@ -22,8 +22,6 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 // Ground rule -- you are only allowed to call the helper functions "bumped(..)"
 // and "atend(..)", and NO other turtle methods or maze methods (no peeking at
 // the maze!)
-const int32_t TIMEOUT = 20; 	 // bigger number slows down simulation so you can see what's happening
-int32_t wait;   				 // w: countdown time.
 typedef int32_t Cord;			 // Define the Coordinate type
 struct Point2D {
     Cord x;
@@ -114,10 +112,13 @@ void turtleMovement(QPointF &pos, TurtleOrientation direction, bool &moving_flag
     }
 }
 
-
+/* this section get turtle's pos and orientation
+ * update turtle's pos and orientation using wall following rule
+ */
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
 	// call in everyloops to return wait time 
-
+	static int32_t wait;	
+	const int32_t TIMEOUT = 20; 	 // bigger number slows down simulation so you can see what's happening
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	bool aend, moving_flag;
   	bool mod = true;
