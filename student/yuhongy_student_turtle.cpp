@@ -135,8 +135,8 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		if (nw_or == north || nw_or == east) {
       		nw_or == north ? endPoint.y++ : endPoint.x++;
     	} else {
-      		endPoint.x += 1;
-			endPoint.y += 1;
+      		endPoint.x++;
+			endPoint.y++;
 			nw_or == south ? startPoint.x++ : startPoint.y++;
     	}
 
