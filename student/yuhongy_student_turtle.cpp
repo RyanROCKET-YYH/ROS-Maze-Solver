@@ -19,7 +19,7 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 // OK TO MODIFY BELOW THIS LINE
 
 const int32_t TIMEOUT = 20;  // bigger number slows down simulation so you can see what's happening   
-int32_t wait; // w: countdown time.
+int32_t wait; 				 // w: countdown time.
 
 // Define the Coordinate type
 typedef double Cord;
@@ -156,6 +156,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		//ROS_INFO("bumped?: %s", bp ? "ture" : "false");
 		aend = atend(pos_.x(), pos_.y()); // check if arrvies at end (boolean)
 		//ROS_INFO("at end?: %s", aend ? "ture" : "false");
+
 		TurtleState cs;
 		ROS_INFO("Current state: %d, Orientation: %d", cs, nw_or);
 		//left hand rule
@@ -257,8 +258,9 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 
 
 		ROS_INFO("Orientation=%d  STATE=%d", nw_or, cs);
-		bool moving_flag = cs == 2;
+		bool moving_flag = (cs == 2);
 		mod = true;
+		// left-hand rule
 		/*if (moving_flag == true && aend == false) {    // when intend to move forward
 			if (nw_or == east)
 				pos_.setY(pos_.y() - 1);    // or = 1, turn left (y-1), or = 1 is east
@@ -274,6 +276,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		// update the turtle's coordination in the maze for next loop
 		// input: flag(z), aend, nw_or. output: pos
 		
+		//right-hand rule
 		if(moving_flag == true && aend == false) {
 			switch(nw_or) {
 				case west:
