@@ -29,7 +29,7 @@
  * This file interfaces with functions in student_turtle.cpp
  */
 // Local map to keep track of number of visits for each square
-static int8_t localMap[23][23] = {{0}};
+static int8_t localMap[23][23] = {0};
 const int START_X = 11;
 const int START_Y = 11;
 
