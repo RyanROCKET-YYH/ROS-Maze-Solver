@@ -91,7 +91,6 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
     
     	startPoint.x = pos_.x();	// initialize the position and used to check for bump
     	startPoint.y = pos_.y();
-
     	endPoint.x = pos_.x();
     	endPoint.y = pos_.y();	
 
@@ -159,8 +158,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		moving_flag = (cs == 2);
 		mod = true;
 		if (moving_flag == true && aend == false) {    // when intend to move forward
-			switch (nw_or)
-			{
+			switch (nw_or) {
 			case east:
 				pos_.setY(--pos_.ry());	// or = 1, turn left (y-1), or = 1 is east
 				break;
@@ -183,8 +181,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		// update the turtle's coordination in the maze for next loop
 		// input: flag(z), aend, nw_or. output: pos
 		/*if(moving_flag == true && aend == false) {			// right-hand rule
-			switch(nw_or) 
-			{
+			switch(nw_or) {
 			case west:
 				pos_.setY(--pos_.ry());    // west y-1
 				break;
