@@ -4,7 +4,7 @@
  *
  * STUDENT NAME: Yuhong YAO
  * ANDREW ID: yuhongy
- * LAST UPDATE:
+ * LAST UPDATE: 9/23/2023
  *
  * This file is an algorithm to solve the ece642rtle maze
  * using the left-hand rule. The code is intentionaly left obfuscated.
