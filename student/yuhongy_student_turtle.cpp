@@ -82,7 +82,7 @@ void updateStartPosition(QPointF &pos_, int32_t nw_or, Point2D &startPoint) {
     startPoint.y = pos_.y();
 }
 
-void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint) {
+void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint, Point2D &startPoint) {
     endPoint.x = pos_.x();
     endPoint.y = pos_.y();
     
@@ -130,7 +130,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		Point2D startPoint, endPoint;
     
     	updateStartPosition(pos_, nw_or, startPoint);
-        updateEndPosition(pos_, nw_or, endPoint);
+        updateEndPosition(pos_, nw_or, endPoint, startPoint);
 
     	// right hand rule
 		//get updated coordination
