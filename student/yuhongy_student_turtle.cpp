@@ -58,7 +58,7 @@ enum TurnDirection {
 TurtleOrientation getNextDir(int8_t nw_or, TurnDirection turn){
 	int8_t cycle = 4;
 	int8_t nextDir = (nw_or + turn + cycle)%4;
-	return nextDir;
+	return static_cast<TurtleOrientation>(nextDir);
 }
 
 // module that determine turtle's next state
