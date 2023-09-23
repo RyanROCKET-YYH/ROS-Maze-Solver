@@ -55,14 +55,14 @@ enum TurnDirection {
 	right = 1,
 };
 
-TurtleOrientation getNextDir(TurtleOrientation nw_or, TurnDirection turn){
+TurtleOrientation getNextDir(int8_t nw_or, TurnDirection turn){
 	int8_t cycle = 4;
 	int8_t nextDir = (nw_or + turn + cycle)%4;
-	return static_cast<TurtleOrientation>(nextDir);
+	return nextDir;
 }
 
 // module that determine turtle's next state
-void TurtleStateUpdate(TurtleOrientation &nw_or, TurtleState &cs, bool bumped){
+void TurtleStateUpdate(int8_t &nw_or, TurtleState &cs, bool bumped){
 	if (cs == moving_forward){
 		nw_or = getNextDir(nw_or, left);
 		cs = turned_forward;
@@ -77,7 +77,7 @@ void TurtleStateUpdate(TurtleOrientation &nw_or, TurtleState &cs, bool bumped){
 /* this section get turtle's pos and orientation
  * update turtle's pos and orientation using wall following rule
  */
-bool studentMoveTurtle(QPointF &pos_, TurtleOrientation &nw_or) {    
+bool studentMoveTurtle(QPointF &pos_, int8_t &nw_or) {    
 	// call in everyloops to return wait time 
 	static int32_t wait;
 	static TurtleState cs;	
