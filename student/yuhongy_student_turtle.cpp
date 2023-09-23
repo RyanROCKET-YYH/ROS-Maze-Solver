@@ -50,71 +50,34 @@ enum TurtleState {				 // enum for turtle's current state
 	moving_forward = 2,
 };
 
-// module that determine turtle's next state
-void turtleNextDir(TurtleOrientation &direction, TurtleState &state, bool bumped) {
-    TurtleOrientation turnDirection;
-    TurtleState nextState;
-    // Define the turn directions for each orientation
-    switch(direction) 
-	{
-	case north:
-		turnDirection = east;
-		break;
-	case east:
-		turnDirection = south;
-		break;
-	case south:
-		turnDirection = west;
-		break;
-	case west:
-		turnDirection = north;
-		break;
-	default:
-		ROS_ERROR("Unexpected value for turtle's direction: %d", direction);
-		return;
-    }
-    if (state == moving_forward) {
-        direction = turnDirection;
-        nextState = turned_forward;
-    } else if (bumped) {
-        direction = static_cast<TurtleOrientation>((direction + 2) % 4);  // Opposite direction
-		direction = static_cast<TurtleOrientation>((direction + 3) % 4);  // then turn left
-        nextState = turned_bumped;
-    } else {
-        nextState = moving_forward;
-    }
-    state = nextState;
+enum TurnDirection {
+	left = -1,
+	right = 1,
+};
+
+TurtleOrientation getNextDir(TurtleOrientation nw_or, TurnDirection turn){
+	int8_t cycle = 4;
+	int8_t nextDir = (nw_or + turn + cycle)%4;
+	return static_cast<TurtleOrientation>(nextDir);
 }
 
-void turtleMovement(QPointF &pos, TurtleOrientation direction, bool &moving_flag, bool aend, bool &mod) {
-    if(moving_flag && !aend) {
-        switch(direction)
-		{
-		case west:
-			pos.setY(pos.y() - 1);
-			break;
-		case north:
-			pos.setX(pos.x() + 1);
-			break;
-		case east:
-			pos.setY(pos.y() + 1);
-			break;
-		case south:
-			pos.setX(pos.x() - 1);
-			break;
-		default:
-			ROS_ERROR("Unexpected value for turtle's direction: %d", direction);
-			break;
-        }
-        moving_flag = false;
-        mod = true;
-    }
+// module that determine turtle's next state
+void TurtleStateUpdate(TurtleOrientation &nw_or, TurtleState &cs, bool bumped){
+	if (cs == moving_forward){
+		nw_or = getNextDir(nw_or, left);
+		cs = turned_forward;
+	} else if (bumped){
+		nw_or = getNextDir(nw_or, right);
+		cs = turned_bumped;
+	} else {
+		cs = moving_forward;
+	}
 }
 
 /* this section get turtle's pos and orientation
  * update turtle's pos and orientation using wall following rule
  */
-bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
+bool studentMoveTurtle(QPointF &pos_, int32_t &nw_or) {    
 	// call in everyloops to return wait time 
 	static int32_t wait;
 	static TurtleState cs;	
@@ -158,59 +121,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		ROS_INFO("Current position: x = %d, y = %d", pos_.x(), pos_.y());
 
 		//left hand rule
-		switch(nw_or) {
-		case north:
-			if (cs == moving_forward) {
-				nw_or = west;
-				cs = turned_forward;
-			} else if (bp) {
-				nw_or = east;
-				cs = turned_bumped;
-			} else {
-				cs = moving_forward;
-			}
-			break;
-		
-		case east:
-			if (cs == moving_forward) {
-				nw_or = north;
-				cs = turned_forward;
-			} else if (bp) {
-				nw_or = south;
-				cs = turned_bumped;
-			} else {
-				cs = moving_forward;
-			}
-			break;
-
-		case south:
-			if (cs == moving_forward) {
-				nw_or = east;
-				cs = turned_forward;
-			} else if (bp) {
-				nw_or = west;
-				cs = turned_bumped;
-			} else {
-				cs = moving_forward;
-			}
-			break;
-
-		case west:
-			if (cs == moving_forward) {
-				nw_or = south;
-				cs = turned_forward;
-			} else if (bp) {
-				nw_or = north;
-				cs = turned_bumped;
-			} else {
-				cs = moving_forward;
-			}
-			break;
-			
-		default:
-			ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
-			break;
-		}
+		TurtleStateUpdate(nw_or, cs, bp);
 
 		// right hand rule
 		/*switch(nw_or) {
@@ -275,16 +186,16 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 			switch(nw_or) 
 			{
 			case west:
-				pos_.setY(pos_.y() - 1);    // west y-1
+				pos_.setY(--pos_.ry());    // west y-1
 				break;
 			case north:
-				pos_.setX(pos_.x() + 1);    // north
+				pos_.setX(++pos_.rx());    // north
 				break;
 			case east:
-				pos_.setY(pos_.y() + 1);    // east
+				pos_.setY(++pos_.ry());    // east
 				break;
 			case south:
-				pos_.setX(pos_.x() - 1);    // south
+				pos_.setX(--pos_.rx());    // south
 				break;
 			default:
 				ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
@@ -298,7 +209,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		wait -= 1;
 	}
 	if (aend) {
-		return false; // don't submit change if reaches destination
+		return false; 			// don't submit change if reaches destination
 	}
 	return wait == TIMEOUT;
 }
