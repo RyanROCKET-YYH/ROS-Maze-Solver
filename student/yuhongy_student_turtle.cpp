@@ -95,7 +95,7 @@ void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint) {
     }
 }
 
-void moveTurtleBasedOnOrientation(QPointF &pos_, int nw_or) {
+void moveTurtleBasedOnOrientation(QPointF &pos_, int32_t nw_or) {
     switch (nw_or) {
         case east:
             pos_.setY(--pos_.ry());
