@@ -55,13 +55,16 @@ enum TurnDirection {
 	right = 1,
 };
 
+// helper function that for turtle's left and right right
+// @param nw_or (turtle's orientation), turn (either left or right)
 TurtleOrientation getNextDir(int32_t nw_or, TurnDirection turn){
 	int32_t cycle = 4;
 	int32_t nextDir = (nw_or + turn + cycle)%4;
 	return static_cast<TurtleOrientation>(nextDir);
 }
 
-// module that determine turtle's next state
+// module that determine turtle's next state by wall following rule
+// @param nw_or, cs(turtle's current state: moving forward, turned forward, turned bumped)
 void TurtleStateUpdate(int32_t &nw_or, TurtleState &cs, bool bumped){
 	if (cs == moving_forward){
 		nw_or = getNextDir(nw_or, left);
@@ -157,6 +160,8 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 		ROS_INFO("Orientation=%d  STATE=%d", nw_or, cs);
 		moving_flag = (cs == 2);
 		mod = true;
+
+		// update turtle's postion while not at end and moving
 		if (moving_flag == true && aend == false) {    // when intend to move forward
 			switch (nw_or) {
 			case east:
