@@ -77,6 +77,44 @@ void TurtleStateUpdate(int32_t &nw_or, TurtleState &cs, bool bumped){
 	}
 }
 
+void updateStartPosition(QPointF &pos_, int32_t nw_or, Point2D &startPoint) {
+    startPoint.x = pos_.x();
+    startPoint.y = pos_.y();
+}
+
+void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint) {
+    endPoint.x = pos_.x();
+    endPoint.y = pos_.y();
+    
+    if (nw_or == north || nw_or == east) {
+        nw_or == north ? endPoint.y++ : endPoint.x++;
+    } else {
+        endPoint.x++;
+        endPoint.y++;
+        nw_or == south ? startPoint.x++ : startPoint.y++;
+    }
+}
+
+void moveTurtleBasedOnOrientation(QPointF &pos_, int nw_or) {
+    switch (nw_or) {
+        case east:
+            pos_.setY(--pos_.ry());
+            break;
+        case south:
+            pos_.setX(++pos_.rx());
+            break;
+        case west:
+            pos_.setY(++pos_.ry());
+            break;
+        case north:
+            pos_.setX(--pos_.rx());
+            break;
+        default:
+            ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
+            break;
+    }
+}
+
 /* this section get turtle's pos and orientation
  * update turtle's pos and orientation using wall following rule
  */
@@ -89,21 +127,10 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	bool aend, moving_flag;
   	bool mod = true;
   	if (!wait) {
-		Point2D startPoint;
-    	Point2D endPoint;
+		Point2D startPoint, endPoint;
     
-    	startPoint.x = pos_.x();	// initialize the position and used to check for bump
-    	startPoint.y = pos_.y();
-    	endPoint.x = pos_.x();
-    	endPoint.y = pos_.y();	
-
-		if (nw_or == north || nw_or == east) {
-      		nw_or == north ? endPoint.y++ : endPoint.x++;
-    	} else {
-      		endPoint.x++;
-			endPoint.y++;
-			nw_or == south ? startPoint.x++ : startPoint.y++;
-    	}
+    	updateStartPosition(pos_, nw_or, startPoint);
+        updateEndPosition(pos_, nw_or, endPoint);
 
     	// right hand rule
 		//get updated coordination
@@ -163,23 +190,7 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 
 		// update turtle's postion while not at end and moving
 		if (moving_flag == true && aend == false) {    // when intend to move forward
-			switch (nw_or) {
-			case east:
-				pos_.setY(--pos_.ry());	// or = 1, turn left (y-1), or = 1 is east
-				break;
-			case south:
-				pos_.setX(++pos_.rx());	// south nw_or = 2, x+1
-				break;
-			case west:
-				pos_.setY(++pos_.ry());	// east nw_or = 3, y+1
-				break;
-			case north:
-				pos_.setX(--pos_.rx());	// north nw_or = 0, x-1
-				break;
-			default:
-				ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
-				break;
-			}  
+			moveTurtleBasedOnOrientation(pos_, nw_or);
 			moving_flag = false;
 			mod = true;
 		}
