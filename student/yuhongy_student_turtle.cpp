@@ -22,7 +22,9 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 // Ground rule -- you are only allowed to call the helper functions "bumped(..)"
 // and "atend(..)", and NO other turtle methods or maze methods (no peeking at
 // the maze!)
-typedef int32_t Cord;			 // Define the Coordinate type
+
+// Define the Coordinate type
+typedef int32_t Cord;			
 struct Point2D {
     Cord x;
     Cord y;
@@ -35,36 +37,43 @@ enum TurtleOrientation {
 	south = 2,
 	west = 3,
 };
-/*
-// right hand orientation enum
-enum TurtleOrientation {		 // enum for turtle's orientation
-	south = 0,
-	west = 1,
-	north = 2,
-	east = 3,
-};
-*/
-enum TurtleState {				 // enum for turtle's current state
+
+// enum for turtle's current state
+enum TurtleState {				 
 	turned_bumped = 0,
 	turned_forward = 1,
 	moving_forward = 2,
 };
 
+// enum represent turn direction
 enum TurnDirection {
 	left = -1,
 	right = 1,
 };
 
-// helper function that for turtle's left and right right
-// @param nw_or (turtle's orientation), turn (either left or right)
+/**
+ * @brief Get the next direction for the turtle based on its current orientation and intended turn direction.
+ *
+ * @param nw_or Current orientation of the turtle.
+ * @param turn Direction turtle intends to turn: either left or right.
+ * @return TurtleOrientation representing the new orientation after turning.
+ */
 TurtleOrientation getNextDir(int32_t nw_or, TurnDirection turn){
 	int32_t cycle = 4;
 	int32_t nextDir = (nw_or + turn + cycle)%4;
 	return static_cast<TurtleOrientation>(nextDir);
 }
 
-// module that determine turtle's next state by wall following rule
-// @param nw_or, cs(turtle's current state: moving forward, turned forward, turned bumped)
+/**
+ * @brief Updates the turtle's state and orientation using the wall-following rule.
+ * 
+ * If the turtle is currently moving forward, it will turn left. If it bumped into a wall, it will turn right.
+ * Otherwise, it will continue moving forward.
+ *
+ * @param nw_or Current orientation of the turtle. This will be updated based on the wall-following rule.
+ * @param cs Current state of the turtle. This will be updated based on the wall-following rule.
+ * @param bumped Boolean indicating if the turtle bumped into a wall.
+ */
 void TurtleStateUpdate(int32_t &nw_or, TurtleState &cs, bool bumped){
 	if (cs == moving_forward){
 		nw_or = getNextDir(nw_or, left);
@@ -77,11 +86,25 @@ void TurtleStateUpdate(int32_t &nw_or, TurtleState &cs, bool bumped){
 	}
 }
 
-void updateStartPosition(QPointF &pos_, int32_t nw_or, Point2D &startPoint) {
+/**
+ * @brief Update the start position of the turtle based on its current position.
+ * 
+ * @param pos_ Current position of the turtle.
+ * @param startPoint Reference to the starting point to be updated.
+ */
+void updateStartPosition(QPointF &pos_, Point2D &startPoint) {
     startPoint.x = pos_.x();
     startPoint.y = pos_.y();
 }
 
+/**
+ * @brief Update the end position of the turtle based on its current position and orientation.
+ * 
+ * @param pos_ Current position of the turtle.
+ * @param nw_or Current orientation of the turtle.
+ * @param endPoint Reference to the ending point to be updated.
+ * @param startPoint Reference to the starting point, used for certain orientations.
+ */
 void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint, Point2D &startPoint) {
     endPoint.x = pos_.x();
     endPoint.y = pos_.y();
@@ -95,6 +118,12 @@ void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint, Point2D 
     }
 }
 
+/**
+ * @brief Update turtle's coordinate in the maze.
+ * 
+ * @param pos_ Current position of the turtle, which will be updated based on the orientation.
+ * @param nw_or Current orientation of the turtle.
+ */
 void moveTurtleBasedOnOrientation(QPointF &pos_, int32_t nw_or) {
     switch (nw_or) {
         case east:
@@ -115,108 +144,43 @@ void moveTurtleBasedOnOrientation(QPointF &pos_, int32_t nw_or) {
     }
 }
 
-/* this section get turtle's pos and orientation
- * update turtle's pos and orientation using wall following rule
+/**
+ * @brief Moves the turtle in the maze based on wall following rule. (either left-hand or right-hand)
+ *        The function determines the turtle's next position and orientation.
+ * 
+ * @param pos_ Current position of the turtle.
+ * @param nw_or Current orientation of the turtle.
+ * 
+ * @return true if the changes to position and submit the orientation, false otherwise.
  */
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
-	// call in everyloops to return wait time 
 	static int32_t wait;
-	static TurtleState cs;	
-	const int32_t TIMEOUT = 2; 	 // bigger number slows down simulation so you can see what's happening
+	static TurtleState cs;			// current state of turtle
+	const int32_t TIMEOUT = 2; 	 	// bigger number slows down simulation so you can see what's happening
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	bool aend, moving_flag;
-  	bool mod = true;
   	if (!wait) {
 		Point2D startPoint, endPoint;
-    
-    	updateStartPosition(pos_, nw_or, startPoint);
+		// update start and end position so that we can check if bumped
+    	updateStartPosition(pos_, startPoint);
         updateEndPosition(pos_, nw_or, endPoint, startPoint);
 
-    	// right hand rule
-		//get updated coordination
-		/*
-		if (nw_or == south || nw_or == west) {
-      		nw_or == south ? endPoint.y++ : endPoint.x++;
-    	} else {
-      		endPoint.x += 1;
-			endPoint.y += 1;
-			nw_or == north ? startPoint.x++ : startPoint.y++;
-    	}
-		*/
-		
 		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // if there is a bump (boolean)
 		aend = atend(pos_.x(), pos_.y()); 									   // if arrvies at end (boolean)
 		ROS_INFO("Current state: %d, Orientation: %d", cs, nw_or);
 		ROS_INFO("Current position: x = %d, y = %d", pos_.x(), pos_.y());
 
-		//left hand rule
+		// left hand rule to update turtle's state and orientation for further pos changes
 		TurtleStateUpdate(nw_or, cs, bp);
-
-		// right hand rule
-		/*switch(nw_or) {
-			// according to turtle's current direction, and currentstate for bumped and aend
-			// decide which direction or action with turtle do at next time tick
-			// input: nw_or, cs, bp. output: cs, nw_or
-		case north:
-			cs == moving_forward ? (nw_or = east, cs = turned_forward) :
-			bp ? (nw_or = west, cs = turned_bumped) : cs = moving_forward;
-			break;
-		
-		case east:
-			cs == moving_forward ? (nw_or = south, cs = turned_forward) :
-			bp ? (nw_or = north, cs = turned_bumped) : cs = moving_forward;
-			break;
-
-		case south:
-			cs == moving_forward ? (nw_or = west, cs = turned_forward) :
-			bp ? (nw_or = east, cs = turned_bumped) : cs = moving_forward;
-			break;
-
-		case west:
-			cs == moving_forward ? (nw_or = north, cs = turned_forward) :
-			bp ? (nw_or = south, cs = turned_bumped) : cs = moving_forward;
-			break;
-		
-		default:
-			ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
-			break;
-		}
-		*/
-		// determineNextDirectionAndState(nw_or, cs, bp); 
 
 		ROS_INFO("Orientation=%d  STATE=%d", nw_or, cs);
 		moving_flag = (cs == 2);
-		mod = true;
 
 		// update turtle's postion while not at end and moving
 		if (moving_flag == true && aend == false) {    // when intend to move forward
 			moveTurtleBasedOnOrientation(pos_, nw_or);
 			moving_flag = false;
-			mod = true;
 		}
-		// update the turtle's coordination in the maze for next loop
-		// input: flag(z), aend, nw_or. output: pos
-		/*if(moving_flag == true && aend == false) {			// right-hand rule
-			switch(nw_or) {
-			case west:
-				pos_.setY(--pos_.ry());    // west y-1
-				break;
-			case north:
-				pos_.setX(++pos_.rx());    // north
-				break;
-			case east:
-				pos_.setY(++pos_.ry());    // east
-				break;
-			case south:
-				pos_.setX(--pos_.rx());    // south
-				break;
-			default:
-				ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
-				break;
-			}
-			moving_flag = false;
-			mod = true;
-		}*/	
 		wait = TIMEOUT;
   	} else {
 		wait -= 1;
@@ -224,5 +188,5 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	if (aend) {
 		return false; 			// don't submit change if reaches destination
 	}
-	return wait == TIMEOUT;
+	return wait == TIMEOUT;		// return true if it's time to submit the changes, false otherwise
 }
