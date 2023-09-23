@@ -55,14 +55,14 @@ enum TurnDirection {
 	right = 1,
 };
 
-TurtleOrientation getNextDir(int8_t nw_or, TurnDirection turn){
-	int8_t cycle = 4;
-	int8_t nextDir = (nw_or + turn + cycle)%4;
+TurtleOrientation getNextDir(int32_t nw_or, TurnDirection turn){
+	int32_t cycle = 4;
+	int32_t nextDir = (nw_or + turn + cycle)%4;
 	return static_cast<TurtleOrientation>(nextDir);
 }
 
 // module that determine turtle's next state
-void TurtleStateUpdate(int8_t &nw_or, TurtleState &cs, bool bumped){
+void TurtleStateUpdate(int32_t &nw_or, TurtleState &cs, bool bumped){
 	if (cs == moving_forward){
 		nw_or = getNextDir(nw_or, left);
 		cs = turned_forward;
