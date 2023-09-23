@@ -77,7 +77,7 @@ void TurtleStateUpdate(TurtleOrientation &nw_or, TurtleState &cs, bool bumped){
 /* this section get turtle's pos and orientation
  * update turtle's pos and orientation using wall following rule
  */
-bool studentMoveTurtle(QPointF &pos_, int32_t &nw_or) {    
+bool studentMoveTurtle(QPointF &pos_, TurtleOrientation &nw_or) {    
 	// call in everyloops to return wait time 
 	static int32_t wait;
 	static TurtleState cs;	
