@@ -148,17 +148,6 @@ void moveTurtleBasedOnOrientation(QPointF &pos_, int32_t nw_or, int8_t &localX, 
     }
 }
 
-// Getter method to get number of visits
-int8_t getVisits(int x, int y) {
-    return localMap[x][y];
-}
-
-// Setter method to update the number of visits
-void setVisits(int8_t x, int8_t y) {
-    localMap[x][y]++; 
-}
-
-
 /**
  * @brief Moves the turtle in the maze based on wall following rule. (either left-hand or right-hand)
  *        The function determines the turtle's next position and orientation.
