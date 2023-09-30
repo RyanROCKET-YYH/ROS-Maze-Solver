@@ -98,6 +98,9 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
                 case west:
                     localX--;
                     break;
+				default:
+					ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
+					break;
             }
 			localMap[localX][localY]++;
 			break;
@@ -120,52 +123,3 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 // Ground rule -- you are only allowed to call the helper functions "bumped(..)"
 // and "atend(..)", and NO other turtle methods or maze methods (no peeking at
 // the maze!)
-
-
-/*
-bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
-	static int32_t wait;
-	static TurtleState cs;			// current state of turtle
-	const int32_t TIMEOUT = 2; 	 	// bigger number slows down simulation so you can see what's happening
-	// Local map to keep track of number of visits for each square
-	static int8_t localMap[23][23] = {0};
-	// Starting position of the turtle		
-	static int8_t localX = 11;
-	static int8_t localY = 11;
-
-	ROS_INFO("Turtle update Called  w=%d", wait);
-	bool aend, moving_flag;
-  	if (!wait) {
-		Point2D startPoint, endPoint;
-		// update start and end position so that we can check if bumped
-    	updateStartPosition(pos_, startPoint);
-        updateEndPosition(pos_, nw_or, endPoint, startPoint);
-
-		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // if there is a bump (boolean)
-		aend = atend(pos_.x(), pos_.y()); 									   // if arrvies at end (boolean)
-
-		ROS_INFO("Current state: %d, Orientation: %d", cs, nw_or);
-
-		// left hand rule to update turtle's state and orientation for further pos changes
-		TurtleStateUpdate(nw_or, cs, bp);
-
-		ROS_INFO("Orientation=%d  STATE=%d", nw_or, cs);
-		moving_flag = (cs == 2);
-
-		// update turtle's postion while not at end and moving
-		if (moving_flag == true && aend == false) {    // when intend to move forward
-			moveTurtleBasedOnOrientation(pos_, nw_or, localX, localY);
-			localMap[localX][localY]++;
-			displayVisits(localMap[localX][localY]);
-			moving_flag = false;
-		}
-		wait = TIMEOUT;
-  	} else {
-		wait -= 1;
-	}
-	if (aend) {
-		return false; 			// don't submit change if reaches destination
-	}
-	return wait == TIMEOUT;		// return true if it's time to submit the changes, false otherwise
-}
-*/

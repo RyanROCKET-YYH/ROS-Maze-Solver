@@ -90,7 +90,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
   	} else {
 		wait -= 1;
 	}
-	
   	// return studentMoveTurtle(pos_, nw_or);
 	return wait == TIMEOUT;	
 }
