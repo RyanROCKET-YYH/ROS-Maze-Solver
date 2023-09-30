@@ -71,6 +71,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	static int32_t nw_or = north;
 	// Current state of the turtle
 	static TurtleState cs = moving_forward;
+	ROS_INFO("Current state: %d", cs);
 	turtleResult result;
 
 	if (atend) {

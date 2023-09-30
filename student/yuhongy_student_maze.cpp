@@ -68,6 +68,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 	const int32_t TIMEOUT = 2;
 
 	ROS_INFO("Turtle update Called  w=%d", wait);
+	ROS_INFO("Current Orientation: %d", nw_or);
 	bool aend, moving_flag;
   	if (!wait) {
 		Point2D startPoint, endPoint;
