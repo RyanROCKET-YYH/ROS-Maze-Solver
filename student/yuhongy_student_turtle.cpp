@@ -45,9 +45,9 @@ TurtleOrientation getNextDir(int32_t nw_or, TurnDirection turn){
  * If the turtle is currently moving forward, it will turn left. If it bumped into a wall, it will turn right.
  * Otherwise, it will continue moving forward.
  *
- * @param nw_or Current orientation of the turtle. This will be updated based on the wall-following rule.
- * @param cs Current state of the turtle. This will be updated based on the wall-following rule.
- * @param bumped Boolean indicating if the turtle bumped into a wall.
+ * @param nw_or Current orientation of the turtle in local map. 
+ * @param cs Current state of the turtle.
+ * @param bumped Check if bumped.
  */
 void TurtleStateUpdate(int32_t &nw_or, TurtleState &cs, bool bumped){
 	if (cs == moving_forward){
@@ -61,8 +61,15 @@ void TurtleStateUpdate(int32_t &nw_or, TurtleState &cs, bool bumped){
 	}
 }
 
+/**
+ * @brief Determines the next move for the turtle based on its current state, whether it bumped into a wall, and whether it reached the end of the maze.
+ * 
+ * @param bumped Check if bumped.
+ * @param atend Check Goal.
+ * @return Returns a turtleResult structure containing the next move for the turtle and the number of visits to the current cell
+ */
 turtleResult studentTurtleStep(bool bumped, bool atend) {
-	// Local map to keep track of number of visits for each square
+	// Local map to keep track of number of visits for each cell
 	static int8_t localMap[23][23] = {0};
 	// Starting position of the turtle		
 	static int8_t localX = 11;
@@ -73,15 +80,15 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	static TurtleState cs = moving_forward;
 	ROS_INFO("Current state: %d", cs);
 	turtleResult result;
-
+	// If the turtle GOAL, stop and return the number of visits
 	if (atend) {
 		result.nextMove = STOP;
 		result.visits = localMap[localX][localY];
 		return result;
 	}
-
+	// Update the turtle's state
 	TurtleStateUpdate(nw_or, cs, bumped);
-	
+	// Determine the next move and update the turtle's position and orientation based on its current state
 	switch (cs) {
 		case moving_forward:
 			result.nextMove = MOVE;
@@ -102,6 +109,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 					ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 					break;
             }
+			// Increment the number of visits for the current cell
 			localMap[localX][localY]++;
 			break;
 		case turned_forward:
@@ -117,9 +125,3 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	result.visits = localMap[localX][localY];
 	return result;
  }
-
-// this procedure takes the current turtle position and orientation and returns
-// true=submit changes, false=do not submit changes
-// Ground rule -- you are only allowed to call the helper functions "bumped(..)"
-// and "atend(..)", and NO other turtle methods or maze methods (no peeking at
-// the maze!)

@@ -2,9 +2,9 @@
  * Originally by Philip Koopman (koopman@cmu.edu)
  * and Milda Zizyte (milda@cmu.edu)
  *
- * STUDENT NAME:
- * ANDREW ID:
- * LAST UPDATE:
+ * STUDENT NAME: Yuhong YAO
+ * ANDREW ID:	yuhongy
+ * LAST UPDATE:	9/29/2023
  *
  * This file keeps track of where the turtle is in the maze
  * and updates the location when the turtle is moved. It shall not
@@ -63,6 +63,15 @@ void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint, Point2D 
     }
 }
 
+/**
+ * @brief Move the turtle based on its current position and orientation.
+ * 		  interact with studentTurtleStep in turtle.cpp to determine
+ * 		  the next move the turtle will make either move forward, turn left, turn right or stop.
+ * 
+ * @param pos_ Current position of the turtle.
+ * @param nw_or Current orientation of the turtle.
+ * @return Returns true if changes are accepted, false otherwise.
+ */
 bool moveTurtle(QPointF& pos_, int& nw_or) {
 	static int32_t wait;
 	const int32_t TIMEOUT = 1;
@@ -94,9 +103,13 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 	return wait == TIMEOUT;	
 }
 
-/*
- * Takes a position and a turtleMove and returns a new position
- * based on the move
+/**
+ * @brief Translate the turtle's position based on its absoulte postion, move and orientation.
+ * 
+ * @param pos_ Current position of the turtle.
+ * @param nextMove The next move the turtle will make.
+ * @param nw_or Current orientation of the turtle.
+ * @return Returns the new position of the turtle.
  */
 QPointF translatePos(QPointF pos_, turtleMove nextMove, int32_t nw_or) {
 	switch (nextMove) {
@@ -131,9 +144,12 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int32_t nw_or) {
     return pos_;
 }
 
-/*
- * Takes an orientation and a turtleMove and returns a new orienation
- * based on the move
+/**
+ * @brief Translate the turtle's orientation based on its move.
+ * 
+ * @param orientation Current orientation of the turtle.
+ * @param nextMove The next move the turtle will make.
+ * @return Returns the new orientation of the turtle.
  */
 int translateOrnt(int orientation, turtleMove nextMove) {
 	int32_t cycle = 4;			// number of orientations
