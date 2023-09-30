@@ -128,7 +128,7 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int32_t nw_or) {
 		default:
 			ROS_ERROR("Unexpected value for turtle's next move: %d", nextMove);
     }
-    return pos;
+    return pos_;
 }
 
 /*
