@@ -31,22 +31,104 @@
 
 
 
-bool moveTurtle(QPointF& pos_, int& nw_or)
-{
-	bool bumped = true; // Replace with your own procedure
-	turtleMove nextMove = studentTurtleStep(bumped); // define your own turtleMove enum or structure
-	pos_ = translatePos(pos_, nextMove);
-	nw_or = translateOrnt(nw_or, nextMove);
-	// REPLACE THE FOLLOWING LINE IN PROJECT 5
-  	return studentMoveTurtle(pos_, nw_or);
+/**
+ * @brief Update the start position of the turtle based on its current position.
+ * 
+ * @param pos_ Current position of the turtle.
+ * @param startPoint Reference to the starting point to be updated.
+ */
+void updateStartPosition(QPointF &pos_, Point2D &startPoint) {
+    startPoint.x = pos_.x();
+    startPoint.y = pos_.y();
+}
+
+/**
+ * @brief Update the end position of the turtle based on its current position and orientation.
+ * 
+ * @param pos_ Current position of the turtle.
+ * @param nw_or Current orientation of the turtle.
+ * @param endPoint Reference to the ending point to be updated.
+ * @param startPoint Reference to the starting point, used for certain orientations.
+ */
+void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint, Point2D &startPoint) {
+    endPoint.x = pos_.x();
+    endPoint.y = pos_.y();
+    
+    if (nw_or == north || nw_or == east) {
+        nw_or == north ? endPoint.y++ : endPoint.x++;
+    } else {
+        endPoint.x++;
+        endPoint.y++;
+        nw_or == south ? startPoint.x++ : startPoint.y++;
+    }
+}
+
+bool moveTurtle(QPointF& pos_, int& nw_or) {
+	static int32_t wait;
+	const int32_t TIMEOUT = 2;
+
+	ROS_INFO("Turtle update Called  w=%d", wait);
+	bool aend, moving_flag;
+  	if (!wait) {
+		Point2D startPoint, endPoint;
+		// update start and end position so that we can check if bumped
+		updateStartPosition(pos_, startPoint);
+		updateEndPosition(pos_, nw_or, endPoint, startPoint);
+		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // if there is a bump (boolean)
+		bool aend = atend(pos_.x(), pos_.y());
+		turtleResult result = studentTurtleStep(bp, aend);
+		turtleMove nextMove = result.nextMove;
+		int32_t visits = result.visits;
+		if (nextMove == STOP) {
+    		return false; // Don't submit changes if the turtle should stop
+		}
+		pos_ = translatePos(pos_, nextMove);
+		nw_or = translateOrnt(nw_or, nextMove);
+		displayVisits(visits);
+		wait = TIMEOUT;
+  	} else {
+		wait -= 1;
+	}
+	
+  	// return studentMoveTurtle(pos_, nw_or);
+	return wait == TIMEOUT;	
 }
 
 /*
  * Takes a position and a turtleMove and returns a new position
  * based on the move
  */
-QPointF translatePos(QPointF pos_, turtleMove nextMove) {
-  	return pos_;
+QPointF translatePos(QPointF pos_, turtleMove nextMove, TurtleOrientation orientation) {
+	switch (nextMove) {
+        case MOVE:
+            switch (orientation) {
+                case east:
+                    pos.setY(--pos.ry());
+                    break;
+                case south:
+                    pos.setX(++pos.rx());
+                    break;
+                case west:
+                    pos.setY(++pos.ry());
+                    break;
+                case north:
+                    pos.setX(--pos.rx());
+                    break;
+				default:
+					ROS_ERROR("Unexpected value for turtle's direction: %d", orientation);
+					break;
+            }
+            break;
+        case TURN_LEFT:
+			break;
+        case TURN_RIGHT:
+			break;
+        case STOP:
+            break;
+		default:
+			ROS_ERROR("Unexpected value for turtle's next move: %d", nextMove);
+    }
+    return pos;
 }
 
 /*
@@ -54,5 +136,22 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove) {
  * based on the move
  */
 int translateOrnt(int orientation, turtleMove nextMove) {
-  	return orientation;
+	int32_t cycle = 4;			// number of orientations
+
+	switch (nextMove) {
+		case STOP:
+			break;
+		case TURN_LEFT:
+			orientation = (orientation + cycle - 1) % cycle;
+			break;
+		case TURN_RIGHT:
+			orientation = (orientation + cycle + 1) % cycle;
+			break;
+		case MOVE:
+			break;
+		default:
+			ROS_ERROR("Unexpected value for turtle's direction: %d", orientation);
+			break;
+	}
+	return orientation;
 }

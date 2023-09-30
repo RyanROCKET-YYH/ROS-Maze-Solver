@@ -13,31 +13,6 @@
 
 #include "student.h"
 
-// Ignore this line until project 5
-turtleMove studentTurtleStep(bool bumped) { return MOVE; }
-
-// OK TO MODIFY BELOW THIS LINE
-// this procedure takes the current turtle position and orientation and returns
-// true=submit changes, false=do not submit changes
-// Ground rule -- you are only allowed to call the helper functions "bumped(..)"
-// and "atend(..)", and NO other turtle methods or maze methods (no peeking at
-// the maze!)
-
-// Define the Coordinate type
-typedef int32_t Cord;			
-struct Point2D {
-	Cord x;
-	Cord y;
-};
-
-// left hand orientation enum
-enum TurtleOrientation {
-	north = 0,
-	east = 1,
-	south = 2,
-	west = 3,
-};
-
 // enum for turtle's current state
 enum TurtleState {				 
 	turned_bumped = 0,
@@ -86,78 +61,67 @@ void TurtleStateUpdate(int32_t &nw_or, TurtleState &cs, bool bumped){
 	}
 }
 
-/**
- * @brief Update the start position of the turtle based on its current position.
- * 
- * @param pos_ Current position of the turtle.
- * @param startPoint Reference to the starting point to be updated.
- */
-void updateStartPosition(QPointF &pos_, Point2D &startPoint) {
-    startPoint.x = pos_.x();
-    startPoint.y = pos_.y();
-}
+turtleResult studentTurtleStep(bool bumped, bool atend) {
+	// Local map to keep track of number of visits for each square
+	static int8_t localMap[23][23] = {0};
+	// Starting position of the turtle		
+	static int8_t localX = 11;
+	static int8_t localY = 11;
+	// Current orientation of the turtle
+	static int32_t nw_or = north;
+	// Current state of the turtle
+	static TurtleState cs = moving_forward;
+	turtleResult result;
 
-/**
- * @brief Update the end position of the turtle based on its current position and orientation.
- * 
- * @param pos_ Current position of the turtle.
- * @param nw_or Current orientation of the turtle.
- * @param endPoint Reference to the ending point to be updated.
- * @param startPoint Reference to the starting point, used for certain orientations.
- */
-void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint, Point2D &startPoint) {
-    endPoint.x = pos_.x();
-    endPoint.y = pos_.y();
-    
-    if (nw_or == north || nw_or == east) {
-        nw_or == north ? endPoint.y++ : endPoint.x++;
-    } else {
-        endPoint.x++;
-        endPoint.y++;
-        nw_or == south ? startPoint.x++ : startPoint.y++;
-    }
-}
+	if (atend) {
+		result.nextMove = STOP;
+		result.visits = localMap[localX][localY];
+		return result;
+	}
 
-/**
- * @brief Update turtle's coordinate in the maze.
- * 
- * @param pos_ Current position of the turtle, which will be updated based on the orientation.
- * @param nw_or Current orientation of the turtle.
- */
-void moveTurtleBasedOnOrientation(QPointF &pos_, int32_t nw_or, int8_t &localX, int8_t &localY) {
-    switch (nw_or) {
-        case east:
-            pos_.setY(--pos_.ry());
-			localX++;
-            break;
-        case south:
-            pos_.setX(++pos_.rx());
-			localY++;
-            break;
-        case west:
-            pos_.setY(++pos_.ry());
-			localX--;
-            break;
-        case north:
-            pos_.setX(--pos_.rx());
-			localY--;
-            break;
-        default:
-            ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
-            break;
-    }
-}
+	TurtleStateUpdate(nw_or, cs, bumped);
+	
+	switch (cs) {
+		case moving_forward:
+			result.nextMove = MOVE;
+			switch (nw_or) {
+                case north:
+                    localY--;
+                    break;
+                case east:
+                    localX++;
+                    break;
+                case south:
+                    localY++;
+                    break;
+                case west:
+                    localX--;
+                    break;
+            }
+			localMap[localX][localY]++;
+			break;
+		case turned_forward:
+			result.nextMove = TURN_LEFT;
+			break;
+		case turned_bumped:
+			result.nextMove = TURN_RIGHT;
+			break;
+		default:
+			ROS_ERROR("Unexpected value for turtle's state: %d", cs);
+			break;
+	}
+	result.visits = localMap[localX][localY];
+	return result;
+ }
 
-/**
- * @brief Moves the turtle in the maze based on wall following rule. (either left-hand or right-hand)
- *        The function determines the turtle's next position and orientation.
- * 
- * @param pos_ Current position of the turtle.
- * @param nw_or Current orientation of the turtle.
- * 
- * @return true if the changes to position and submit the orientation, false otherwise.
- */
+// this procedure takes the current turtle position and orientation and returns
+// true=submit changes, false=do not submit changes
+// Ground rule -- you are only allowed to call the helper functions "bumped(..)"
+// and "atend(..)", and NO other turtle methods or maze methods (no peeking at
+// the maze!)
 
+
+/*
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
 	static int32_t wait;
 	static TurtleState cs;			// current state of turtle
@@ -203,3 +167,4 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 	}
 	return wait == TIMEOUT;		// return true if it's time to submit the changes, false otherwise
 }
+*/

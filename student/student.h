@@ -16,12 +16,29 @@ void displayVisits(int visits);
 bool moveTurtle(QPointF& pos_, int& nw_or);
 
 // Scope-preserving changes to these lines permitted (see p5 writeup)
-enum turtleMove {MOVE};
-QPointF translatePos(QPointF pos_, turtleMove nextMove);
+// left hand orientation enum
+enum TurtleOrientation {
+	north = 0,
+	east = 1,
+	south = 2,
+	west = 3,
+};
+enum turtleMove {MOVE, TURN_LEFT, TURN_RIGHT, STOP};
+QPointF translatePos(QPointF pos_, turtleMove nextMove, TurtleOrientation turtleOrnt);
 int translateOrnt(int orientation, turtleMove nextMove);
-turtleMove studentTurtleStep(bool bumped);
+turtleMove studentTurtleStep(bool bumped, bool atend);
 
 // OK to change below this line
 bool studentMoveTurtle(QPointF& pos_, int& nw_or);
 
+// Define the Coordinate type
+typedef int32_t Cord;			
+struct Point2D {
+	Cord x;
+	Cord y;
+};
 
+struct turtleResult {
+    turtleMove nextMove;
+    int32_t visits;
+};
