@@ -26,8 +26,8 @@ turtleMove studentTurtleStep(bool bumped) { return MOVE; }
 // Define the Coordinate type
 typedef int32_t Cord;			
 struct Point2D {
-    Cord x;
-    Cord y;
+	Cord x;
+	Cord y;
 };
 
 // left hand orientation enum
@@ -124,25 +124,40 @@ void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint, Point2D 
  * @param pos_ Current position of the turtle, which will be updated based on the orientation.
  * @param nw_or Current orientation of the turtle.
  */
-void moveTurtleBasedOnOrientation(QPointF &pos_, int32_t nw_or) {
+void moveTurtleBasedOnOrientation(QPointF &pos_, int32_t nw_or, int8_t &localX, int8_t &localY) {
     switch (nw_or) {
         case east:
             pos_.setY(--pos_.ry());
+			localX++;
             break;
         case south:
             pos_.setX(++pos_.rx());
+			localY++;
             break;
         case west:
             pos_.setY(++pos_.ry());
+			localX--;
             break;
         case north:
             pos_.setX(--pos_.rx());
+			localY--;
             break;
         default:
             ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
             break;
     }
 }
+
+// Getter method to get number of visits
+int8_t getVisits(int x, int y) {
+    return localMap[x][y];
+}
+
+// Setter method to update the number of visits
+void setVisits(int8_t x, int8_t y) {
+    localMap[x][y]++; 
+}
+
 
 /**
  * @brief Moves the turtle in the maze based on wall following rule. (either left-hand or right-hand)
@@ -153,10 +168,17 @@ void moveTurtleBasedOnOrientation(QPointF &pos_, int32_t nw_or) {
  * 
  * @return true if the changes to position and submit the orientation, false otherwise.
  */
+
 bool studentMoveTurtle(QPointF &pos_, int &nw_or) {    
 	static int32_t wait;
 	static TurtleState cs;			// current state of turtle
 	const int32_t TIMEOUT = 2; 	 	// bigger number slows down simulation so you can see what's happening
+	// Local map to keep track of number of visits for each square
+	static int8_t localMap[23][23] = {0};
+	// Starting position of the turtle		
+	static int8_t localX = 11;
+	static int8_t localY = 11;
+
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	bool aend, moving_flag;
   	if (!wait) {
@@ -167,8 +189,8 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 
 		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // if there is a bump (boolean)
 		aend = atend(pos_.x(), pos_.y()); 									   // if arrvies at end (boolean)
+
 		ROS_INFO("Current state: %d, Orientation: %d", cs, nw_or);
-		ROS_INFO("Current position: x = %d, y = %d", pos_.x(), pos_.y());
 
 		// left hand rule to update turtle's state and orientation for further pos changes
 		TurtleStateUpdate(nw_or, cs, bp);
@@ -178,7 +200,9 @@ bool studentMoveTurtle(QPointF &pos_, int &nw_or) {
 
 		// update turtle's postion while not at end and moving
 		if (moving_flag == true && aend == false) {    // when intend to move forward
-			moveTurtleBasedOnOrientation(pos_, nw_or);
+			moveTurtleBasedOnOrientation(pos_, nw_or, localX, localY);
+			localMap[localX][localY]++;
+			displayVisits(localMap[localX][localY]);
 			moving_flag = false;
 		}
 		wait = TIMEOUT;
