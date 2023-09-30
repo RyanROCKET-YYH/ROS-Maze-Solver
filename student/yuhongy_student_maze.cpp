@@ -65,7 +65,7 @@ void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint, Point2D 
 
 bool moveTurtle(QPointF& pos_, int& nw_or) {
 	static int32_t wait;
-	const int32_t TIMEOUT = 40;
+	const int32_t TIMEOUT = 1;
 
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	ROS_INFO("Current Orientation: %d", nw_or);
