@@ -24,10 +24,6 @@ enum TurtleOrientation {
 	west = 3,
 };
 
-struct turtleResult {
-    turtleMove nextMove;
-    int32_t visits;
-};
 enum turtleMove {MOVE, TURN_LEFT, TURN_RIGHT, STOP};
 QPointF translatePos(QPointF pos_, turtleMove nextMove, int32_t nw_or);
 int translateOrnt(int orientation, turtleMove nextMove);
@@ -41,4 +37,9 @@ typedef int32_t Cord;
 struct Point2D {
 	Cord x;
 	Cord y;
+};
+
+struct turtleResult {
+    turtleMove nextMove;
+    int32_t visits;
 };
