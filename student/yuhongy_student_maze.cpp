@@ -92,7 +92,9 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 		if (nextMove == STOP) {
     		return false; // Don't submit changes if the turtle should stop
 		}
-		pos_ = translatePos(pos_, nextMove, nw_or);
+		if (nextMove == MOVE) {
+			pos_ = translatePos(pos_, nextMove, nw_or);
+		}
 		nw_or = translateOrnt(nw_or, nextMove);
 		displayVisits(visits);
 		wait = TIMEOUT;
@@ -116,17 +118,17 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int32_t nw_or) {
         case MOVE:
             switch (nw_or) {
 				case east:
-					pos_.setY(--pos_.ry());
-					break;
-				case south:
-					pos_.setX(++pos_.rx());
-					break;
-				case west:
-					pos_.setY(++pos_.ry());
-					break;
-				case north:
-					pos_.setX(--pos_.rx());
-					break;
+                    pos_.setX(++pos_.rx());
+                    break;
+                case south:
+                    pos_.setY(++pos_.ry());
+                    break;
+                case west:
+                    pos_.setX(--pos_.rx());
+                    break;
+                case north:
+                    pos_.setY(--pos_.ry());
+                    break;
 				default:
 					ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 					break;
