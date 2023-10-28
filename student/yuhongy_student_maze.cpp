@@ -89,13 +89,13 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 		turtleResult result = studentTurtleStep(bp, aend);
 		turtleMove nextMove = result.nextMove;
 		int32_t visits = result.visits;
+		nw_or = translateOrnt(nw_or, nextMove);
 		if (nextMove == STOP) {
     		return false; // Don't submit changes if the turtle should stop
 		}
 		if (nextMove == MOVE) {
 			pos_ = translatePos(pos_, nextMove, nw_or);
 		}
-		nw_or = translateOrnt(nw_or, nextMove);
 		displayVisits(visits);
 		wait = TIMEOUT;
   	} else {
