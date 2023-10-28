@@ -115,18 +115,18 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int32_t nw_or) {
 	switch (nextMove) {
         case MOVE:
             switch (nw_or) {
-				case east:
-					pos_.setY(--pos_.ry());
-					break;
-				case south:
-					pos_.setX(++pos_.rx());
-					break;
-				case west:
-					pos_.setY(++pos_.ry());
-					break;
-				case north:
-					pos_.setX(--pos_.rx());
-					break;
+				ase east:
+                    pos_.setX(++pos_.rx());
+                    break;
+                case south:
+                    pos_.setY(++pos_.ry());
+                    break;
+                case west:
+                    pos_.setX(--pos_.rx());
+                    break;
+                case north:
+                    pos_.setY(--pos_.ry());
+                    break;
 				default:
 					ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 					break;
