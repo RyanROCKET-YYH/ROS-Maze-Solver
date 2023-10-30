@@ -295,13 +295,9 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 		case DecideNextMove:
 			DirectionVisitCounts counts = get_visitCounts(localX, localY, localMap, visitCounts, counts);
 			desiredDirection = get_lstVisitedDir(direction, counts);
-			cs = DecisionMade;
-			break;
-		case DecisionMade: {
 			result.nextMove = get_nextMove(direction, desiredDirection, cs);
 			result.visits = visitCounts[localX][localY];
 			break;
-		}
 		case leftTwice: {
 			direction = getNextDir(direction, left);
 			result.nextMove = TURN_LEFT;
@@ -324,6 +320,21 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			break;
 		}
 		case moving_forward: {
+			case north:
+				localY--;
+				break;
+			case east:
+				localX++;
+				break;
+			case south:
+				localY++;
+				break;
+			case west:
+				localX--;
+				break;
+			default:
+				ROS_ERROR("Invalid orientation");
+				break;
 			result.nextMove = MOVE;
 			result.visits = visitCounts[localX][localY];
 			cs = moved;
