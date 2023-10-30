@@ -74,7 +74,7 @@ void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint, Point2D 
  */
 bool moveTurtle(QPointF& pos_, int& nw_or) {
 	static int32_t wait;
-	const int32_t TIMEOUT = 50;
+	const int32_t TIMEOUT = 30;
 
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	ROS_INFO("Current Orientation: %d", nw_or);
@@ -116,16 +116,16 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int32_t nw_or) {
         case MOVE:
             switch (nw_or) {
 				case east:
-					pos_.setY(++pos_.rx());
+					pos_.setY(--pos_.ry());
 					break;
 				case south:
-					pos_.setX(++pos_.ry());
+					pos_.setX(++pos_.rx());
 					break;
 				case west:
-					pos_.setY(--pos_.rx());
+					pos_.setY(++pos_.ry());
 					break;
 				case north:
-					pos_.setX(--pos_.ry());
+					pos_.setX(--pos_.rx());
 					break;
 				default:
 					ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
