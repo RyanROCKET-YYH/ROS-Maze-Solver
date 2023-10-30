@@ -98,8 +98,8 @@ struct DirectionVisitCounts {
 	int32_t westCount;
 };
 
-DirectionVisitCounts get_visitCounts(int8_t x, int8_t y, int8_t (&localMap)[23][23], int32_t (&visitCounts)[23][23]) {
-	DirectionVisitCounts counts;
+DirectionVisitCounts get_visitCounts(int8_t x, int8_t y, int8_t (&localMap)[23][23], int32_t (&visitCounts)[23][23], DirectionVisitCounts counts) {
+
 	counts.northCount = (localMap[x][y] & 0b0001) ? INT32_MAX : visitCounts[x][y-1];
     counts.eastCount  = (localMap[x][y] & 0b0010) ? INT32_MAX : visitCounts[x+1][y];
     counts.southCount = (localMap[x][y] & 0b0100) ? INT32_MAX : visitCounts[x][y+1];
@@ -241,7 +241,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	static TurtleState cs = Initialized;
 	ROS_INFO("Current state: %d", cs);
 	turtleResult result;
-	DirectionVisitCounts counts;
+	DirectionVisitCounts counts = {-1,-1,-1,-1};
 	static TurtleOrientation desiredDirection = north;
 	// If the turtle GOAL, stop and return the number of visits
 	switch (cs) {
