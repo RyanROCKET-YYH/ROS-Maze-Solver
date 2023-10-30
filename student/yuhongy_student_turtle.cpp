@@ -260,7 +260,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	static TurtleOrientation desiredDirection = north;
 	// If the turtle GOAL, stop and return the number of visits
 	switch (cs) {
-		case Initialized:
+		case Initialized:   // S1. IDLE
 			visitCounts[localX][localY]++;
 			cs = CheckAlldirection;
 			direction = getNextDir(direction, left);
@@ -268,14 +268,14 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			result.visits = visitCounts[localX][localY];
 			break;
 		case CheckAlldirection:
-			WallUpdate(direction, localMap, localX, localY, bumped);
-			direction = getNextDir(direction, right);
 			if (direction == west) {
 				cs = DecideNextMove;
 				result.nextMove = STOP;
 				result.visits = visitCounts[localX][localY];
 				break;
 			}
+			WallUpdate(direction, localMap, localX, localY, bumped);
+			direction = getNextDir(direction, right);
 			result.nextMove = TURN_RIGHT;
 			result.visits = visitCounts[localX][localY];
 			break;
