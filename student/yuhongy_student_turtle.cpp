@@ -323,6 +323,9 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			result.visits = visitCounts[localX][localY];
 			cs = moved;
 			break;
+		default:
+			ROS_ERROR("Invalid state");
+			break;
 	}
 	return result;
  }
