@@ -28,6 +28,7 @@ enum TurtleState {
 	Initialized = 10,
 	TurnAround = 11,
 	DecisionMade = 12,
+	CheckAlldirection = 13,
 };
 
 // enum represent turn direction
@@ -247,7 +248,22 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	switch (cs) {
 		case Initialized:
 			visitCounts[localX][localY]++;
-			// leave the start point for now will come back later
+			cs = CheckAlldirection;
+			direction = getNextDir(direction, left);
+			result.nextMove = TURN_LEFT;
+			result.visits = visitCounts[localX][localY];
+			break;
+		case CheckAlldirection:
+			WallUpdate(direction, localMap, localX, localY, bumped);
+			direction = getNextDir(direction, right);
+			if (direction == west) {
+				cs = DecideNextMove;
+				result.nextMove = STOP;
+				result.visits = visitCounts[localX][localY];
+				break;
+			}
+			result.nextMove = TURN_RIGHT;
+			resjult.visits = visitCounts[localX][localY];
 			break;
 		case moved:
 			visitCounts[localX][localY]++;
@@ -260,6 +276,8 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 				break;
 			} else if (!atend && visitCounts[localX][localY] > 1) {
 				cs = DecideNextMove;
+				result.nextMove = STOP;
+				result.visits = visitCounts[localX][localY];
 				break;
 			} else if (atend) {
 				cs = Goal;
@@ -291,11 +309,15 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 		case CheckRight:
 			cs = DecideNextMove;
 			WallUpdate(direction, localMap, localX, localY, bumped);
+			result.nextMove = STOP;
+			result.visits = visitCounts[localX][localY];
 			break;
 		case DecideNextMove:
 			counts = get_visitCounts(localX, localY, localMap, visitCounts, counts);
 			desiredDirection = get_lstVisitedDir(direction, counts);
 			cs = DecisionMade;
+			result.nextMove = STOP;
+			result.visits = visitCounts[localX][localY];
 			break;
 		case DecisionMade: {
 			result.nextMove = get_nextMove(direction, desiredDirection, cs);
