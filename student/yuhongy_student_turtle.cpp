@@ -324,21 +324,23 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			break;
 		}
 		case moving_forward: {
-			case north:
-				localY--;
-				break;
-			case east:
-				localX++;
-				break;
-			case south:
-				localY++;
-				break;
-			case west:
-				localX--;
-				break;
-			default:
-				ROS_ERROR("Invalid orientation");
-				break;
+			switch (direction) {
+				case north:
+					localY--;
+					break;
+				case east:
+					localX++;
+					break;
+				case south:
+					localY++;
+					break;
+				case west:
+					localX--;
+					break;
+				default:
+					ROS_ERROR("Invalid orientation");
+					break;
+			}
 			result.nextMove = MOVE;
 			result.visits = visitCounts[localX][localY];
 			cs = moved;
