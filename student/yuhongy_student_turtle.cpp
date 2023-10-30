@@ -18,7 +18,7 @@ enum TurtleState {
 	moved = 0,
 	CheckRight = 1,
 	CheckFront = 2,
-	Checkleft = 3,
+	CheckLeft = 3,
 	ReadyForWallCheck = 4,
 	DecideNextMove = 5,
 	leftTwice = 6,
@@ -152,7 +152,7 @@ turtleMove get_nextMove(TurtleOrientation currentDirection, TurtleOrientation de
 					cs = TurnAround;
 					return TURN_RIGHT;
 				case south:
-					cs = leftTwice
+					cs = leftTwice;
 					return TURN_LEFT;
 				case west:
 					cs = leftOnce;
