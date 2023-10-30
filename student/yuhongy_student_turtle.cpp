@@ -263,7 +263,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 				break;
 			}
 			result.nextMove = TURN_RIGHT;
-			resjult.visits = visitCounts[localX][localY];
+			result.visits = visitCounts[localX][localY];
 			break;
 		case moved:
 			visitCounts[localX][localY]++;
