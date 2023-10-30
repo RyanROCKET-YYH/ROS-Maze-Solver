@@ -132,7 +132,7 @@ TurtleOrientation get_lstVisitedDir (TurtleOrientation currentDirection, Directi
 	for (int8_t i = 0; i < 4; i++) {
 		TurtleOrientation desiredDirection = priorityOrder[currentDirection][i];
 		if (directionCounts[desiredDirection] == minCount && directionCounts[desiredDirection] != INT32_MAX) {
-			return dir;
+			return desiredDirection;
 		}
 	}
 
