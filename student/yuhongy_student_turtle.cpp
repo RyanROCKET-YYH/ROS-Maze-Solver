@@ -256,7 +256,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	static TurtleState cs = Initialized;
 	ROS_INFO("Current state: %d", cs);
 	turtleResult result;
-	static DirectionVisitCounts counts = {-1,-1,-1,-1};
+	DirectionVisitCounts counts = {-1,-1,-1,-1};
 	static TurtleOrientation desiredDirection = north;
 	// If the turtle GOAL, stop and return the number of visits
 	switch (cs) {
@@ -268,14 +268,14 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			result.visits = visitCounts[localX][localY];
 			break;
 		case CheckAlldirection:
+			WallUpdate(direction, localMap, localX, localY, bumped);
+			direction = getNextDir(direction, right);
 			if (direction == west) {
 				cs = DecideNextMove;
 				result.nextMove = STOP;
 				result.visits = visitCounts[localX][localY];
 				break;
 			}
-			WallUpdate(direction, localMap, localX, localY, bumped);
-			direction = getNextDir(direction, right);
 			result.nextMove = TURN_RIGHT;
 			result.visits = visitCounts[localX][localY];
 			break;
