@@ -88,6 +88,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 		bool aend = atend(pos_.x(), pos_.y());
 		turtleResult result = studentTurtleStep(bp, aend);
 		turtleMove nextMove = result.nextMove;
+		ROS_INFO("Current Orientation: %d", result.nextMove);
 		int32_t visits = result.visits;
 		nw_or = translateOrnt(nw_or, nextMove);
 		if (nextMove == STOP) {
@@ -118,17 +119,17 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int32_t nw_or) {
         case MOVE:
             switch (nw_or) {
 				case east:
-					pos_.setY(--pos_.ry());
-					break;
-				case south:
-					pos_.setX(++pos_.rx());
-					break;
-				case west:
-					pos_.setY(++pos_.ry());
-					break;
-				case north:
-					pos_.setX(--pos_.rx());
-					break;
+                    pos_.setX(++pos_.rx());
+                    break;
+                case south:
+                    pos_.setY(++pos_.ry());
+                    break;
+                case west:
+                    pos_.setX(--pos_.rx());
+                    break;
+                case north:
+                    pos_.setY(--pos_.ry());
+                    break;
 				default:
 					ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 					break;
