@@ -293,7 +293,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			WallUpdate(direction, localMap, localX, localY, bumped);
 			break;
 		case DecideNextMove:
-			DirectionVisitCounts counts = get_visitCounts(localX, localY, localMap, visitCounts);
+			DirectionVisitCounts counts = get_visitCounts(localX, localY, localMap, visitCounts, counts);
 			desiredDirection = get_lstVisitedDir(direction, counts);
 			cs = DecisionMade;
 			break;
