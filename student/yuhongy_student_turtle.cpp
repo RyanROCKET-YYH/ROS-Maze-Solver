@@ -109,7 +109,7 @@ DirectionVisitCounts get_visitCounts(int8_t x, int8_t y, int8_t (&localMap)[23][
 }
 
 TurtleOrientation get_lstVisitedDir (TurtleOrientation currentDirection, DirectionVisitCounts counts) {
-	TurtleOrientation priorityOrder[4][4] = {
+	TurtleOrientation priorityOrder[4][3] = {
 		{east, north, west, south},  // Current: north
         {south, east, north, west},  // Current: east
         {west, south, east, north},  // Current: south
@@ -222,6 +222,10 @@ turtleMove get_nextMove(TurtleOrientation currentDirection, TurtleOrientation de
 	}
 }
 
+void printLocalMapCell(int8_t (&localMap)[23][23], int8_t x, int8_t y) {
+    printf("localMap[%d][%d]: %x\n", x, y, localMap[x][y]);
+}
+
 /**
  * @brief Determines the next move for the turtle based on its current state, whether it bumped into a wall, and whether it reached the end of the maze.
  * 
@@ -236,11 +240,13 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	// Starting position of the turtle		
 	static int8_t localX = 11;
 	static int8_t localY = 11;
+	printLocalMapCell(localMap, localX, localY);
 	// Current orientation of the turtle
 	static TurtleOrientation direction = north;
 	// Current state of the turtle
 	static TurtleState cs = Initialized;
 	ROS_INFO("Current state: %d", cs);
+	ROS_INFO("Current orientation: %d", direc);
 	turtleResult result;
 	static DirectionVisitCounts counts = {-1,-1,-1,-1};
 	static TurtleOrientation desiredDirection = north;
