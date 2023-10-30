@@ -263,14 +263,15 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 		case Initialized:   // S1. IDLE
 			visitCounts[localX][localY]++;
 			cs = CheckAlldirection;
-			direction = getNextDir(direction, left);
-			result.nextMove = TURN_LEFT;
+			WallUpdate(direction, localMap, localX, localY, bumped);
+			direction = getNextDir(direction, right);
+			result.nextMove = TURN_right;
 			result.visits = visitCounts[localX][localY];
 			break;
 		case CheckAlldirection:
 			WallUpdate(direction, localMap, localX, localY, bumped);
 			direction = getNextDir(direction, right);
-			if (direction == west) {
+			if (direction == north) {
 				cs = DecideNextMove;
 				result.nextMove = STOP;
 				result.visits = visitCounts[localX][localY];
