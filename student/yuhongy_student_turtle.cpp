@@ -236,7 +236,16 @@ void printLocalMapCell(int8_t (&localMap)[23][23], int8_t x, int8_t y) {
 turtleResult studentTurtleStep(bool bumped, bool atend) {
 	// Local map to keep track of number of visits for each cell
 	static int32_t visitCounts[23][23] = {0};
-	static int8_t localMap[23][23] = {0b1111};
+	static int8_t localMap[23][23];
+	static bool isInitialized = false;
+	if (!isInitialized) {
+		for (int i = 0; i < 23; ++i) {
+			for (int j = 0; j < 23; ++j) {
+				localMap[i][j] = 0b1111;
+			}
+		}
+		isInitialized = true;
+	}
 	// Starting position of the turtle		
 	static int8_t localX = 11;
 	static int8_t localY = 11;
