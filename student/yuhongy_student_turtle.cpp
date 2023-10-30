@@ -241,7 +241,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	static TurtleState cs = Initialized;
 	ROS_INFO("Current state: %d", cs);
 	turtleResult result;
-	DirectionVisitCounts counts = {-1,-1,-1,-1};
+	static DirectionVisitCounts counts = {-1,-1,-1,-1};
 	static TurtleOrientation desiredDirection = north;
 	// If the turtle GOAL, stop and return the number of visits
 	switch (cs) {
