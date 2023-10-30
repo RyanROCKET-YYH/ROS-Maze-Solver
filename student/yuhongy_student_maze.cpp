@@ -74,7 +74,7 @@ void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint, Point2D 
  */
 bool moveTurtle(QPointF& pos_, int& nw_or) {
 	static int32_t wait;
-	const int32_t TIMEOUT = 20;
+	const int32_t TIMEOUT = 0;
 
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	ROS_INFO("Current Orientation: %d", nw_or);
@@ -88,7 +88,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 		bool aend = atend(pos_.x(), pos_.y());
 		turtleResult result = studentTurtleStep(bp, aend);
 		turtleMove nextMove = result.nextMove;
-		ROS_INFO("Current Orientation: %d", result.nextMove);
 		int32_t visits = result.visits;
 		nw_or = translateOrnt(nw_or, nextMove);
 		if (nextMove == STOP) {
