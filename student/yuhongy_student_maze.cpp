@@ -74,7 +74,7 @@ void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint, Point2D 
  */
 bool moveTurtle(QPointF& pos_, int& nw_or) {
 	static int32_t wait;
-	const int32_t TIMEOUT = 0;
+	const int32_t TIMEOUT = 1;
 
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	ROS_INFO("Current Orientation: %d", nw_or);
@@ -89,13 +89,11 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 		turtleResult result = studentTurtleStep(bp, aend);
 		turtleMove nextMove = result.nextMove;
 		int32_t visits = result.visits;
-		nw_or = translateOrnt(nw_or, nextMove);
 		if (nextMove == STOP) {
     		return false; // Don't submit changes if the turtle should stop
 		}
-		if (nextMove == MOVE) {
-			pos_ = translatePos(pos_, nextMove, nw_or);
-		}
+		pos_ = translatePos(pos_, nextMove, nw_or);
+		nw_or = translateOrnt(nw_or, nextMove);
 		displayVisits(visits);
 		wait = TIMEOUT;
   	} else {
@@ -118,17 +116,17 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int32_t nw_or) {
         case MOVE:
             switch (nw_or) {
 				case east:
-                    pos_.setX(--pos_.ry());
-                    break;
-                case south:
-                    pos_.setY(++pos_.rx());
-                    break;
-                case west:
-                    pos_.setX(++pos_.ry());
-                    break;
-                case north:
-                    pos_.setY(--pos_.rx());
-                    break;
+					pos_.setY(--pos_.ry());
+					break;
+				case south:
+					pos_.setX(++pos_.rx());
+					break;
+				case west:
+					pos_.setY(++pos_.ry());
+					break;
+				case north:
+					pos_.setX(--pos_.rx());
+					break;
 				default:
 					ROS_ERROR("Unexpected value for turtle's direction: %d", nw_or);
 					break;
