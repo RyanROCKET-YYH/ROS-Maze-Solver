@@ -109,7 +109,7 @@ DirectionVisitCounts get_visitCounts(int8_t x, int8_t y, int8_t (&localMap)[23][
 }
 
 TurtleOrientation get_lstVisitedDir (TurtleOrientation currentDirection, DirectionVisitCounts counts) {
-	TurtleOrientation priorityOrder[4][3] = {
+	TurtleOrientation priorityOrder[4][4] = {
 		{east, north, west, south},  // Current: north
         {south, east, north, west},  // Current: east
         {west, south, east, north},  // Current: south
