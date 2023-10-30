@@ -319,33 +319,29 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			result.nextMove = STOP;
 			result.visits = visitCounts[localX][localY];
 			break;
-		case DecisionMade: {
+		case DecisionMade:
 			result.nextMove = get_nextMove(direction, desiredDirection, cs);
 			result.visits = visitCounts[localX][localY];
 			break;
-		}
-		case leftTwice: {
+		case leftTwice:
 			direction = getNextDir(direction, left);
 			result.nextMove = TURN_LEFT;
 			result.visits = visitCounts[localX][localY];
 			cs = leftOnce;
 			break;
-		}
-		case leftOnce: {
+		case leftOnce:
 			direction = getNextDir(direction, left);
 			result.nextMove = TURN_LEFT;
 			result.visits = visitCounts[localX][localY];
 			cs = moving_forward;
 			break;
-		}
-		case TurnAround: {
+		case TurnAround: 
 			direction = getNextDir(direction, right);
 			result.nextMove = TURN_RIGHT;
 			result.visits = visitCounts[localX][localY];
 			cs = moving_forward;
 			break;
-		}
-		case moving_forward: {
+		case moving_forward: 
 			switch (direction) {
 				case north:
 					localY--;
@@ -367,7 +363,6 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			result.visits = visitCounts[localX][localY];
 			cs = moved;
 			break;
-		}
 		default:
 			ROS_ERROR("Invalid state");
 			break;
