@@ -265,7 +265,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			cs = CheckAlldirection;
 			WallUpdate(direction, localMap, localX, localY, bumped);
 			direction = getNextDir(direction, right);
-			result.nextMove = TURN_right;
+			result.nextMove = TURN_RIGHT;
 			result.visits = visitCounts[localX][localY];
 			break;
 		case CheckAlldirection:
