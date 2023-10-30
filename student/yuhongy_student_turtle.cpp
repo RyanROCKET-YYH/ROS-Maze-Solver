@@ -293,11 +293,15 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			WallUpdate(direction, localMap, localX, localY, bumped);
 			break;
 		case DecideNextMove:
-			DirectionVisitCounts counts = get_visitCounts(localX, localY, localMap, visitCounts, counts);
+			counts = get_visitCounts(localX, localY, localMap, visitCounts, counts);
 			desiredDirection = get_lstVisitedDir(direction, counts);
+			cs = DecisionMade;
+			break;
+		case DecisionMade: {
 			result.nextMove = get_nextMove(direction, desiredDirection, cs);
 			result.visits = visitCounts[localX][localY];
 			break;
+		}
 		case leftTwice: {
 			direction = getNextDir(direction, left);
 			result.nextMove = TURN_LEFT;
