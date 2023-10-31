@@ -22,7 +22,7 @@ static enum TurtleState {
 	Move,
 	leftOnce,
 	leftTwice,
-	RightOnce,
+	rightOnce,
 	Goal,
 };
 
@@ -181,7 +181,6 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			direction = getNextDir(direction, right);
 			spinCounter += 1;
 			result.nextMove = TURN_RIGHT;
-			result.visits = visitCounts[localX][localY];
 			if (spinCounter <= 3) {
 				cs = CheckWall;
 			}
@@ -189,39 +188,53 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 
 		case DecideNextMove:
 			desiredDir = NextMove(direction, visitCounts[23][23], localMap[23][23], localX, localY);
-
-
-
-		case DecideNextMove:
-			counts = get_visitCounts(localX, localY, localMap, visitCounts, counts);
-			desiredDirection = get_lstVisitedDir(direction, counts);
-			cs = DecisionMade;
-			result.nextMove = STOP;
-			result.visits = visitCounts[localX][localY];
+			int8_t tunrs = getTurns(direction, desiredDir);
+			if (desiredDir != -1) {
+				switch (turns) {
+					case 0:
+						cs = move;
+						break;
+					case 1:
+						cs = leftOnce;
+						break;
+					case 2:
+						cs = leftTwice;
+						break;
+					case 3:
+						cs = rightOnce;
+						break;
+					default:
+						ROS_ERROR("ERROR WHEN DECIDE NEXT MOVE");
+						break;
+				}
+			}
 			break;
-		case DecisionMade:
-			result.nextMove = get_nextMove(direction, desiredDirection, cs);
-			result.visits = visitCounts[localX][localY];
-			break;
+
 		case leftTwice:
+			spinCounter = 2;
 			direction = getNextDir(direction, left);
 			result.nextMove = TURN_LEFT;
-			result.visits = visitCounts[localX][localY];
+			spinCounter -= 1;
 			cs = leftOnce;
 			break;
+
 		case leftOnce:
+			spinCounter = 1;
 			direction = getNextDir(direction, left);
 			result.nextMove = TURN_LEFT;
-			result.visits = visitCounts[localX][localY];
-			cs = moving_forward;
+			spinCounter -= 1;
+			cs = Move;
 			break;
-		case TurnAround: 
+
+		case rightOnce:
+			spinCounter = 1;
 			direction = getNextDir(direction, right);
 			result.nextMove = TURN_RIGHT;
-			result.visits = visitCounts[localX][localY];
-			cs = moving_forward;
+			spinCounter -= 1;
+			cs = Move;
 			break;
-		case moving_forward: 
+
+		case Move: 
 			switch (direction) {
 				case north:
 					localY--;
@@ -236,16 +249,24 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 					localX--;
 					break;
 				default:
-					ROS_ERROR("Invalid orientation");
+					ROS_ERROR("Invalid orientation while moving");
 					break;
 			}
+			visitCounts[localX][localY]++;
 			result.nextMove = MOVE;
-			result.visits = visitCounts[localX][localY];
-			cs = moved;
+			if (atend) {
+				cs = Goal;
+			} else if (visitCounts[localX][localY] != 1 && localMap[localX][localY] != 0b1111) {
+				cs = DecideNextMove;
+			} else if (visitCounts[localX][localY] == 1) {
+				cs = CheckWall;
+			}
 			break;
+
 		default:
 			ROS_ERROR("Invalid state");
 			break;
 	}
+	result.visits = visitCounts[localX][localY];
 	return result;
  }
