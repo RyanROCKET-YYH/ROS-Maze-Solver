@@ -158,7 +158,6 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	TurtleOrientation desiredDir = error;
 	ROS_INFO("Current state: %d", cs);
 	turtleResult result;
-	static int8_t spinCounter = 0;
 	// If the turtle GOAL, stop and return the number of visits
 	switch (cs) {
 		case Initialized:   // S1. Initialized
@@ -168,6 +167,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			break;
 	
 		case CheckWall: // S3. CheckWall
+			int8_t spinCounter = 0;
 			WallUpdate(direction, localMap, localX, localY, bumped);
 			if (visitCounts[localX][localY] == 1) {
 				direction = getNextDir(direction, right);
@@ -177,7 +177,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			}
 			break;
 	
-		case Right:
+		case Right: // S2. Right
 			direction = getNextDir(direction, right);
 			spinCounter += 1;
 			result.nextMove = TURN_RIGHT;
@@ -186,13 +186,13 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			}
 			break;
 
-		case DecideNextMove:
-			desiredDir = NextMove(direction, visitCounts[23][23], localMap[23][23], localX, localY);
-			int8_t tunrs = getTurns(direction, desiredDir);
+		case DecideNextMove: // S4. DecideNextMove
+			desiredDir = NextMove(direction, visitCounts, localMap, localX, localY);
+			int8_t turns = getTurns(direction, desiredDir);
 			if (desiredDir != -1) {
 				switch (turns) {
 					case 0:
-						cs = move;
+						cs = Move;
 						break;
 					case 1:
 						cs = leftOnce;
@@ -210,7 +210,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			}
 			break;
 
-		case leftTwice:
+		case leftTwice: // S7. leftTwice
 			spinCounter = 2;
 			direction = getNextDir(direction, left);
 			result.nextMove = TURN_LEFT;
@@ -218,7 +218,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			cs = leftOnce;
 			break;
 
-		case leftOnce:
+		case leftOnce: // S6. leftOnce
 			spinCounter = 1;
 			direction = getNextDir(direction, left);
 			result.nextMove = TURN_LEFT;
@@ -226,7 +226,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			cs = Move;
 			break;
 
-		case rightOnce:
+		case rightOnce: // S8. RightOnce
 			spinCounter = 1;
 			direction = getNextDir(direction, right);
 			result.nextMove = TURN_RIGHT;
@@ -234,7 +234,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			cs = Move;
 			break;
 
-		case Move: 
+		case Move: // S5. Move
 			switch (direction) {
 				case north:
 					localY--;
@@ -261,6 +261,10 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			} else if (visitCounts[localX][localY] == 1) {
 				cs = CheckWall;
 			}
+			break;
+
+		case Goal: // S9. Goal
+			result.nextMove = STOP;
 			break;
 
 		default:
