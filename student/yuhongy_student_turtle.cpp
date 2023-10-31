@@ -14,25 +14,20 @@
 #include "student.h"
 
 // enum for turtle's current state
-enum TurtleState {				 
-	moved = 0,
-	CheckRight = 1,
-	CheckFront = 2,
-	CheckLeft = 3,
-	ReadyForWallCheck = 4,
-	DecideNextMove = 5,
-	leftTwice = 6,
-	leftOnce = 7,
-	moving_forward = 8,
-	Goal = 9,
-	Initialized = 10,
-	TurnAround = 11,
-	DecisionMade = 12,
-	CheckAlldirection = 13,
+static enum TurtleState {				 
+	Initialized,
+	CheckWall,
+	Right,
+	DecideNextMove,
+	Move,
+	leftOnce,
+	leftTwice,
+	RightOnce,
+	Goal,
 };
 
 // enum represent turn direction
-enum TurnDirection {
+static enum TurnDirection {
 	left = -1,
 	right = 1,
 };
@@ -50,7 +45,7 @@ TurtleOrientation getNextDir(TurtleOrientation direction, TurnDirection turn){
 	return static_cast<TurtleOrientation>(nextDir);
 }
 
-void WallUpdate(TurtleOrientation &direction, int8_t (&localMap)[23][23], int8_t x, int8_t y, bool bumped) {
+void WallUpdate(TurtleOrientation &direction, int32_t (&localMap)[23][23], int32_t x, int32_t y, bool bumped) {
 	if (!bumped) {
 		switch (direction) {
 			case north:
@@ -72,157 +67,63 @@ void WallUpdate(TurtleOrientation &direction, int8_t (&localMap)[23][23], int8_t
 	}
 }
 
-void ComingDirection_No_Wall(TurtleOrientation &direction, int8_t (&localMap)[23][23], int8_t x, int8_t y) {
-	switch (direction) {
+TurtleOrientation NextMove(TurtleOrientation &currentDir, int32_t (&visitCounts)[23][23], int32_t (&localMap)[23][23], int32_t x, int32_t y) {
+	int32_t northCount = visitCounts[x][y-1];
+	int32_t eastCount = visitCounts[x+1][y];
+	int32_t southCount = visitCounts[x][y+1];
+	int32_t westCount = visitCounts[x-1][y];
+
+	int32_t walls = localMap[x][y];
+
+	TurtleOrientation priorityOrder[4][4] = {
+		{EAST, NORTH, WEST, SOUTH},  // Current: NORTH
+        {SOUTH, EAST, NORTH, WEST}, // Current: EAST
+        {WEST, SOUTH, EAST, NORTH},  // Current: SOUTH
+        {NORTH, WEST, SOUTH, EAST}  // Current: WEST
+	};
+
+	int32_t minvisitCount = INT32_MAX;
+	TurtleOrientation nextDir = error;
+	for (int8_t i = 0; i < 4; i++) {
+		TurtleOrientation direction = priorityOrder[currentDir][i];
+		int32_t count = 0;
+		bool hasWall = false;
+		switch (direction) {
 			case north:
-				localMap[x][y] &= ~0b0100;
+				count = northCount;
+				hasWall = ((walls & 0b0001) != 0);
 				break;
 			case east:
-				localMap[x][y] &= ~0b1000;
+				count = eastCount;
+				hasWall = ((walls & 0b0010) != 0);
 				break;
 			case south:
-				localMap[x][y] &= ~0b0001;
+				count = southCount;
+				hasWall = ((walls & 0b0100) != 0);
 				break;
 			case west:
-				localMap[x][y] &= ~0b0010;
+				count = westCount;
+				hasWall = ((walls & 0b1000) != 0);
 				break;
 			default:
 				ROS_ERROR("Invalid orientation");
 				break;
 		}
-}
-
-struct DirectionVisitCounts {
-	int32_t northCount;
-	int32_t eastCount;
-	int32_t southCount;
-	int32_t westCount;
-};
-
-DirectionVisitCounts get_visitCounts(int8_t x, int8_t y, int8_t (&localMap)[23][23], int32_t (&visitCounts)[23][23], DirectionVisitCounts counts) {
-
-	counts.northCount = (localMap[x][y] & 0b0001) ? INT32_MAX : visitCounts[x][y-1];
-    counts.eastCount  = (localMap[x][y] & 0b0010) ? INT32_MAX : visitCounts[x+1][y];
-    counts.southCount = (localMap[x][y] & 0b0100) ? INT32_MAX : visitCounts[x][y+1];
-    counts.westCount  = (localMap[x][y] & 0b1000) ? INT32_MAX : visitCounts[x-1][y];
-	return counts;
-}
-
-TurtleOrientation get_lstVisitedDir (TurtleOrientation currentDirection, DirectionVisitCounts counts) {
-	TurtleOrientation priorityOrder[4][4] = {
-		{east, north, west, south},  // Current: north
-        {south, east, north, west},  // Current: east
-        {west, south, east, north},  // Current: south
-        {north, west, south, east}   // Current: west
-    };
-
-	int32_t directionCounts[4] = {
-		counts.northCount,
-		counts.eastCount,
-		counts.southCount,
-		counts.westCount
-	};
-
-	int32_t minCount = directionCounts[0];
-	for (int8_t i = 1; i < 4; i++) {
-		if (directionCounts[i] < minCount) {
-			minCount = directionCounts[i];
+		if (!hasWall && count <= minvisitCount) {
+			minvisitCount = count;
+			nextDir = direction;
 		}
 	}
-
-	for (int8_t i = 0; i < 4; i++) {
-		TurtleOrientation desiredDirection = priorityOrder[currentDirection][i];
-		if (directionCounts[desiredDirection] == minCount && directionCounts[desiredDirection] != INT32_MAX) {
-			return desiredDirection;
-		}
-	}
-
-	// error handling
-	ROS_ERROR("Invalid direction");
-	return currentDirection;
+	return nextDir;
 }
 
-turtleMove get_nextMove(TurtleOrientation currentDirection, TurtleOrientation desiredDirection, TurtleState &cs) {
-	switch(currentDirection) {
-		case north:
-			switch(desiredDirection) {
-				case north:
-					cs = moving_forward;
-					return MOVE;
-				case east:
-					cs = TurnAround;
-					return TURN_RIGHT;
-				case south:
-					cs = leftTwice;
-					return TURN_LEFT;
-				case west:
-					cs = leftOnce;
-					return TURN_LEFT;
-				default:
-					ROS_ERROR("Invalid direction");
-					break;
-			}
-		case east:
-			switch(desiredDirection) {
-				case north:
-					cs = leftOnce;
-					return TURN_LEFT;
-				case east:
-					cs = moving_forward;
-					return MOVE;
-				case south:
-					cs = TurnAround;
-					return TURN_RIGHT;
-				case west:
-					cs = leftTwice;
-					return TURN_LEFT;
-				default:
-					ROS_ERROR("Invalid direction");
-					break;
-			}
-		case south:
-			switch(desiredDirection) {
-				case north:
-					cs = TurnAround;
-					return TURN_RIGHT;
-				case east:
-					cs = leftOnce;
-					return TURN_LEFT;
-				case south:
-					cs = moving_forward;
-					return MOVE;
-				case west:
-					cs = leftTwice;
-					return TURN_LEFT;
-				default:
-					ROS_ERROR("Invalid direction");
-					break;
-			}
-		case west:
-			switch(desiredDirection) {
-				case north:
-					cs = leftTwice;
-					return TURN_LEFT;
-				case east:
-					cs = TurnAround;
-					return TURN_RIGHT;
-				case south:
-					cs = leftOnce;
-					return TURN_LEFT;
-				case west:
-					cs = moving_forward;
-					return MOVE;
-				default:
-					ROS_ERROR("Invalid direction");
-					break;
-			}
-		default:
-			ROS_ERROR("Invalid direction");
-			break;
-	}
+int8_t getTurns(TurtleOrientation &currentDir, TurtleOrientation &desiredDir) {
+	int8_t cycle = 4;
+	int8_t difference = (desiredDir - currentDir + cycle) % cycle;
+	return difference;
 }
 
-void printLocalMapCell(int8_t (&localMap)[23][23], int8_t x, int8_t y) {
+void printLocalMapCell(int32_t (&localMap)[23][23], int32_t x, int32_t y) {
     printf("localMap[%d][%d]: %x\n", x, y, localMap[x][y]);
 }
 
@@ -236,7 +137,7 @@ void printLocalMapCell(int8_t (&localMap)[23][23], int8_t x, int8_t y) {
 turtleResult studentTurtleStep(bool bumped, bool atend) {
 	// Local map to keep track of number of visits for each cell
 	static int32_t visitCounts[23][23] = {0};
-	static int8_t localMap[23][23];
+	static int32_t localMap[23][23];
 	static bool isInitialized = false;
 	if (!isInitialized) {
 		for (int i = 0; i < 23; ++i) {
@@ -247,86 +148,50 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 		isInitialized = true;
 	}
 	// Starting position of the turtle		
-	static int8_t localX = 11;
-	static int8_t localY = 11;
+	static int32_t localX = 11;
+	static int32_t localY = 11;
 	printLocalMapCell(localMap, localX, localY);
 	// Current orientation of the turtle
 	static TurtleOrientation direction = north;
 	// Current state of the turtle
 	static TurtleState cs = Initialized;
+	TurtleOrientation desiredDir = error;
 	ROS_INFO("Current state: %d", cs);
 	turtleResult result;
-	DirectionVisitCounts counts = {-1,-1,-1,-1};
-	static TurtleOrientation desiredDirection = north;
+	static int8_t spinCounter = 0;
 	// If the turtle GOAL, stop and return the number of visits
 	switch (cs) {
-		case Initialized:   // S1. IDLE
+		case Initialized:   // S1. Initialized
 			visitCounts[localX][localY]++;
-			cs = CheckAlldirection;
-			WallUpdate(direction, localMap, localX, localY, bumped);
-			direction = getNextDir(direction, right);
-			result.nextMove = TURN_RIGHT;
-			result.visits = visitCounts[localX][localY];
+			static TurtleOrientation desiredDirection = north;
+			cs = CheckWall;
 			break;
-		case CheckAlldirection:
+	
+		case CheckWall: // S3. CheckWall
 			WallUpdate(direction, localMap, localX, localY, bumped);
-			direction = getNextDir(direction, right);
-			if (direction == north) {
+			if (visitCounts[localX][localY] == 1) {
+				direction = getNextDir(direction, right);
+				cs = Right;
+			} else if (spinCounter == 3) {
 				cs = DecideNextMove;
-				result.nextMove = STOP;
-				result.visits = visitCounts[localX][localY];
-				break;
 			}
+			break;
+	
+		case Right:
+			direction = getNextDir(direction, right);
+			spinCounter += 1;
 			result.nextMove = TURN_RIGHT;
 			result.visits = visitCounts[localX][localY];
-			break;
-		case moved:
-			visitCounts[localX][localY]++;
-			if (visitCounts[localX][localY] == 1 && !atend) {
-				ComingDirection_No_Wall(direction, localMap, localX, localY);
-				cs = ReadyForWallCheck;
-				direction = getNextDir(direction, left);
-				result.nextMove = TURN_LEFT;
-				result.visits = visitCounts[localX][localY];
-				break;
-			} else if (!atend && visitCounts[localX][localY] > 1) {
-				cs = DecideNextMove;
-				result.nextMove = STOP;
-				result.visits = visitCounts[localX][localY];
-				break;
-			} else if (atend) {
-				cs = Goal;
-				result.nextMove = STOP;
-				result.visits = visitCounts[localX][localY];
-				break;
+			if (spinCounter <= 3) {
+				cs = CheckWall;
 			}
-		case ReadyForWallCheck:
-			cs = CheckLeft;
-			WallUpdate(direction, localMap, localX, localY, bumped);
-			direction = getNextDir(direction, right);
-			result.nextMove = TURN_RIGHT;
-			result.visits = visitCounts[localX][localY];
 			break;
-		case CheckLeft:
-			cs = CheckFront;
-			WallUpdate(direction, localMap, localX, localY, bumped);
-			direction = getNextDir(direction, right);
-			result.nextMove = TURN_RIGHT;
-			result.visits = visitCounts[localX][localY];
-			break;
-		case CheckFront:
-			cs = CheckRight;
-			WallUpdate(direction, localMap, localX, localY, bumped);
-			direction = getNextDir(direction, right);
-			result.nextMove = TURN_RIGHT;
-			result.visits = visitCounts[localX][localY];
-			break;
-		case CheckRight:
-			cs = DecideNextMove;
-			WallUpdate(direction, localMap, localX, localY, bumped);
-			result.nextMove = STOP;
-			result.visits = visitCounts[localX][localY];
-			break;
+
+		case DecideNextMove:
+			desiredDir = NextMove(direction, visitCounts[23][23], localMap[23][23], localX, localY);
+
+
+
 		case DecideNextMove:
 			counts = get_visitCounts(localX, localY, localMap, visitCounts, counts);
 			desiredDirection = get_lstVisitedDir(direction, counts);

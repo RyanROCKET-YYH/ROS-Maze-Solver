@@ -8,6 +8,7 @@
 #include <ece642rtle/bumpEcho.h>
 #include <ece642rtle/aendEcho.h>
 #include <QPointF>
+#include <cstdint>
 
 // Functions to interface with ROS. Don't change these lines!
 bool bumped(int x1,int y1,int x2,int y2);
@@ -22,6 +23,7 @@ enum TurtleOrientation {
 	east = 1,
 	south = 2,
 	west = 3,
+	error = -1
 };
 
 enum turtleMove {MOVE, TURN_LEFT, TURN_RIGHT, STOP};
