@@ -196,13 +196,13 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 						cs = Move;
 						break;
 					case 1:
-						cs = leftOnce;
+						cs = rightOnce;
 						break;
 					case 2:
 						cs = leftTwice;
 						break;
 					case 3:
-						cs = rightOnce;
+						cs = leftOnce;
 						break;
 					default:
 						ROS_ERROR("ERROR WHEN DECIDE NEXT MOVE");
