@@ -112,8 +112,8 @@ TurtleOrientation NextMove(TurtleOrientation currentDir, int32_t (&visitCounts)[
 			minvisitCount = count;
 			nextDir = direction;
 		}
-		ROS_INFO("Direction: %d, Count: %d, Has Wall: %d, Min Visit Count: %d, Next Dir: %d",
-             direction, count, hasWall, minvisitCount, nextDir);
+		ROS_INFO("Direction: %d, Count: %d, Has Wall: %d, Min Visit Count: %d, Next Dir: %d, CurrentDir: %d",
+            direction, count, hasWall, minvisitCount, nextDir, currentDir);
 	}
 	return nextDir;
 }
