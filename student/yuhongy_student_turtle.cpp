@@ -171,6 +171,10 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	
 		case CheckWall: // S3. CheckWall
 			WallUpdate(direction, localMap, localX, localY, bumped);
+			if (atend) {
+				cs = Goal;
+				break;
+			}
 			if (spinCounter < 3) {
 				cs = Right;
 			} else if (spinCounter == 3) {
@@ -188,6 +192,10 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			break;
 
 		case DecideNextMove: // S4. DecideNextMove
+			if (atend) {
+				cs = Goal;
+				break;
+			}
 			desiredDir = NextMove(direction, visitCounts, localMap, localX, localY);
 			turns = getTurns(direction, desiredDir);
 			if (desiredDir != -1) {
