@@ -159,7 +159,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	TurtleOrientation desiredDir = error;
 	ROS_INFO("Current state: %d", cs);
 	turtleResult result;
-	result.nextMove = STOP;
+	// result.nextMove = STOP;
 	// If the turtle GOAL, stop and return the number of visits
 	switch (cs) {
 		case Initialized:   // S1. Initialized
