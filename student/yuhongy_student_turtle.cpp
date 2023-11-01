@@ -44,6 +44,14 @@ TurtleOrientation getNextDir(TurtleOrientation direction, TurnDirection turn){
 	return static_cast<TurtleOrientation>(nextDir);
 }
 
+/**
+ * @brief update the local map based on the turtle's current position and orientation.
+ *
+ * @param direction Current orientation of the turtle.
+ * @param localMap turtle's localMap to store wall info.
+ * @param x, y turtle's current coordinate
+ * @param bumped check if bump
+ */
 void WallUpdate(TurtleOrientation direction, int32_t (&localMap)[23][23], int32_t x, int32_t y, bool bumped) {
 	if (!bumped) {
 		switch (direction) {
@@ -66,6 +74,15 @@ void WallUpdate(TurtleOrientation direction, int32_t (&localMap)[23][23], int32_
 	}
 }
 
+/**
+ * @brief decide the next move based on the lowest visits and bump condition
+ *
+ * @param currentDir Current orientation of the turtle.
+ * @param visitCounts Turtle's visit count array
+ * @param localMap turtle's localMap to store wall info.
+ * @param x, y turtle's current coordinate
+ * @return desiredDir
+ */
 TurtleOrientation NextMove(TurtleOrientation currentDir, int32_t (&visitCounts)[23][23], int32_t (&localMap)[23][23], int32_t x, int32_t y) {
 	int32_t northCount = visitCounts[x][y-1];
 	int32_t eastCount = visitCounts[x+1][y];
@@ -118,6 +135,14 @@ TurtleOrientation NextMove(TurtleOrientation currentDir, int32_t (&visitCounts)[
 	return nextDir;
 }
 
+/**
+ * @brief get the number of turns required to reach the desired direction from the current direction
+ * 
+ * @param currentDir Current orientation of the turtle.
+ * @param desiredDir Turtle's desired direction
+ * 
+ * @return turns turtle needs to make
+ */
 int8_t getTurns(TurtleOrientation currentDir, TurtleOrientation desiredDir) {
 	int8_t cycle = 4;
 	int8_t difference = (desiredDir - currentDir + cycle) % cycle;
@@ -166,18 +191,18 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	switch (cs) {
 		case Initialized:   // S1. Initialized
 			visitCounts[localX][localY]++;
-			cs = CheckWall;
+			cs = CheckWall; // transition. True (S1->S3)
 			break;
 	
 		case CheckWall: // S3. CheckWall
 			WallUpdate(direction, localMap, localX, localY, bumped);
-			if (atend) {
+			if (atend) {   // transition: Atend (S3->S9)
 				cs = Goal;
 				break;
 			}
-			if (spinCounter < 3) {
+			if (spinCounter < 3) {   // transition: spinCounter < 3 (S3->S2)
 				cs = Right;
-			} else if (spinCounter == 3) {
+			} else if (spinCounter == 3) {  // transition: spinCounter == 3 (S3->S4)
 				cs = DecideNextMove;
 			}
 			break;
@@ -186,30 +211,30 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			direction = getNextDir(direction, right);
 			spinCounter += 1;
 			result.nextMove = TURN_RIGHT;
-			if (spinCounter <= 3) {
+			if (spinCounter <= 3) { // transitionL spinCounter <=3 (S2->S3)
 				cs = CheckWall;
 			}
 			break;
 
 		case DecideNextMove: // S4. DecideNextMove
-			if (atend) {
+			if (atend) {  // transition: Atend (S4->S9)
 				cs = Goal;
 				break;
 			}
 			desiredDir = NextMove(direction, visitCounts, localMap, localX, localY);
 			turns = getTurns(direction, desiredDir);
-			if (desiredDir != -1) {
+			if (desiredDir != -1) { // transition: desiredDir != -1 (S4->S5,S8,S7,S6)
 				switch (turns) {
-					case 0:
+					case 0:		// transition: direction - desiredDir == 0 (S4->S5)
 						cs = Move;
 						break;
-					case 1:
+					case 1:    // transition: direction - desiredDir == 1 (S4->S8)
 						cs = rightOnce;
 						break;
-					case 2:
+					case 2:   // transition: direction - desiredDir == 2 (S4->S7)
 						cs = leftTwice;
 						break;
-					case 3:
+					case 3:  // transition: direction - desiredDir == 3 (S4->S6)
 						cs = leftOnce;
 						break;
 					default:
@@ -224,7 +249,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			direction = getNextDir(direction, left);
 			result.nextMove = TURN_LEFT;
 			spinCounter -= 1;
-			cs = leftOnce;
+			cs = leftOnce; // transion: Ture (S7->S6)
 			break;
 
 		case leftOnce: // S6. leftOnce
@@ -232,7 +257,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			direction = getNextDir(direction, left);
 			result.nextMove = TURN_LEFT;
 			spinCounter -= 1;
-			cs = Move;
+			cs = Move; // transion: Ture (S6->S5)
 			break;
 
 		case rightOnce: // S8. RightOnce
@@ -240,7 +265,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			direction = getNextDir(direction, right);
 			result.nextMove = TURN_RIGHT;
 			spinCounter -= 1;
-			cs = Move;
+			cs = Move; // transion: Ture (S7->S6)
 			break;
 
 		case Move: // S5. Move
@@ -264,11 +289,11 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			}
 			visitCounts[localX][localY]++;
 			result.nextMove = MOVE;
-			if (atend) {
+			if (atend) {  // transion: Atend (S5->S9)
 				cs = Goal;
-			} else if (visitCounts[localX][localY] != 1 && localMap[localX][localY] != 0b1111) {
+			} else if (visitCounts[localX][localY] != 1 && localMap[localX][localY] != 0b1111) {  // transion: visitCounts > 1 && localMap != 0b1111  (S5->S4)
 				cs = DecideNextMove;
-			} else if (visitCounts[localX][localY] == 1) {
+			} else if (visitCounts[localX][localY] == 1) {  // transion: visitCounts == 1 && localMap == 0b1111  (S5->S3)
 				cs = CheckWall;
 			}
 			break;
