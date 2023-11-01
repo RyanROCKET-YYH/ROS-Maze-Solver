@@ -44,7 +44,7 @@ TurtleOrientation getNextDir(TurtleOrientation direction, TurnDirection turn){
 	return static_cast<TurtleOrientation>(nextDir);
 }
 
-void WallUpdate(TurtleOrientation &direction, int32_t (&localMap)[23][23], int32_t x, int32_t y, bool bumped) {
+void WallUpdate(TurtleOrientation direction, int32_t (&localMap)[23][23], int32_t x, int32_t y, bool bumped) {
 	if (!bumped) {
 		switch (direction) {
 			case north:
@@ -66,7 +66,7 @@ void WallUpdate(TurtleOrientation &direction, int32_t (&localMap)[23][23], int32
 	}
 }
 
-TurtleOrientation NextMove(TurtleOrientation &currentDir, int32_t (&visitCounts)[23][23], int32_t (&localMap)[23][23], int32_t x, int32_t y) {
+TurtleOrientation NextMove(TurtleOrientation currentDir, int32_t (&visitCounts)[23][23], int32_t (&localMap)[23][23], int32_t x, int32_t y) {
 	int32_t northCount = visitCounts[x][y-1];
 	int32_t eastCount = visitCounts[x+1][y];
 	int32_t southCount = visitCounts[x][y+1];
