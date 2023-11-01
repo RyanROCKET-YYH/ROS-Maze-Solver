@@ -168,7 +168,6 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			break;
 	
 		case CheckWall: // S3. CheckWall
-			spinCounter = 0;
 			WallUpdate(direction, localMap, localX, localY, bumped);
 			if (visitCounts[localX][localY] == 1 && spinCounter < 3) {
 				direction = getNextDir(direction, right);
@@ -236,6 +235,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			break;
 
 		case Move: // S5. Move
+			spinCounter = 0;
 			switch (direction) {
 				case north:
 					localY--;
