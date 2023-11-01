@@ -83,7 +83,7 @@ TurtleOrientation NextMove(TurtleOrientation currentDir, int32_t (&visitCounts)[
 
 	int32_t minvisitCount = INT32_MAX;
 	TurtleOrientation nextDir = error;
-	for (int8_t i = 4; i > 0; i--) {
+	for (int8_t i = 0; i < 4; i++) {
 		TurtleOrientation direction = priorityOrder[currentDir][i];
 		int32_t count = 0;
 		bool hasWall = false;
@@ -108,7 +108,7 @@ TurtleOrientation NextMove(TurtleOrientation currentDir, int32_t (&visitCounts)[
 				ROS_ERROR("Invalid orientation");
 				break;
 		}
-		if (!hasWall && count <= minvisitCount) {
+		if (!hasWall && count < minvisitCount) {
 			minvisitCount = count;
 			nextDir = direction;
 		}
