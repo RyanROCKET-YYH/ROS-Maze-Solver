@@ -116,7 +116,7 @@ TurtleOrientation NextMove(TurtleOrientation &currentDir, int32_t (&visitCounts)
 	return nextDir;
 }
 
-int8_t getTurns(TurtleOrientation &currentDir, TurtleOrientation &desiredDir) {
+int8_t getTurns(TurtleOrientation currentDir, TurtleOrientation desiredDir) {
 	int8_t cycle = 4;
 	int8_t difference = (desiredDir - currentDir + cycle) % cycle;
 	return difference;
