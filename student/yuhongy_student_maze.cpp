@@ -85,7 +85,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 		updateStartPosition(pos_, startPoint);
 		updateEndPosition(pos_, nw_or, endPoint, startPoint);
 		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // if there is a bump (boolean)
-		bool aend = atend(static_cast<int32_t>(pos_.x()), static_cast<int32_t>(pos_.y()));
+		aend = atend(static_cast<int32_t>(pos_.x()), static_cast<int32_t>(pos_.y()));
 		ROS_INFO("Bumped: %d", bp);
 		turtleResult result = studentTurtleStep(bp, aend);
 		turtleMove nextMove = result.nextMove;

@@ -291,7 +291,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			result.nextMove = MOVE;
 			if (atend) {  // transion: Atend (S5->S9)
 				cs = Goal;
-			} else if (visitCounts[localX][localY] != 1 && localMap[localX][localY] != 0b1111) {  // transion: visitCounts > 1 && localMap != 0b1111  (S5->S4)
+			} else if (visitCounts[localX][localY] != 1 && localMap[localX][localY] != 0x0F) {  // transion: visitCounts > 1 && localMap != 0b1111  (S5->S4)
 				cs = DecideNextMove;
 			} else if (visitCounts[localX][localY] == 1) {  // transion: visitCounts == 1 && localMap == 0b1111  (S5->S3)
 				cs = CheckWall;
