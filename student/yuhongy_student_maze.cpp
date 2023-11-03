@@ -38,8 +38,8 @@
  * @param startPoint Reference to the starting point to be updated.
  */
 void updateStartPosition(QPointF &pos_, Point2D &startPoint) {
-    startPoint.x = pos_.x();
-    startPoint.y = pos_.y();
+    startPoint.x = static_cast<int32_t>(pos_.x());
+    startPoint.y = static_cast<int32_t>(pos_.y());
 }
 
 /**
@@ -51,8 +51,8 @@ void updateStartPosition(QPointF &pos_, Point2D &startPoint) {
  * @param startPoint Reference to the starting point, used for certain orientations.
  */
 void updateEndPosition(QPointF &pos_, int32_t nw_or, Point2D &endPoint, Point2D &startPoint) {
-    endPoint.x = pos_.x();
-    endPoint.y = pos_.y();
+    endPoint.x = static_cast<int32_t>(pos_.x());
+    endPoint.y = static_cast<int32_t>(pos_.y());
     
     if (nw_or == north || nw_or == east) {
         nw_or == north ? endPoint.y++ : endPoint.x++;
@@ -78,14 +78,14 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	ROS_INFO("Current Orientation: %d", nw_or);
-	bool aend, moving_flag;
+	bool aend;
   	if (!wait) {
 		Point2D startPoint, endPoint;
 		// update start and end position so that we can check if bumped
 		updateStartPosition(pos_, startPoint);
 		updateEndPosition(pos_, nw_or, endPoint, startPoint);
 		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // if there is a bump (boolean)
-		bool aend = atend(pos_.x(), pos_.y());
+		bool aend = atend(static_cast<int32_t>(pos_.x()), static_cast<int32_t>(pos_.y()));
 		ROS_INFO("Bumped: %d", bp);
 		turtleResult result = studentTurtleStep(bp, aend);
 		turtleMove nextMove = result.nextMove;
