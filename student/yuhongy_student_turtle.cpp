@@ -21,7 +21,7 @@ enum TurtleState {
 	Move,
 	leftOnce,
 	leftTwice,
-	rightOnce,
+	rightOnce, // unnecessary
 	Goal,
 };
 
