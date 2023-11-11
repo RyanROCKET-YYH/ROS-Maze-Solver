@@ -10,7 +10,12 @@
  *
  */
 
+#ifdef testing
+#include "student_mock.h"
+#endif
+#ifndef testing
 #include "student.h"
+#endif
 
 // enum for turtle's current state
 enum TurtleState {				 

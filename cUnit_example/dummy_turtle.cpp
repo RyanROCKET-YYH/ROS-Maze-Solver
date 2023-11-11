@@ -28,6 +28,7 @@ move_state moveTurtle(move_state curr_state, bool at_end) {
   case MOVE_BACK: // S2
     // Outputs
     setOrientation(DOWN);
+
     if (at_end) { // T3
       curr_state = MOVE_BACK;
     } else if (will_bump()) { // T4
