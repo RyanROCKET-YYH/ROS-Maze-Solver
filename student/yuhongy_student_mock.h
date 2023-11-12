@@ -69,5 +69,7 @@ int32_t getVisitCounts(int32_t x, int32_t y);
 void setVisitCounts(int32_t x, int32_t y, int32_t value);
 int32_t getLocalMap(int32_t x, int32_t y);
 void setLocalMap(int32_t x, int32_t y, int32_t value);
+TurtleState getTurtleState();
+TurtleState setTurtleState(TurtleState state);
 
 void ROS_ERROR(std::string e);

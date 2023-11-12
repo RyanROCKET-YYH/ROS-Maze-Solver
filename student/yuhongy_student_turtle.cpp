@@ -19,26 +19,36 @@
 
 #ifdef testing
 
-int32_t getVisitCount(int x, int y) {
+int32_t getVisitCount(int32_t x, int32_t y) {
     return visitCounts[x][y];
 }
 
-void setVisitCount(int x, int y, int32_t count) {
+void setVisitCount(int32_t x, int32_t y, int32_t count) {
     visitCounts[x][y] = count;
 }
 
-int32_t getLocalMapValue(int x, int y) {
+int32_t getLocalMapValue(int32_t x, int32_t y) {
     return localMap[x][y];
 }
 
-void setLocalMapValue(int x, int y, int32_t value) {
+void setLocalMapValue(int32_t x, int32_t y, int32_t value) {
     localMap[x][y] = value;
+}
+
+TurtleState getTurtleState() {
+	return cs;
+}
+
+TurtleState setTurtleState(TurtleState state) {
+	cs = state;
 }
 
 #endif
 
 static int32_t visitCounts[23][23];
 static int32_t localMap[23][23];
+// Current state of the turtle
+static TurtleState cs = Initialized;
 
 // enum for turtle's current state
 enum TurtleState {				 
@@ -207,7 +217,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	// Current orientation of the turtle
 	static TurtleOrientation direction = north;
 	// Current state of the turtle
-	static TurtleState cs = Initialized;
+	// static TurtleState cs = Initialized;
 	static int8_t spinCounter = 0;
 	static int8_t turns = -1;
 	TurtleOrientation desiredDir = error;

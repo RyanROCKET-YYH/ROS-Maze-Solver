@@ -31,22 +31,6 @@ void mock_set_atend(bool atend) {
   mock_atend = atend;
 }
 
-int32_t getVisitCounts(int32_t x, int32_t y) {
-  return visitCounts[x][y];
-}
-
-void setVisitCounts(int32_t x, int32_t y, int32_t value) {
-  visitCounts[x][y] = value;
-}
-
-int32_t getLocalMap(int32_t x, int32_t y) {
-  return localMap[x][y];
-}
-
-void setLocalMap(int32_t x, int32_t y, int32_t value) {
-  localMap[x][y] = value;
-}
-
 /* Dummy ROS_ERROR */
 void ROS_ERROR(std::string e) {
   mock_error = true;

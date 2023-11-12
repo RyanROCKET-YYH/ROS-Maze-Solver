@@ -1,8 +1,17 @@
-#include "yuhong_student_mock.h"
+#include "yuhongy_student_mock.h"
 #include <CUnit/Basic.h>
 
-void test_t1() {
+void test_t1() { // test transition from initialized to checkWall
+    mock_set_bump(false);
+    mock_set_atend(false);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    int32_t x = 11;
+    int32_t y = 11;
     
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_EQUAL(getVisitCounts(x, y), 1);
+
+
 }
 
 void test_t1() {
