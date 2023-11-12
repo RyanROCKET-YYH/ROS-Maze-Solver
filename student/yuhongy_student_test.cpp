@@ -322,7 +322,7 @@ void test_t14() { // test transition from Move to DecideNextMove
     setMockLocalCord(x, y);
     setTurtleOrientation(north);
     setVisitCounts(x, y-1, 2);
-    setLocalMap(x, y, 0x8);
+    setLocalMap(x, y-1, 0x8);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
 
@@ -343,7 +343,7 @@ void test_t14_1() { // test transition from Move to DecideNextMove
     setMockLocalCord(x, y);
     setTurtleOrientation(east);
     setVisitCounts(x+1, y, 1);
-    setLocalMap(x, y, 0xF);
+    setLocalMap(x+1, y, 0xF);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
 
@@ -364,7 +364,7 @@ void test_t14_2() { // test transition from Move to DecideNextMove
     setMockLocalCord(x, y);
     setTurtleOrientation(south);
     setVisitCounts(x, y+1, 0);
-    setLocalMap(x, y, 0x4);
+    setLocalMap(x, y+1, 0x4);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
 
@@ -385,7 +385,7 @@ void test_t14_3() { // test transition from Move to DecideNextMove
     setMockLocalCord(x, y);
     setTurtleOrientation(west);
     setVisitCounts(x, y, 2);
-    setLocalMap(x, y, 0x1);
+    setLocalMap(x-1, y, 0x1);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
 
