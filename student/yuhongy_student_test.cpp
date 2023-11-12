@@ -4,31 +4,31 @@
 void test_t1() { // test transition from initialized to checkWall
     mock_set_bump(false);
     mock_set_atend(false);
+    setTurtleState(Initialized);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
     int32_t x = 11;
     int32_t y = 11;
-    
+
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getVisitCounts(x, y), 1);
-
-
+    CU_ASSERT_EQUAL(return_state, CheckWall);
 }
 
-void test_t1() {
-  move_state return_state = moveTurtle(MOVE_FORWARD, true);
-  orientation output_orientation = test_orientation_result();
+void test_t2() { // test transition from CheckWall to Right
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(CheckWall);
+    setSpinCounter(0);
+    setTurtleOrientation(north);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    int32_t x = 11;
+    int32_t y = 11;
 
-  CU_ASSERT_EQUAL(output_orientation, UP);
-  CU_ASSERT_EQUAL(return_state, MOVE_FORWARD);
-}
-
-void test_t2() {
-  mock_set_bump(true);
-  move_state return_state = moveTurtle(MOVE_FORWARD, false);
-  orientation output_orienation = test_orientation_result();
-
-  CU_ASSERT_EQUAL(output_orienation, UP);
-  CU_ASSERT_EQUAL(return_state, MOVE_BACK);
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_EQUAL(getLocalMap(x, y), 0xE);
+    CU_ASSERT_EQUAL(return_state, Right);
 }
 
 int init() {
@@ -51,15 +51,15 @@ int main() {
     return CU_get_error();
 
   /* add a suite to the registry */
-  pSuite = CU_add_suite("Suite_1", init, cleanup);
+  pSuite = CU_add_suite("UNIT TEST #1", init, cleanup);
   if (NULL == pSuite) {
     CU_cleanup_registry();
     return CU_get_error();
   }
 
   /* add the tests to the suite */
-  if ((NULL == CU_add_test(pSuite, "test of transition T1", test_t1)) ||
-      (NULL == CU_add_test(pSuite, "test of transition T2", test_t2)))
+  if ((NULL == CU_add_test(pSuite, "test of transition S1 -> S3", test_t1)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2)))
     {
       CU_cleanup_registry();
       return CU_get_error();

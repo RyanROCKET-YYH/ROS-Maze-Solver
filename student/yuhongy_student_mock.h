@@ -64,12 +64,16 @@ void test_studentTurtleStep();
 void mock_set_bump(bool bump);
 void mock_set_atend(bool atend);
 
-
+// get and set functions for static variables
 int32_t getVisitCounts(int32_t x, int32_t y);
 void setVisitCounts(int32_t x, int32_t y, int32_t value);
 int32_t getLocalMap(int32_t x, int32_t y);
 void setLocalMap(int32_t x, int32_t y, int32_t value);
 TurtleState getTurtleState();
-TurtleState setTurtleState(TurtleState state);
+void setTurtleState(TurtleState state);
+TurtleOrientation getTurtleOrientation();
+void setTurtleOrientation(TurtleOrientation dir);
+int8_t getSpinCounter();
+void setSpinCounter(int8_t count);
 
 void ROS_ERROR(std::string e);
