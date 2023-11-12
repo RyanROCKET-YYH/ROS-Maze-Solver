@@ -37,8 +37,8 @@ void setLocalMapValue(int x, int y, int32_t value) {
 
 #endif
 
-static int32_t visitCounts[23][23] = {{0}};
-static int32_t localMap[23][23] = {{0x0F}};
+static int32_t visitCounts[23][23];
+static int32_t localMap[23][23];
 
 // enum for turtle's current state
 enum TurtleState {				 
@@ -190,15 +190,16 @@ int8_t getTurns(TurtleOrientation currentDir, TurtleOrientation desiredDir) {
  */
 turtleResult studentTurtleStep(bool bumped, bool atend) {
 	// Local map to keep track of number of visits for each cell
-	// static bool isInitialized = false;
-	// if (!isInitialized) {
-	// 	for (int i = 0; i < 23; ++i) {
-	// 		for (int j = 0; j < 23; ++j) {
-	// 			localMap[i][j] = 0x0F;
-	// 		}
-	// 	}
-	// 	isInitialized = true;
-	// }
+	visitCounts[23][23] = {0};
+	static bool isInitialized = false;
+	if (!isInitialized) {
+		for (int i = 0; i < 23; ++i) {
+			for (int j = 0; j < 23; ++j) {
+				localMap[i][j] = 0x0F;
+			}
+		}
+		isInitialized = true;
+	}
 	// Starting position of the turtle		
 	static int32_t localX = 11;
 	static int32_t localY = 11;
