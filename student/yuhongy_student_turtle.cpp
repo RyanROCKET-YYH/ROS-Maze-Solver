@@ -81,6 +81,15 @@ int8_t getSpinCounter() {
 void setSpinCounter(int8_t count) {
 	spinCounter = count;
 }
+
+TurtleOrientation mock_desiredDir = error;
+TurtleOrientation getMockDesiredDir() {
+	return mock_desiredDir;
+}
+
+void setMockDesiredDir(TurtleOrientation dir) {
+	mock_desiredDir = dir
+}
 #endif
 
 /**
@@ -278,6 +287,12 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 				break;
 			}
 			desiredDir = NextMove(direction, visitCounts, localMap, localX, localY);
+			#ifdef testing
+			if (mock_desiredDir != error) {
+				desiredDir = getMockDesiredDir();
+				direction = setTurtleOrientation();
+			}
+			#endif
 			turns = getTurns(direction, desiredDir);
 			if (desiredDir != -1) { // transition: desiredDir != -1 (S4->S5,S8,S7,S6)
 				switch (turns) {

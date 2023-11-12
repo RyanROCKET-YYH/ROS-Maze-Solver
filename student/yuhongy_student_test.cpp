@@ -197,6 +197,82 @@ void test_t5_1() { // test transition from CheckWall to DecidNextMove
     CU_ASSERT_NOT_EQUAL(return_state, DecideNextMove);
 }
 
+void test_t6() { // test transition from DecidNextMove to Goal
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(DecideNextMove);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_NOT_EQUAL(return_state, Goal);
+}
+
+void test_t6_1() { // test transition from DecidNextMove to Goal
+    mock_set_bump(false);
+    mock_set_atend(true);
+    setTurtleState(DecideNextMove);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_EQUAL(return_state, Goal);
+}
+
+void test_t7() { // test transition from DecidNextMove to leftOnce
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(DecideNextMove);
+    setMockDesiredDir(north);
+    setTurtleOrientation(east);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_EQUAL(return_state, leftOnce);
+}
+
+void test_t8() { // test transition from DecidNextMove to leftTwice
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(DecideNextMove);
+    setMockDesiredDir(east);
+    setTurtleOrientation(west);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_EQUAL(return_state, leftTwice);
+}
+
+void test_t9() { // test transition from DecidNextMove to Move
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(DecideNextMove);
+    setMockDesiredDir(south);
+    setTurtleOrientation(south);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_EQUAL(return_state, Move);
+}
+
+void test_t10() { // test transition from DecidNextMove to rightOnce
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(DecideNextMove);
+    setMockDesiredDir(east);
+    setTurtleOrientation(north);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_EQUAL(return_state, rightOnce);
+}
+
+
+
 
 
 
@@ -241,7 +317,13 @@ int main() {
       (NULL == CU_add_test(pSuite, "test of transition S3 -> S4", test_t4)) ||
       (NULL == CU_add_test(pSuite, "test of transition S3 -> S4", test_t4_1)) ||
       (NULL == CU_add_test(pSuite, "test of transition S3 -> S5", test_t5)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S3 -> S5", test_t5_1)))
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S5", test_t5_1)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t6)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t6_1)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t7)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t8)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t9)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t10)))
     {
       CU_cleanup_registry();
       return CU_get_error();
