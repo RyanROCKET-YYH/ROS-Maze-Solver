@@ -83,6 +83,75 @@ void test_t2_3() { // test transition from CheckWall to Right
     CU_ASSERT_NOT_EQUAL(return_state, Right);
 }
 
+void test_t3() { // test transition from Right to CheckWall
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(Right);
+    setSpinCounter(0);
+    setTurtleOrientation(west);
+    int32_t x = 11;
+    int32_t y = 11;
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, TURN_RIGHT);
+    CU_ASSERT_EQUAL(getSpinCounter(), 1);
+    CU_ASSERT_EQUAL(getTurtleOrientation, north);
+    CU_ASSERT_EQUAL(return_state, CheckWall);
+}
+
+void test_t3_1() { // test transition from Right to CheckWall
+    mock_set_bump(true);
+    mock_set_atend(false);
+    setTurtleState(Right);
+    setSpinCounter(1);
+    setTurtleOrientation(north);
+    int32_t x = 11;
+    int32_t y = 11;
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, TURN_RIGHT);
+    CU_ASSERT_EQUAL(getSpinCounter(), 2);
+    CU_ASSERT_EQUAL(getTurtleOrientation, east);
+    CU_ASSERT_EQUAL(return_state, CheckWall);
+}
+
+void test_t3_2() { // test transition from Right to CheckWall
+    mock_set_bump(true);
+    mock_set_atend(false);
+    setTurtleState(Right);
+    setSpinCounter(2);
+    setTurtleOrientation(east);
+    int32_t x = 11;
+    int32_t y = 11;
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, TURN_RIGHT);
+    CU_ASSERT_EQUAL(getSpinCounter(), 3);
+    CU_ASSERT_EQUAL(getTurtleOrientation, south);
+    CU_ASSERT_EQUAL(return_state, CheckWall);
+}
+
+void test_t3_3() { // test transition from Right to CheckWall
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(Right);
+    setSpinCounter(3);
+    setTurtleOrientation(south);
+    int32_t x = 11;
+    int32_t y = 11;
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, TURN_RIGHT);
+    CU_ASSERT_EQUAL(getSpinCounter(), 4);
+    CU_ASSERT_EQUAL(getTurtleOrientation, west);
+    CU_ASSERT_EQUAL(return_state, Right);
+}
+
+
 
 
 int init() {
@@ -117,7 +186,11 @@ int main() {
       (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2_1)) ||
       (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2_2)) ||
       (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2_3)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2_3)))
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2_3)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S2 -> S3", test_t3)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S2 -> S3", test_t3_1)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S2 -> S3", test_t3_2)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S2 -> S3", test_t3_3)))
     {
       CU_cleanup_registry();
       return CU_get_error();

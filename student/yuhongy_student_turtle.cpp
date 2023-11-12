@@ -251,7 +251,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	
 		case CheckWall: // S3. CheckWall
 			WallUpdate(direction, localMap, localX, localY, bumped);
-			printLocalMapCell(localMap, localX, localY);
+			// printLocalMapCell(localMap, localX, localY);
 			if (atend) {   // transition: Atend (S3->S9)
 				cs = Goal;
 				break;
