@@ -47,8 +47,6 @@ TurtleState setTurtleState(TurtleState state) {
 
 static int32_t visitCounts[23][23];
 static int32_t localMap[23][23];
-// Current state of the turtle
-static TurtleState cs = Initialized;
 
 // enum for turtle's current state
 enum TurtleState {				 
@@ -62,6 +60,9 @@ enum TurtleState {
 	rightOnce, // unnecessary
 	Goal,
 };
+
+// Current state of the turtle
+static TurtleState cs = Initialized;
 
 // enum represent turn direction
 enum TurnDirection {
