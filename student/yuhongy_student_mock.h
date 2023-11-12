@@ -76,3 +76,4 @@ int8_t getSpinCounter();
 void setSpinCounter(int8_t count);
 
 void ROS_ERROR(std::string e);
+void ROS_INFO(std::string e);

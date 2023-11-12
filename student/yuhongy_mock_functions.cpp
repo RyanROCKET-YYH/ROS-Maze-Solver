@@ -38,3 +38,6 @@ void ROS_ERROR(std::string e) {
   std::cout << e << std::endl;
 }
 
+void ROS_INFO(std::string info) {
+  std::cout << info << std::endl;
+}
