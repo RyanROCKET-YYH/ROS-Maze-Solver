@@ -58,6 +58,7 @@ void test_t2_2() { // test transition from CheckWall to Right
     TurtleState return_state = getTurtleState();
     int32_t x = 11;
     int32_t y = 11;
+    printf("%d\n", getLocalMap(x, y));
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getLocalMap(x, y), 0xB);
