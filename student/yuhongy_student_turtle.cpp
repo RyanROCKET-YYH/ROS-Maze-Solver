@@ -201,9 +201,9 @@ int8_t getTurns(TurtleOrientation currentDir, TurtleOrientation desiredDir) {
 	return difference;
 }
 
-// void printLocalMapCell(int32_t (&localMap)[23][23], int32_t x, int32_t y) {
-//     printf("localMap[%d][%d]: %x\n", x, y, localMap[x][y]);
-// }
+void printLocalMapCell(int32_t (&localMap)[23][23], int32_t x, int32_t y) {
+    printf("localMap[%d][%d]: %x\n", x, y, localMap[x][y]);
+}
 
 /**
  * @brief Determines the next move for the turtle based on its current state, whether it bumped into a wall, and whether it reached the end of the maze.
@@ -251,6 +251,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	
 		case CheckWall: // S3. CheckWall
 			WallUpdate(direction, localMap, localX, localY, bumped);
+			printLocalMapCell(localMap, localX, localY);
 			if (atend) {   // transition: Atend (S3->S9)
 				cs = Goal;
 				break;

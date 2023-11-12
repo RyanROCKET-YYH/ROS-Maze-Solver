@@ -37,14 +37,15 @@ void test_t2_1() { // test transition from CheckWall to Right
     mock_set_atend(false);
     setTurtleState(CheckWall);
     setSpinCounter(1);
-    setTurtleOrientation(north);
-    turtleResult result = studentTurtleStep(will_bump(), at_end());
-    TurtleState return_state = getTurtleState();
+    setTurtleOrientation(east);
     int32_t x = 11;
     int32_t y = 11;
-
+    setLocalMap(x, y, 0xF);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
     CU_ASSERT_EQUAL(result.nextMove, STOP);
-    CU_ASSERT_EQUAL(getLocalMap(x, y), 0xE);
+    CU_ASSERT_EQUAL(getLocalMap(x, y), 0xD);
     CU_ASSERT_EQUAL(return_state, Right);
 }
 
@@ -54,16 +55,34 @@ void test_t2_2() { // test transition from CheckWall to Right
     setTurtleState(CheckWall);
     setSpinCounter(2);
     setTurtleOrientation(south);
-    turtleResult result = studentTurtleStep(will_bump(), at_end());
-    TurtleState return_state = getTurtleState();
     int32_t x = 11;
     int32_t y = 11;
-    printf("%d\n", getLocalMap(x, y));
-
+    setLocalMap(x, y, 0xF);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getLocalMap(x, y), 0xB);
     CU_ASSERT_EQUAL(return_state, Right);
 }
+
+void test_t2_3() { // test transition from CheckWall to Right
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(CheckWall);
+    setSpinCounter(3);
+    setTurtleOrientation(west);
+    int32_t x = 11;
+    int32_t y = 11;
+    setLocalMap(x, y, 0xF);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_EQUAL(getLocalMap(x, y), 0x7);
+    CU_ASSERT_NOT_EQUAL(return_state, Right);
+}
+
 
 
 int init() {
@@ -96,7 +115,9 @@ int main() {
   if ((NULL == CU_add_test(pSuite, "test of transition S1 -> S3", test_t1)) ||
       (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2)) ||
       (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2_1)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2_2)))
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2_2)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2_3)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2_3)))
     {
       CU_cleanup_registry();
       return CU_get_error();
