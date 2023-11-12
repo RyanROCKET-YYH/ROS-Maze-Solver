@@ -96,8 +96,8 @@ TurtleOrientation getDesiredDir() {
 	return desiredDir;
 }
 
-static int32_t mock_localX;
-static int32_t mock_localY;
+int32_t mock_localX;
+int32_t mock_localY;
 void setMockLocalCord(int32_t x, int32_t y) {
 	mock_localX = x;
 	mock_localY = y;
