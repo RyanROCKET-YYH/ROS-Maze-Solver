@@ -1,5 +1,6 @@
 #include "yuhongy_student_mock.h"
 #include <CUnit/Basic.h>
+#include <cstdint>
 
 void test_t1() { // test transition from initialized to checkWall
     mock_set_bump(false);

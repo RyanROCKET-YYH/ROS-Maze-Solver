@@ -1,5 +1,6 @@
 #include "yuhongy_student_mock.h"
 #include <iostream>
+#include <cstdint>
 
 static TurtleOrientation mock_orientation;
 static bool mock_bump;
