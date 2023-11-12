@@ -15,6 +15,7 @@
 #endif
 #ifndef testing
 #include "student.h"
+#include "ros/ros.h"
 #endif
 
 #ifdef testing
@@ -81,11 +82,6 @@ static TurtleState cs = Initialized;
 
 static TurtleOrientation direction = north;
 
-// enum represent turn direction
-enum TurnDirection {
-	left = -1,
-	right = 1,
-};
 
 /**
  * @brief Get the next direction for the turtle based on its current orientation and intended turn direction.

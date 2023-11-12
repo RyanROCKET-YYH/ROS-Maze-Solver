@@ -38,6 +38,12 @@ enum TurtleState {
 	Goal,
 };
 
+// enum represent turn direction
+enum TurnDirection {
+	left = -1,
+	right = 1,
+};
+
 enum turtleMove {MOVE, TURN_LEFT, TURN_RIGHT, STOP};
 QPointF translatePos(QPointF pos_, turtleMove nextMove, int32_t nw_or);
 int translateOrnt(int orientation, turtleMove nextMove);
