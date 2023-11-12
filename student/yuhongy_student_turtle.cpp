@@ -88,7 +88,7 @@ TurtleOrientation getMockDesiredDir() {
 }
 
 void setMockDesiredDir(TurtleOrientation dir) {
-	mock_desiredDir = dir
+	mock_desiredDir = dir;
 }
 #endif
 
