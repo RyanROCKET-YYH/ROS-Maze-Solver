@@ -321,14 +321,14 @@ void test_t14() { // test transition from Move to DecideNextMove
     int32_t y = 11;
     setMockLocalCord(x, y);
     setTurtleOrientation(north);
-    setVisitCounts(x, y, 2);
+    setVisitCounts(x, y-1, 2);
     setLocalMap(x, y, 0x8);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
 
-    CU_ASSERT_EQUAL(result.nextMove, Move);
+    CU_ASSERT_EQUAL(result.nextMove, MOVE);
     CU_ASSERT_EQUAL(getDesiredDir(), error);
-    CU_ASSERT_EQUAL(getVisitCounts(x,y), 3);
+    CU_ASSERT_EQUAL(getVisitCounts(x,y-1), 3);
     CU_ASSERT_EQUAL(getMockLocalX(), 11);
     CU_ASSERT_EQUAL(getMockLocalY(), 10);
     CU_ASSERT_EQUAL(return_state, DecideNextMove);
@@ -342,14 +342,14 @@ void test_t14_1() { // test transition from Move to DecideNextMove
     int32_t y = 11;
     setMockLocalCord(x, y);
     setTurtleOrientation(east);
-    setVisitCounts(x, y, 1);
+    setVisitCounts(x+1, y, 1);
     setLocalMap(x, y, 0xF);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
 
-    CU_ASSERT_EQUAL(result.nextMove, Move);
+    CU_ASSERT_EQUAL(result.nextMove, MOVE);
     CU_ASSERT_EQUAL(getDesiredDir(), error);
-    CU_ASSERT_EQUAL(getVisitCounts(x,y), 2);
+    CU_ASSERT_EQUAL(getVisitCounts(x+1,y), 2);
     CU_ASSERT_EQUAL(getMockLocalX(), 12);
     CU_ASSERT_EQUAL(getMockLocalY(), 11);
     CU_ASSERT_NOT_EQUAL(return_state, DecideNextMove);
@@ -363,14 +363,14 @@ void test_t14_2() { // test transition from Move to DecideNextMove
     int32_t y = 11;
     setMockLocalCord(x, y);
     setTurtleOrientation(south);
-    setVisitCounts(x, y, 0);
+    setVisitCounts(x, y+1, 0);
     setLocalMap(x, y, 0x4);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
 
-    CU_ASSERT_EQUAL(result.nextMove, Move);
+    CU_ASSERT_EQUAL(result.nextMove, MOVE);
     CU_ASSERT_EQUAL(getDesiredDir(), error);
-    CU_ASSERT_EQUAL(getVisitCounts(x,y), 1);
+    CU_ASSERT_EQUAL(getVisitCounts(x,y+1), 1);
     CU_ASSERT_EQUAL(getMockLocalX(), 11);
     CU_ASSERT_EQUAL(getMockLocalY(), 12);
     CU_ASSERT_NOT_EQUAL(return_state, DecideNextMove);
@@ -389,7 +389,7 @@ void test_t14_3() { // test transition from Move to DecideNextMove
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
 
-    CU_ASSERT_EQUAL(result.nextMove, Move);
+    CU_ASSERT_EQUAL(result.nextMove, MOVE);
     CU_ASSERT_EQUAL(getDesiredDir(), error);
     CU_ASSERT_EQUAL(getVisitCounts(x,y), 3);
     CU_ASSERT_EQUAL(getMockLocalX(), 10);
@@ -439,23 +439,23 @@ int main() {
       (NULL == CU_add_test(pSuite, "test of transition S2 -> S3", test_t3_1)) ||
       (NULL == CU_add_test(pSuite, "test of transition S2 -> S3", test_t3_2)) ||
       (NULL == CU_add_test(pSuite, "test of transition S2 -> S3", test_t3_3)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S3 -> S4", test_t4)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S3 -> S4", test_t4_1)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S3 -> S5", test_t5)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S3 -> S5", test_t5_1)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t6)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t6_1)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t7)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t8)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t9)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t10)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S6 -> S7", test_t11)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S7 -> S8", test_t12)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S8 -> S9", test_t13)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S9 -> S10", test_t14)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S9 -> S10", test_t14_1)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S9 -> S10", test_t14_2)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S9 -> S10", test_t14_3)))
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S9", test_t4)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S9", test_t4_1)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S4", test_t5)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S4", test_t5_1)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S4 -> S9", test_t6)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S4 -> S9", test_t6_1)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S4 -> S6", test_t7)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S4 -> S7", test_t8)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S4 -> S5", test_t9)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S4 -> S8", test_t10)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S7 -> S6", test_t11)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S6 -> S5", test_t12)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S8 -> S5", test_t13)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t14)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t14_1)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t14_2)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t14_3)))
 
     {
       CU_cleanup_registry();
