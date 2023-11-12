@@ -96,7 +96,7 @@ void test_t3() { // test transition from Right to CheckWall
     
     CU_ASSERT_EQUAL(result.nextMove, TURN_RIGHT);
     CU_ASSERT_EQUAL(getSpinCounter(), 1);
-    CU_ASSERT_EQUAL(getTurtleOrientation, north);
+    CU_ASSERT_EQUAL(getTurtleOrientation(), north);
     CU_ASSERT_EQUAL(return_state, CheckWall);
 }
 
@@ -113,7 +113,7 @@ void test_t3_1() { // test transition from Right to CheckWall
     
     CU_ASSERT_EQUAL(result.nextMove, TURN_RIGHT);
     CU_ASSERT_EQUAL(getSpinCounter(), 2);
-    CU_ASSERT_EQUAL(getTurtleOrientation, east);
+    CU_ASSERT_EQUAL(getTurtleOrientation(), east);
     CU_ASSERT_EQUAL(return_state, CheckWall);
 }
 
@@ -130,7 +130,7 @@ void test_t3_2() { // test transition from Right to CheckWall
     
     CU_ASSERT_EQUAL(result.nextMove, TURN_RIGHT);
     CU_ASSERT_EQUAL(getSpinCounter(), 3);
-    CU_ASSERT_EQUAL(getTurtleOrientation, south);
+    CU_ASSERT_EQUAL(getTurtleOrientation(), south);
     CU_ASSERT_EQUAL(return_state, CheckWall);
 }
 
@@ -147,7 +147,7 @@ void test_t3_3() { // test transition from Right to CheckWall
     
     CU_ASSERT_EQUAL(result.nextMove, TURN_RIGHT);
     CU_ASSERT_EQUAL(getSpinCounter(), 4);
-    CU_ASSERT_EQUAL(getTurtleOrientation, west);
+    CU_ASSERT_EQUAL(getTurtleOrientation(), west);
     CU_ASSERT_EQUAL(return_state, Right);
 }
 
