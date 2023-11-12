@@ -151,6 +151,28 @@ void test_t3_3() { // test transition from Right to CheckWall
     CU_ASSERT_EQUAL(return_state, Right);
 }
 
+void test_t4() { // test transition from CheckWall to Goal
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(CheckWall);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_NOT_EQUAL(return_state, Goal);
+}
+
+void test_t4_1() { // test transition from CheckWall to Goal
+    mock_set_bump(false);
+    mock_set_atend(true);
+    setTurtleState(CheckWall);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_EQUAL(return_state, Goal);
+}
+
 
 
 
@@ -190,7 +212,9 @@ int main() {
       (NULL == CU_add_test(pSuite, "test of transition S2 -> S3", test_t3)) ||
       (NULL == CU_add_test(pSuite, "test of transition S2 -> S3", test_t3_1)) ||
       (NULL == CU_add_test(pSuite, "test of transition S2 -> S3", test_t3_2)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S2 -> S3", test_t3_3)))
+      (NULL == CU_add_test(pSuite, "test of transition S2 -> S3", test_t3_3)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S4", test_t4)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S4", test_t4_1)))
     {
       CU_cleanup_registry();
       return CU_get_error();
