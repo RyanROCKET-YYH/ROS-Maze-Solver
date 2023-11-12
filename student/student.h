@@ -26,6 +26,18 @@ enum TurtleOrientation {
 	error = -1
 };
 
+enum TurtleState {				 
+	Initialized,
+	CheckWall,
+	Right,
+	DecideNextMove,
+	Move,
+	leftOnce,
+	leftTwice,
+	rightOnce, // unnecessary
+	Goal,
+};
+
 enum turtleMove {MOVE, TURN_LEFT, TURN_RIGHT, STOP};
 QPointF translatePos(QPointF pos_, turtleMove nextMove, int32_t nw_or);
 int translateOrnt(int orientation, turtleMove nextMove);

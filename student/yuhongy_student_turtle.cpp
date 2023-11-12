@@ -64,17 +64,17 @@ static int32_t localMap[23][23];
 static int8_t spinCounter = 0;
 
 // enum for turtle's current state
-enum TurtleState {				 
-	Initialized,
-	CheckWall,
-	Right,
-	DecideNextMove,
-	Move,
-	leftOnce,
-	leftTwice,
-	rightOnce, // unnecessary
-	Goal,
-};
+// enum TurtleState {				 
+// 	Initialized,
+// 	CheckWall,
+// 	Right,
+// 	DecideNextMove,
+// 	Move,
+// 	leftOnce,
+// 	leftTwice,
+// 	rightOnce, // unnecessary
+// 	Goal,
+// };
 
 // Current state of the turtle
 static TurtleState cs = Initialized;
