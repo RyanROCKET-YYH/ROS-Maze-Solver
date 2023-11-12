@@ -18,6 +18,29 @@
 #include "ros/ros.h"
 #endif
 
+
+static int32_t visitCounts[23][23];
+static int32_t localMap[23][23];
+static int8_t spinCounter = 0;
+
+// enum for turtle's current state
+// enum TurtleState {				 
+// 	Initialized,
+// 	CheckWall,
+// 	Right,
+// 	DecideNextMove,
+// 	Move,
+// 	leftOnce,
+// 	leftTwice,
+// 	rightOnce, // unnecessary
+// 	Goal,
+// };
+
+// Current state of the turtle
+static TurtleState cs = Initialized;
+
+static TurtleOrientation direction = north;
+
 #ifdef testing
 int32_t getVisitCounts(int32_t x, int32_t y) {
     return visitCounts[x][y];
@@ -59,29 +82,6 @@ void setSpinCounter(int8_t count) {
 	spinCounter = count;
 }
 #endif
-
-static int32_t visitCounts[23][23];
-static int32_t localMap[23][23];
-static int8_t spinCounter = 0;
-
-// enum for turtle's current state
-// enum TurtleState {				 
-// 	Initialized,
-// 	CheckWall,
-// 	Right,
-// 	DecideNextMove,
-// 	Move,
-// 	leftOnce,
-// 	leftTwice,
-// 	rightOnce, // unnecessary
-// 	Goal,
-// };
-
-// Current state of the turtle
-static TurtleState cs = Initialized;
-
-static TurtleOrientation direction = north;
-
 
 /**
  * @brief Get the next direction for the turtle based on its current orientation and intended turn direction.
