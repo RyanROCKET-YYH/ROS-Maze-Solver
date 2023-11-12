@@ -22,6 +22,7 @@
 static int32_t visitCounts[23][23];
 static int32_t localMap[23][23];
 static int8_t spinCounter = 0;
+static TurtleOrientation desiredDir = error;
 
 // enum for turtle's current state
 // enum TurtleState {				 
@@ -89,6 +90,25 @@ TurtleOrientation getMockDesiredDir() {
 
 void setMockDesiredDir(TurtleOrientation dir) {
 	mock_desiredDir = dir;
+}
+
+TurtleOrientation getDesiredDir() {
+	return desiredDir;
+}
+
+static int32_t mock_localX;
+static int32_t mock_localY;
+void setMockLocalCord(int32_t x, int32_t y) {
+	mock_localX = x;
+	mock_localY = y;
+}
+
+int32_t getMockLocalX() {
+	return mock_localX;
+}
+
+int32_t getMockLocalY() {
+	return mock_localY;
 }
 #endif
 
@@ -190,8 +210,8 @@ TurtleOrientation NextMove(TurtleOrientation currentDir, int32_t (&visitCounts)[
 			minvisitCount = count;
 			nextDir = direction;
 		}
-		ROS_INFO("Direction: %d, Count: %d, Has Wall: %d, Min Visit Count: %d, Next Dir: %d, CurrentDir: %d",
-            direction, count, hasWall, minvisitCount, nextDir, currentDir);
+		// ROS_INFO("Direction: %d, Count: %d, Has Wall: %d, Min Visit Count: %d, Next Dir: %d, CurrentDir: %d",
+        //     direction, count, hasWall, minvisitCount, nextDir, currentDir);
 	}
 	return nextDir;
 }
@@ -247,7 +267,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	// static int8_t spinCounter = 0;
 
 	static int8_t turns = -1;
-	TurtleOrientation desiredDir = error;
+	desiredDir = error;
 	ROS_INFO("Current state: %d", cs);
 	turtleResult result;
 	result.nextMove = STOP;
@@ -344,15 +364,27 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			switch (direction) {
 				case north:
 					localY--;
+					#ifdef testing
+					mock_localY--;
+					#endif
 					break;
 				case east:
 					localX++;
+					#ifdef testing
+					mock_localX++;
+					#endif
 					break;
 				case south:
 					localY++;
+					#ifdef testing
+					mock_localY++;
+					#endif
 					break;
 				case west:
 					localX--;
+					#ifdef testing
+					mock_localX--;
+					#endif
 					break;
 				default:
 					ROS_ERROR("Invalid orientation while moving");

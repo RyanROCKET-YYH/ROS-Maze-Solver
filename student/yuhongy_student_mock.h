@@ -76,6 +76,10 @@ int8_t getSpinCounter();
 void setSpinCounter(int8_t count);
 TurtleOrientation getMockDesiredDir();
 void setMockDesiredDir(TurtleOrientation dir);
+TurtleOrientation getDesiredDir();
+void setMockLocalCord(int32_t x, int32_t y);
+int32_t getMockLocalX();
+int32_t getMockLocalY();
 
 void ROS_ERROR(std::string e);
 void ROS_INFO(const char* format, ...);

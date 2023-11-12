@@ -271,6 +271,131 @@ void test_t10() { // test transition from DecidNextMove to rightOnce
     CU_ASSERT_EQUAL(return_state, rightOnce);
 }
 
+void test_t11() { // test transition from leftTwice to leftOnce
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(leftTwice);
+    setTurtleOrientation(east);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+
+    CU_ASSERT_EQUAL(result.nextMove, TURN_LEFT);
+    CU_ASSERT_EQUAL(getSpinCounter(), 1);
+    CU_ASSERT_EQUAL(getTurtleOrientation(), north);
+    CU_ASSERT_EQUAL(return_state, leftOnce);
+}
+
+void test_t12() { // test transition from leftOnce to Move
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(leftOnce);
+    setTurtleOrientation(south);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+
+    CU_ASSERT_EQUAL(result.nextMove, TURN_LEFT);
+    CU_ASSERT_EQUAL(getSpinCounter(), 0);
+    CU_ASSERT_EQUAL(getTurtleOrientation(), east);
+    CU_ASSERT_EQUAL(return_state, Move);
+}
+
+void test_t13() { // test transition from rightOnce to Move
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(rightOnce);
+    setTurtleOrientation(south);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+
+    CU_ASSERT_EQUAL(result.nextMove, TURN_RIGHT);
+    CU_ASSERT_EQUAL(getSpinCounter(), 0);
+    CU_ASSERT_EQUAL(getTurtleOrientation(), west);
+    CU_ASSERT_EQUAL(return_state, Move);
+}
+
+void test_t14() { // test transition from Move to DecideNextMove
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(Move);
+    int32_t x = 11;
+    int32_t y = 11;
+    setMockLocalCord(x, y);
+    setTurtleOrientation(north);
+    setVisitCounts(x, y, 2);
+    setLocalMap(x, y, 0x8);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+
+    CU_ASSERT_EQUAL(result.nextMove, Move);
+    CU_ASSERT_EQUAL(getDesiredDir(), error);
+    CU_ASSERT_EQUAL(getVisitCounts(x,y), 3);
+    CU_ASSERT_EQUAL(getMockLocalX, 11);
+    CU_ASSERT_EQUAL(getMockLocalY, 10);
+    CU_ASSERT_EQUAL(return_state, DecideNextMove);
+}
+
+void test_t14_1() { // test transition from Move to DecideNextMove
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(Move);
+    int32_t x = 11;
+    int32_t y = 11;
+    setMockLocalCord(x, y);
+    setTurtleOrientation(east);
+    setVisitCounts(x, y, 1);
+    setLocalMap(x, y, 0xF);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+
+    CU_ASSERT_EQUAL(result.nextMove, Move);
+    CU_ASSERT_EQUAL(getDesiredDir(), error);
+    CU_ASSERT_EQUAL(getVisitCounts(x,y), 2);
+    CU_ASSERT_EQUAL(getMockLocalX, 12);
+    CU_ASSERT_EQUAL(getMockLocalY, 11);
+    CU_ASSERT_NOT_EQUAL(return_state, DecideNextMove);
+}
+
+void test_t14_2() { // test transition from Move to DecideNextMove
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(Move);
+    int32_t x = 11;
+    int32_t y = 11;
+    setMockLocalCord(x, y);
+    setTurtleOrientation(south);
+    setVisitCounts(x, y, 0);
+    setLocalMap(x, y, 0x4);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+
+    CU_ASSERT_EQUAL(result.nextMove, Move);
+    CU_ASSERT_EQUAL(getDesiredDir(), error);
+    CU_ASSERT_EQUAL(getVisitCounts(x,y), 1);
+    CU_ASSERT_EQUAL(getMockLocalX, 11);
+    CU_ASSERT_EQUAL(getMockLocalY, 12);
+    CU_ASSERT_NOT_EQUAL(return_state, DecideNextMove);
+}
+
+void test_t14_3() { // test transition from Move to DecideNextMove
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(Move);
+    int32_t x = 11;
+    int32_t y = 11;
+    setMockLocalCord(x, y);
+    setTurtleOrientation(west);
+    setVisitCounts(x, y, 2);
+    setLocalMap(x, y, 0x1);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+
+    CU_ASSERT_EQUAL(result.nextMove, Move);
+    CU_ASSERT_EQUAL(getDesiredDir(), error);
+    CU_ASSERT_EQUAL(getVisitCounts(x,y), 3);
+    CU_ASSERT_EQUAL(getMockLocalX, 10);
+    CU_ASSERT_EQUAL(getMockLocalY, 11);
+    CU_ASSERT_EQUAL(return_state, DecideNextMove);
+}
 
 
 
@@ -323,7 +448,15 @@ int main() {
       (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t7)) ||
       (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t8)) ||
       (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t9)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t10)))
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S6", test_t10)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S6 -> S7", test_t11)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S7 -> S8", test_t12)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S8 -> S9", test_t13)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S9 -> S10", test_t14)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S9 -> S10", test_t14_1)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S9 -> S10", test_t14_2)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S9 -> S10", test_t14_3)))
+
     {
       CU_cleanup_registry();
       return CU_get_error();
