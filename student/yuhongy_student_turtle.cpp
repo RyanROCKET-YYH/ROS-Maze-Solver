@@ -290,7 +290,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			#ifdef testing
 			if (mock_desiredDir != error) {
 				desiredDir = getMockDesiredDir();
-				direction = setTurtleOrientation();
+				direction = getTurtleOrientation();
 			}
 			#endif
 			turns = getTurns(direction, desiredDir);
