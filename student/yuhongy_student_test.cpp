@@ -329,8 +329,8 @@ void test_t14() { // test transition from Move to DecideNextMove
     CU_ASSERT_EQUAL(result.nextMove, Move);
     CU_ASSERT_EQUAL(getDesiredDir(), error);
     CU_ASSERT_EQUAL(getVisitCounts(x,y), 3);
-    CU_ASSERT_EQUAL(getMockLocalX, 11);
-    CU_ASSERT_EQUAL(getMockLocalY, 10);
+    CU_ASSERT_EQUAL(getMockLocalX(), 11);
+    CU_ASSERT_EQUAL(getMockLocalY(), 10);
     CU_ASSERT_EQUAL(return_state, DecideNextMove);
 }
 
@@ -350,8 +350,8 @@ void test_t14_1() { // test transition from Move to DecideNextMove
     CU_ASSERT_EQUAL(result.nextMove, Move);
     CU_ASSERT_EQUAL(getDesiredDir(), error);
     CU_ASSERT_EQUAL(getVisitCounts(x,y), 2);
-    CU_ASSERT_EQUAL(getMockLocalX, 12);
-    CU_ASSERT_EQUAL(getMockLocalY, 11);
+    CU_ASSERT_EQUAL(getMockLocalX(), 12);
+    CU_ASSERT_EQUAL(getMockLocalY(), 11);
     CU_ASSERT_NOT_EQUAL(return_state, DecideNextMove);
 }
 
@@ -371,8 +371,8 @@ void test_t14_2() { // test transition from Move to DecideNextMove
     CU_ASSERT_EQUAL(result.nextMove, Move);
     CU_ASSERT_EQUAL(getDesiredDir(), error);
     CU_ASSERT_EQUAL(getVisitCounts(x,y), 1);
-    CU_ASSERT_EQUAL(getMockLocalX, 11);
-    CU_ASSERT_EQUAL(getMockLocalY, 12);
+    CU_ASSERT_EQUAL(getMockLocalX(), 11);
+    CU_ASSERT_EQUAL(getMockLocalY(), 12);
     CU_ASSERT_NOT_EQUAL(return_state, DecideNextMove);
 }
 
@@ -392,8 +392,8 @@ void test_t14_3() { // test transition from Move to DecideNextMove
     CU_ASSERT_EQUAL(result.nextMove, Move);
     CU_ASSERT_EQUAL(getDesiredDir(), error);
     CU_ASSERT_EQUAL(getVisitCounts(x,y), 3);
-    CU_ASSERT_EQUAL(getMockLocalX, 10);
-    CU_ASSERT_EQUAL(getMockLocalY, 11);
+    CU_ASSERT_EQUAL(getMockLocalX(), 10);
+    CU_ASSERT_EQUAL(getMockLocalY(), 11);
     CU_ASSERT_EQUAL(return_state, DecideNextMove);
 }
 
