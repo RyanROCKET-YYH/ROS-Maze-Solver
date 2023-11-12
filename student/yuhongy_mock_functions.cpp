@@ -1,6 +1,8 @@
 #include "yuhongy_student_mock.h"
 #include <iostream>
 #include <cstdint>
+#include <cstdio>
+#include <cstdarg>
 
 static TurtleOrientation mock_orientation;
 static bool mock_bump;
@@ -38,6 +40,9 @@ void ROS_ERROR(std::string e) {
   std::cout << e << std::endl;
 }
 
-void ROS_INFO(std::string info) {
-  std::cout << info << std::endl;
+void ROS_INFO(const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
 }
