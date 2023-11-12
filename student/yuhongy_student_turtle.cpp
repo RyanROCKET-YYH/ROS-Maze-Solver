@@ -11,11 +11,34 @@
  */
 
 #ifdef testing
-#include "student_mock.h"
+#include "yuhongy_student_mock.h"
 #endif
 #ifndef testing
 #include "student.h"
 #endif
+
+#ifdef testing
+
+int32_t getVisitCount(int x, int y) {
+    return visitCounts[x][y];
+}
+
+void setVisitCount(int x, int y, int32_t count) {
+    visitCounts[x][y] = count;
+}
+
+int32_t getLocalMapValue(int x, int y) {
+    return localMap[x][y];
+}
+
+void setLocalMapValue(int x, int y, int32_t value) {
+    localMap[x][y] = value;
+}
+
+#endif
+
+static int32_t visitCounts[23][23] = {{0}};
+static int32_t localMap[23][23] = {{0x0F}};
 
 // enum for turtle's current state
 enum TurtleState {				 
@@ -154,9 +177,9 @@ int8_t getTurns(TurtleOrientation currentDir, TurtleOrientation desiredDir) {
 	return difference;
 }
 
-void printLocalMapCell(int32_t (&localMap)[23][23], int32_t x, int32_t y) {
-    printf("localMap[%d][%d]: %x\n", x, y, localMap[x][y]);
-}
+// void printLocalMapCell(int32_t (&localMap)[23][23], int32_t x, int32_t y) {
+//     printf("localMap[%d][%d]: %x\n", x, y, localMap[x][y]);
+// }
 
 /**
  * @brief Determines the next move for the turtle based on its current state, whether it bumped into a wall, and whether it reached the end of the maze.
@@ -167,21 +190,19 @@ void printLocalMapCell(int32_t (&localMap)[23][23], int32_t x, int32_t y) {
  */
 turtleResult studentTurtleStep(bool bumped, bool atend) {
 	// Local map to keep track of number of visits for each cell
-	static int32_t visitCounts[23][23] = {0};
-	static int32_t localMap[23][23];
-	static bool isInitialized = false;
-	if (!isInitialized) {
-		for (int i = 0; i < 23; ++i) {
-			for (int j = 0; j < 23; ++j) {
-				localMap[i][j] = 0x0F;
-			}
-		}
-		isInitialized = true;
-	}
+	// static bool isInitialized = false;
+	// if (!isInitialized) {
+	// 	for (int i = 0; i < 23; ++i) {
+	// 		for (int j = 0; j < 23; ++j) {
+	// 			localMap[i][j] = 0x0F;
+	// 		}
+	// 	}
+	// 	isInitialized = true;
+	// }
 	// Starting position of the turtle		
 	static int32_t localX = 11;
 	static int32_t localY = 11;
-	printLocalMapCell(localMap, localX, localY);
+	// printLocalMapCell(localMap, localX, localY);
 	// Current orientation of the turtle
 	static TurtleOrientation direction = north;
 	// Current state of the turtle
