@@ -32,6 +32,22 @@ void test_t2() { // test transition from CheckWall to Right
     CU_ASSERT_EQUAL(return_state, Right);
 }
 
+void test_t2_1() { // test transition from CheckWall to Right
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(CheckWall);
+    setSpinCounter(1);
+    setTurtleOrientation(east);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    int32_t x = 11;
+    int32_t y = 11;
+
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_EQUAL(getLocalMap(x, y), 0xD);
+    CU_ASSERT_EQUAL(return_state, Right);
+}
+
 int init() {
   // Any test initialization code goes here
   return 0;
@@ -60,7 +76,8 @@ int main() {
 
   /* add the tests to the suite */
   if ((NULL == CU_add_test(pSuite, "test of transition S1 -> S3", test_t1)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2)))
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S3 -> S2", test_t2_1)))
     {
       CU_cleanup_registry();
       return CU_get_error();
