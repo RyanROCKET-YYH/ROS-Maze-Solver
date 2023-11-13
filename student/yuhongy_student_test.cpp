@@ -763,7 +763,7 @@ void test_NextMove_3() {  // test subrotine in the state of DecideNextMove
 	}
     int32_t x = 11;
     int32_t y = 11;
-    mockLocalMap[x][y] = 0x6;
+    mockLocalMap[x][y] = 0x3;
      // Set up the conditions of the surrounding cells
     mockVisitCounts[x][y-1] = 2; // North
     mockVisitCounts[x+1][y] = 2; // East
@@ -772,6 +772,50 @@ void test_NextMove_3() {  // test subrotine in the state of DecideNextMove
     TurtleOrientation desiredDIR = NextMove(currDir, mockVisitCounts, mockLocalMap, x, y);
 
     CU_ASSERT_EQUAL(desiredDIR, west);
+}  
+
+void test_NextMove_4() {  // test subrotine in the state of DecideNextMove
+    TurtleOrientation currDir = north;
+    int32_t mockVisitCounts[23][23] = {0};
+    int32_t mockLocalMap[23][23];
+    for (int i = 0; i < 23; ++i) {
+        for (int j = 0; j < 23; ++j) {
+            mockLocalMap[i][j] = 0x0F;
+        }
+	}
+    int32_t x = 11;
+    int32_t y = 11;
+    mockLocalMap[x][y] = 0xB;
+     // Set up the conditions of the surrounding cells
+    mockVisitCounts[x][y-1] = 2; // North
+    mockVisitCounts[x+1][y] = 2; // East
+    mockVisitCounts[x][y+1] = 2; // South
+    mockVisitCounts[x-1][y] = 2; // West
+    TurtleOrientation desiredDIR = NextMove(currDir, mockVisitCounts, mockLocalMap, x, y);
+
+    CU_ASSERT_EQUAL(desiredDIR, south);
+}  
+
+void test_NextMove_5() {  // test subrotine in the state of DecideNextMove
+    TurtleOrientation currDir = south;
+    int32_t mockVisitCounts[23][23] = {0};
+    int32_t mockLocalMap[23][23];
+    for (int i = 0; i < 23; ++i) {
+        for (int j = 0; j < 23; ++j) {
+            mockLocalMap[i][j] = 0x0F;
+        }
+	}
+    int32_t x = 11;
+    int32_t y = 11;
+    mockLocalMap[x][y] = 0x6;
+     // Set up the conditions of the surrounding cells
+    mockVisitCounts[x][y-1] = 2; // North
+    mockVisitCounts[x+1][y] = 3; // East
+    mockVisitCounts[x][y+1] = 2; // South
+    mockVisitCounts[x-1][y] = 4; // West
+    TurtleOrientation desiredDIR = NextMove(currDir, mockVisitCounts, mockLocalMap, x, y);
+
+    CU_ASSERT_EQUAL(desiredDIR, north);
 }  
 
 int init() {
@@ -850,7 +894,9 @@ int main() {
         (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove)) ||
         (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_1)) ||
         (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_2)) ||
-        (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_3)))
+        (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_3)) ||
+        (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_4)) ||
+        (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_5)))
 
 
     {
