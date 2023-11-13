@@ -686,9 +686,26 @@ void test_t18() { // test invalide state
     CU_ASSERT_TRUE(was_ros_error());
 } // need 1 test for this transition
 
-// void test_NextMove() {  // test subrotine in the state of DecideNextMove
+void test_NextMove() {  // test subrotine in the state of DecideNextMove
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(DecideNextMove);
+    setTurtleOrientation(north);
+    int32_t x = 11;
+    int32_t y = 11;
+    setMockLocalCord(x, y);
+    setVisitCounts(x-1, y, 5);
+    setVisitCounts(x, y-1, 2);
+    setVisitCounts(x+1, y, 3);
+    setVisitCounts(x, y+1, 4);
+    setVisitCounts(x, y, 1);
+    setLocalMap(x, y, 0x0);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    TurtleOrientation desiredDIR = getDesiredDir();
 
-// }
+    CU_ASSERT_EQUAL(getDesiredDir(), north);
+} // need 1 test for this subroutine    
 
 int init() {
   // Any test initialization code goes here
@@ -762,7 +779,8 @@ int main() {
         (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t16_1)) ||
         (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t16_2)) ||
         (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t17)) ||
-        (NULL == CU_add_test(pSuite, "test of default turtleState case", test_t18)))
+        (NULL == CU_add_test(pSuite, "test of default turtleState case", test_t18))
+        (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove)))
 
 
     {
