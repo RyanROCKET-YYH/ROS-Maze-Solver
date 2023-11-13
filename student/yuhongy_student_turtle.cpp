@@ -395,7 +395,6 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			result.nextMove = MOVE;
 			#ifdef testing
 			visitCounts[mock_localX][mock_localY]++;
-			ROS_INFO("Current position: (%d, %d), visitCounts %d", mock_localX, mock_localY, visitCounts[mock_localX][mock_localY]);
 			if (atend) {  // transion: Atend (S5->S9)
 				cs = Goal;
 			} else if (visitCounts[mock_localX][mock_localY] != 1 && localMap[mock_localX][mock_localY] != 0x0F) {  // transion: visitCounts > 1 && localMap != 0b1111  (S5->S4)
