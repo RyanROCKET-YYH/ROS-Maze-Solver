@@ -689,23 +689,26 @@ void test_t18() { // test invalide state
 void test_NextMove() {  // test subrotine in the state of DecideNextMove
     mock_set_bump(false);
     mock_set_atend(false);
-    setTurtleState(DecideNextMove);
-    setTurtleOrientation(north);
+    TurtleOrientation currDir = north;
+    int32_t mockVisitCounts[23][23] = {0};
+    int32_t mockLocalMap[23][23];
+    for (int i = 0; i < 23; ++i) {
+        for (int j = 0; j < 23; ++j) {
+            localMap[i][j] = 0x0F;
+        }
+	}
     int32_t x = 11;
     int32_t y = 11;
-    setMockLocalCord(x, y);
-    setVisitCounts(x-1, y, 5);
-    setVisitCounts(x, y-1, 2);
-    setVisitCounts(x+1, y, 3);
-    setVisitCounts(x, y+1, 4);
-    setVisitCounts(x, y, 1);
-    setLocalMap(x, y, 0x0);
-    turtleResult result = studentTurtleStep(will_bump(), at_end());
-    TurtleState return_state = getTurtleState();
-    TurtleOrientation desiredDIR = getDesiredDir();
+    localMap[x][y] = 0x00;
+     // Set up the conditions of the surrounding cells
+    mockVisitCounts[x][y-1] = 2; // North
+    mockVisitCounts[x+1][y] = 3; // East
+    mockVisitCounts[x][y+1] = 4; // South
+    mockVisitCounts[x-1][y] = 5; // West
+    TurtleOrientation desiredDIR = NextMove(currDir, mockVisitCounts[23][23], mockLocalMap[23][23], x, y);
 
-    CU_ASSERT_EQUAL(getDesiredDir(), north);
-} // need 1 test for this subroutine    
+    CU_ASSERT_EQUAL(desiredDIR, north);
+}   
 
 int init() {
   // Any test initialization code goes here
