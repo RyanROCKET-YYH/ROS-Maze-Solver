@@ -274,7 +274,9 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	// If the turtle GOAL, stop and return the number of visits
 	switch (cs) {
 		case Initialized:   // S1. Initialized
+			#ifndef testing
 			visitCounts[localX][localY]++;
+			#endif
 			#ifdef testing
 			visitCounts[mock_localX][mock_localY]++;
 			#endif
