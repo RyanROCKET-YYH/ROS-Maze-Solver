@@ -17,12 +17,6 @@
 #include "student.h"
 #endif
 
-
-static int32_t visitCounts[23][23];
-static int32_t localMap[23][23];
-static int8_t spinCounter = 0;
-static TurtleOrientation desiredDir = error;
-
 // enum for turtle's current state
 // enum TurtleState {				 
 // 	Initialized,
@@ -36,12 +30,15 @@ static TurtleOrientation desiredDir = error;
 // 	Goal,
 // };
 
-// Current state of the turtle
-static TurtleState cs = Initialized;
 
-static TurtleOrientation direction = north;
 
 #ifdef testing
+static int32_t visitCounts[23][23];
+static int32_t localMap[23][23];
+static int8_t spinCounter = 0;
+static TurtleOrientation desiredDir = error;
+static TurtleState cs = Initialized;
+static TurtleOrientation direction = north;
 int32_t getVisitCounts(int32_t x, int32_t y) {
     return visitCounts[x][y];
 }
@@ -242,6 +239,15 @@ void printLocalMapCell(int32_t (&localMap)[23][23], int32_t x, int32_t y) {
  */
 turtleResult studentTurtleStep(bool bumped, bool atend) {
 	// Local map to keep track of number of visits for each cell
+	#ifndef testing
+	// Current state of the turtle
+	static TurtleState cs = Initialized;
+	static TurtleOrientation direction = north;
+	static int32_t visitCounts[23][23];
+	static int32_t localMap[23][23];
+	static int8_t spinCounter = 0;
+	static TurtleOrientation desiredDir = error;
+	#endif
 	visitCounts[23][23] = {0};
 	static bool isInitialized = false;
 	if (!isInitialized) {
