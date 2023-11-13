@@ -5,7 +5,7 @@ COMPILER=g++
 STD=-std=c++11
 CPPFLAGS=-Dtesting
 OUTPUT=-o yuhongy_student_tests
-SOURCES="yuhongy_student_tests.cpp yuhongy_student_turtle.cpp yuhongy_mock_functions.cpp"
+SOURCES="yuhongy_student_test.cpp yuhongy_student_turtle.cpp yuhongy_mock_functions.cpp"
 LIBRARIES=-lcunit
 
 $COMPILER $STD $CPPFLAGS $OUTPUT $SOURCES $LIBRARIES
