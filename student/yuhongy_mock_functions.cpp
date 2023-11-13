@@ -46,3 +46,7 @@ void ROS_INFO(const char* format, ...) {
     vprintf(format, args);
     va_end(args);
 }
+
+bool was_ros_error() {
+  return mock_error;
+}

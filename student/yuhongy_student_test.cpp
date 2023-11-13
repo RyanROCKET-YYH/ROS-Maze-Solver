@@ -683,7 +683,7 @@ void test_t18() { // test invalide state
     setTurtleState(Invalid);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
 
-    CU_ASSERT_TRUE(mock_error);
+    CU_ASSERT_TRUE(was_ros_error());
 } // need 1 test for this transition
 
 // void test_NextMove() {  // test subrotine in the state of DecideNextMove

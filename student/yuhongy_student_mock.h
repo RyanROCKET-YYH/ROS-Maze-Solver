@@ -82,5 +82,6 @@ void setMockLocalCord(int32_t x, int32_t y);
 int32_t getMockLocalX();
 int32_t getMockLocalY();
 
+bool was_ros_error();
 void ROS_ERROR(std::string e);
 void ROS_INFO(const char* format, ...);
