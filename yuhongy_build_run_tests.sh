@@ -13,9 +13,10 @@ $COMPILER $STD $CPPFLAGS $OUTPUT $SOURCES $LIBRARIES
 if [ $? -eq 0 ]; then
     # Run the tests
     ./yuhongy_student_tests
-
+    cd ..
     exit $?
 else
     echo "Compilation failed."
+    cd ..
     exit 1
 fi
