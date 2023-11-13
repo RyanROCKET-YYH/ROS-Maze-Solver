@@ -1,3 +1,9 @@
+/*
+ * STUDENT NAME: Yuhong YAO
+ * ANDREW ID: yuhongy
+ * 
+*/
+
 #include "yuhongy_student_mock.h"
 #include <iostream>
 #include <cstdint>
