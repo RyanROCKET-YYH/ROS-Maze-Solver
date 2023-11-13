@@ -10,9 +10,10 @@ void test_t1() { // test transition from initialized to checkWall
     TurtleState return_state = getTurtleState();
     int32_t x = 11;
     int32_t y = 11;
+    setMockLocalCord(x, y);
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
-    CU_ASSERT_EQUAL(getVisitCounts(x, y), 1);
+    CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
     CU_ASSERT_EQUAL(return_state, CheckWall);
 }   
 
@@ -24,9 +25,10 @@ void test_t1_1() { // test transition from initialized to checkWall
     TurtleState return_state = getTurtleState();
     int32_t x = 11;
     int32_t y = 11;
+    setMockLocalCord(x, y);
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
-    CU_ASSERT_EQUAL(getVisitCounts(x, y), 1);
+    CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
     CU_ASSERT_EQUAL(return_state, CheckWall);
 }  // need 4 tests for this transition
 
@@ -38,9 +40,10 @@ void test_t1_2() { // test transition from initialized to checkWall
     TurtleState return_state = getTurtleState();
     int32_t x = 11;
     int32_t y = 11;
+    setMockLocalCord(x, y);
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
-    CU_ASSERT_EQUAL(getVisitCounts(x, y), 1);
+    CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
     CU_ASSERT_EQUAL(return_state, CheckWall);
 }
 
@@ -52,9 +55,10 @@ void test_t1_3() { // test transition from initialized to checkWall
     TurtleState return_state = getTurtleState();
     int32_t x = 11;
     int32_t y = 11;
+    setMockLocalCord(x, y);
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
-    CU_ASSERT_EQUAL(getVisitCounts(x, y), 1);
+    CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
     CU_ASSERT_EQUAL(return_state, CheckWall);
 }
 

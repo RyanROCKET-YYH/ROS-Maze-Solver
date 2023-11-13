@@ -275,6 +275,9 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	switch (cs) {
 		case Initialized:   // S1. Initialized
 			visitCounts[localX][localY]++;
+			#ifdef testing
+			visitCounts[mock_localX][mock_localY]++;
+			#endif
 			cs = CheckWall; // transition. True (S1->S3)
 			break;
 	
