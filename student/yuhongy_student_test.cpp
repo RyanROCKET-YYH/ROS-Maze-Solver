@@ -11,6 +11,7 @@ void test_t1() { // test transition from initialized to checkWall
     int32_t x = 11;
     int32_t y = 11;
     setMockLocalCord(x, y);
+    setVisitCounts(x, y, 0);
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
@@ -26,6 +27,7 @@ void test_t1_1() { // test transition from initialized to checkWall
     int32_t x = 11;
     int32_t y = 11;
     setMockLocalCord(x, y);
+    setVisitCounts(x, y, 0);
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
@@ -41,6 +43,7 @@ void test_t1_2() { // test transition from initialized to checkWall
     int32_t x = 11;
     int32_t y = 11;
     setMockLocalCord(x, y);
+    setVisitCounts(x, y, 0);
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
@@ -56,6 +59,7 @@ void test_t1_3() { // test transition from initialized to checkWall
     int32_t x = 11;
     int32_t y = 11;
     setMockLocalCord(x, y);
+    setVisitCounts(x, y, 0);
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
