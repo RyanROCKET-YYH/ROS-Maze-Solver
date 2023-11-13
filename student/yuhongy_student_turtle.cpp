@@ -361,6 +361,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 
 		case Move: // S5. Move
 			spinCounter = 0;
+			desiredDir = error;
 			switch (direction) {
 				case north:
 					localY--;

@@ -405,9 +405,97 @@ void test_t14_3() { // test transition from Move to DecideNextMove
     CU_ASSERT_EQUAL(return_state, DecideNextMove);
 }
 
+void test_t15() { // test transition from Move to Goal
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(Move);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_NOT_EQUAL(return_state, Goal);
+}
+
+void test_t15_1() { // test transition from Move to Goal
+    mock_set_bump(false);
+    mock_set_atend(true);
+    setTurtleState(Move);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_EQUAL(return_state, Goal);
+}
+
+void test_t16() { // test transition from Move to CheckWall
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(Move);
+    int32_t x = 11;
+    int32_t y = 11;
+    setMockLocalCord(x, y);
+    setTurtleOrientation(west);
+    setVisitCounts(x-1, y, 0);
+    setLocalMap(x-1, y, 0xF);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    int32_t mockX = getMockLocalX();
+    int32_t mockY = getMockLocalY();
+
+    CU_ASSERT_EQUAL(result.nextMove, MOVE);
+    CU_ASSERT_EQUAL(getDesiredDir(), error);
+    CU_ASSERT_EQUAL(getVisitCounts(mockX,mockY), 1);
+    CU_ASSERT_EQUAL(getMockLocalX(), 10);
+    CU_ASSERT_EQUAL(getMockLocalY(), 11);
+    CU_ASSERT_EQUAL(return_state, CheckWall);
+}
+
+void test_t16_1() { // test transition from Move to CheckWall
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(Move);
+    int32_t x = 11;
+    int32_t y = 11;
+    setMockLocalCord(x, y);
+    setTurtleOrientation(north);
+    setVisitCounts(x, y-1, 0);
+    setLocalMap(x, y-1, 0x8);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    int32_t mockX = getMockLocalX();
+    int32_t mockY = getMockLocalY();
+
+    CU_ASSERT_EQUAL(result.nextMove, MOVE);
+    CU_ASSERT_EQUAL(getDesiredDir(), error);
+    CU_ASSERT_EQUAL(getVisitCounts(mockX,mockY), 1);
+    CU_ASSERT_EQUAL(getMockLocalX(), 10);
+    CU_ASSERT_EQUAL(getMockLocalY(), 11);
+    CU_ASSERT_NOT_EQUAL(return_state, CheckWall);
+}
 
 
+void test_t16_2() { // test transition from Move to CheckWall
+    mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(Move);
+    int32_t x = 11;
+    int32_t y = 11;
+    setMockLocalCord(x, y);
+    setTurtleOrientation(north);
+    setVisitCounts(x, y-1, 1);
+    setLocalMap(x, y-1, 0x8);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    int32_t mockX = getMockLocalX();
+    int32_t mockY = getMockLocalY();
 
+    CU_ASSERT_EQUAL(result.nextMove, MOVE);
+    CU_ASSERT_EQUAL(getDesiredDir(), error);
+    CU_ASSERT_EQUAL(getVisitCounts(mockX,mockY), 2);
+    CU_ASSERT_EQUAL(getMockLocalX(), 10);
+    CU_ASSERT_EQUAL(getMockLocalY(), 11);
+    CU_ASSERT_NOT_EQUAL(return_state, CheckWall);
+}
 
 
 int init() {
@@ -463,7 +551,13 @@ int main() {
       (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t14)) ||
       (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t14_1)) ||
       (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t14_2)) ||
-      (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t14_3)))
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t14_3)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S9", test_t15)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S9", test_t15_1)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t16)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t16_1)) ||
+      (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t16_2)))
+
 
     {
       CU_cleanup_registry();
