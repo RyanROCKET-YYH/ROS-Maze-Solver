@@ -699,7 +699,7 @@ void test_NextMove() {  // test subrotine in the state of DecideNextMove
 	}
     int32_t x = 11;
     int32_t y = 11;
-    localMap[x][y] = 0x00;
+    mockLocalMap[x][y] = 0x00;
      // Set up the conditions of the surrounding cells
     mockVisitCounts[x][y-1] = 2; // North
     mockVisitCounts[x+1][y] = 3; // East
