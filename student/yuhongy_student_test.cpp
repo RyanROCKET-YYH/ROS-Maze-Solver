@@ -436,7 +436,6 @@ void test_t16() { // test transition from Move to CheckWall
     setMockLocalCord(x, y);
     setTurtleOrientation(west);
     setVisitCounts(x-1, y, 0);
-    setLocalMap(x-1, y, 0xF);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
     int32_t mockX = getMockLocalX();
@@ -459,7 +458,6 @@ void test_t16_1() { // test transition from Move to CheckWall
     setMockLocalCord(x, y);
     setTurtleOrientation(north);
     setVisitCounts(x, y-1, 0);
-    setLocalMap(x, y-1, 0x8);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
     int32_t mockX = getMockLocalX();
@@ -470,7 +468,7 @@ void test_t16_1() { // test transition from Move to CheckWall
     CU_ASSERT_EQUAL(getVisitCounts(mockX,mockY), 1);
     CU_ASSERT_EQUAL(getMockLocalX(), 11);
     CU_ASSERT_EQUAL(getMockLocalY(), 10);
-    CU_ASSERT_NOT_EQUAL(return_state, CheckWall);
+    CU_ASSERT_EQUAL(return_state, CheckWall);
 }
 
 
@@ -483,7 +481,6 @@ void test_t16_2() { // test transition from Move to CheckWall
     setMockLocalCord(x, y);
     setTurtleOrientation(north);
     setVisitCounts(x, y-1, 1);
-    setLocalMap(x, y-1, 0xF);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
     int32_t mockX = getMockLocalX();

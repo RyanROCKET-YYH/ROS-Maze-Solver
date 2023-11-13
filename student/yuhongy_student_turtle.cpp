@@ -268,7 +268,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 
 	static int8_t turns = -1;
 	desiredDir = error;
-	ROS_INFO("Current state: %d", cs);
+	// ROS_INFO("Current state: %d", cs);
 	turtleResult result;
 	result.nextMove = STOP;
 	// If the turtle GOAL, stop and return the number of visits
