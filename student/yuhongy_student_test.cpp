@@ -6,12 +6,13 @@ void test_t1() { // test transition from initialized to checkWall
     mock_set_bump(false);
     mock_set_atend(false);
     setTurtleState(Initialized);
-    turtleResult result = studentTurtleStep(will_bump(), at_end());
-    TurtleState return_state = getTurtleState();
     int32_t x = 11;
     int32_t y = 11;
     setMockLocalCord(x, y);
     setVisitCounts(x, y, 0);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
@@ -38,13 +39,14 @@ void test_t1_2() { // test transition from initialized to checkWall
     mock_set_bump(true);
     mock_set_atend(false);
     setTurtleState(Initialized);
-    turtleResult result = studentTurtleStep(will_bump(), at_end());
-    TurtleState return_state = getTurtleState();
     int32_t x = 11;
     int32_t y = 11;
     setMockLocalCord(x, y);
     setVisitCounts(x, y, 0);
-
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
+    
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
     CU_ASSERT_EQUAL(return_state, CheckWall);
@@ -54,12 +56,12 @@ void test_t1_3() { // test transition from initialized to checkWall
     mock_set_bump(true);
     mock_set_atend(true);
     setTurtleState(Initialized);
-    turtleResult result = studentTurtleStep(will_bump(), at_end());
-    TurtleState return_state = getTurtleState();
     int32_t x = 11;
     int32_t y = 11;
     setMockLocalCord(x, y);
     setVisitCounts(x, y, 0);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
