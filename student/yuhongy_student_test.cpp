@@ -317,7 +317,7 @@ void test_t14() { // test transition from Move to DecideNextMove
     mock_set_bump(false);
     mock_set_atend(false);
     setTurtleState(Move);
-    int32_t x = 11;
+    int32_t x = 8;
     int32_t y = 11;
     setMockLocalCord(x, y);
     setTurtleOrientation(north);
