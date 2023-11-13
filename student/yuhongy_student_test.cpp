@@ -694,7 +694,7 @@ void test_NextMove() {  // test subrotine in the state of DecideNextMove
     int32_t mockLocalMap[23][23];
     for (int i = 0; i < 23; ++i) {
         for (int j = 0; j < 23; ++j) {
-            localMap[i][j] = 0x0F;
+            mockLocalMap[i][j] = 0x0F;
         }
 	}
     int32_t x = 11;
@@ -705,7 +705,7 @@ void test_NextMove() {  // test subrotine in the state of DecideNextMove
     mockVisitCounts[x+1][y] = 3; // East
     mockVisitCounts[x][y+1] = 4; // South
     mockVisitCounts[x-1][y] = 5; // West
-    TurtleOrientation desiredDIR = NextMove(currDir, mockVisitCounts[23][23], mockLocalMap[23][23], x, y);
+    TurtleOrientation desiredDIR = NextMove(currDir, mockVisitCounts, mockLocalMap, x, y);
 
     CU_ASSERT_EQUAL(desiredDIR, north);
 }   
