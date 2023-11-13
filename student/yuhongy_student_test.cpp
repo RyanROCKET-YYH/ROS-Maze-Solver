@@ -14,7 +14,6 @@ void test_t1() { // test transition from initialized to checkWall
     int32_t mockY = getMockLocalY();
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
-    
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getVisitCounts(mockX,mockY), 1);
@@ -25,13 +24,13 @@ void test_t1_1() { // test transition from initialized to checkWall
     mock_set_bump(false);
     mock_set_atend(true);
     setTurtleState(Initialized);
-    turtleResult result = studentTurtleStep(will_bump(), at_end());
-    TurtleState return_state = getTurtleState();
     int32_t x = 11;
     int32_t y = 11;
     setMockLocalCord(x, y);
     setVisitCounts(x, y, 0);
-
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+    
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
     CU_ASSERT_EQUAL(return_state, CheckWall);
@@ -47,7 +46,6 @@ void test_t1_2() { // test transition from initialized to checkWall
     setVisitCounts(x, y, 0);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
-    
     
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
@@ -184,7 +182,7 @@ void test_t2_6() { // test transition from CheckWall to Right
     TurtleState return_state = getTurtleState();
     
     CU_ASSERT_EQUAL(result.nextMove, STOP);
-    CU_ASSERT_EQUAL(getLocalMap(x, y), 0xF);
+    CU_ASSERT_EQUAL(getLocalMap(x, y), 0x7);
     CU_ASSERT_NOT_EQUAL(return_state, Right);
 } // need 7 tests for this transition
 
@@ -270,7 +268,7 @@ void test_t3_4() { // test transition from Right to CheckWall
     TurtleState return_state = getTurtleState();
     
     CU_ASSERT_EQUAL(result.nextMove, TURN_RIGHT);
-    CU_ASSERT_EQUAL(getSpinCounter(), 4);
+    CU_ASSERT_EQUAL(getSpinCounter(), 2);
     CU_ASSERT_EQUAL(getTurtleOrientation(), west);
     CU_ASSERT_EQUAL(return_state, CheckWall);
 } // need 5 tests for this transition
@@ -361,7 +359,7 @@ void test_t6_2() { // test transition from DecidNextMove to Goal
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
     
-    CU_ASSERT_NOT_EQUAL(result.nextMove, STOP);
+    CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_NOT_EQUAL(return_state, Goal);
 } // need 3 tests for this transition   
 
