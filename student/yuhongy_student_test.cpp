@@ -10,12 +10,14 @@ void test_t1() { // test transition from initialized to checkWall
     int32_t y = 11;
     setMockLocalCord(x, y);
     setVisitCounts(x, y, 0);
+    int32_t mockX = getMockLocalX();
+    int32_t mockY = getMockLocalY();
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
     
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
-    CU_ASSERT_EQUAL(getVisitCounts(getMockLocalX(), getMockLocalY()), 1);
+    CU_ASSERT_EQUAL(getVisitCounts(mockX,mockY), 1);
     CU_ASSERT_EQUAL(return_state, CheckWall);
 }   
 
