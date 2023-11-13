@@ -321,7 +321,7 @@ void test_t14() { // test transition from Move to DecideNextMove
     int32_t y = 11;
     setMockLocalCord(x, y);
     setTurtleOrientation(north);
-    setVisitCounts(x, y-1, 2);
+    setVisitCounts(x, y-1, 1);
     setLocalMap(x, y-1, 0x8);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
@@ -330,7 +330,7 @@ void test_t14() { // test transition from Move to DecideNextMove
 
     CU_ASSERT_EQUAL(result.nextMove, MOVE);
     CU_ASSERT_EQUAL(getDesiredDir(), error);
-    CU_ASSERT_EQUAL(getVisitCounts(mockX,mockY), 3);
+    CU_ASSERT_EQUAL(getVisitCounts(mockX,mockY), 2);
     CU_ASSERT_EQUAL(getMockLocalX(), 11);
     CU_ASSERT_EQUAL(getMockLocalY(), 10);
     CU_ASSERT_EQUAL(return_state, DecideNextMove);
@@ -390,7 +390,7 @@ void test_t14_3() { // test transition from Move to DecideNextMove
     int32_t y = 11;
     setMockLocalCord(x, y);
     setTurtleOrientation(west);
-    setVisitCounts(x, y, 2);
+    setVisitCounts(x-1, y, 2);
     setLocalMap(x-1, y, 0x1);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
