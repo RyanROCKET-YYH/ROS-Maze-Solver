@@ -680,7 +680,7 @@ void test_t16_2() { // test transition from Move to CheckWall
 void test_t18() { // test invalide state
     mock_set_bump(false);
     mock_set_atend(false);
-    mock_error = false;
+    bool mock_error = false;
     setTurtleState(Invalid);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
