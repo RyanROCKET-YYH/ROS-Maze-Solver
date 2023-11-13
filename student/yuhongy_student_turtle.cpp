@@ -394,8 +394,16 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			#ifdef testing
 			visitCounts[mock_localX][mock_localY]++;
 			ROS_INFO("Current position: (%d, %d), visitCounts %d", mock_localX, mock_localY, visitCounts[mock_localX][mock_localY]);
+			if (atend) {  // transion: Atend (S5->S9)
+				cs = Goal;
+			} else if (visitCounts[mock_localX][mock_localY] != 1 && localMap[mock_localX][mock_localY] != 0x0F) {  // transion: visitCounts > 1 && localMap != 0b1111  (S5->S4)
+				cs = DecideNextMove;
+			} else if (visitCounts[mock_localX][mock_localY] == 1) {  // transion: visitCounts == 1 && localMap == 0b1111  (S5->S3)
+				cs = CheckWall;
+			}
 			#endif
-			ROS_INFO("Current position: (%d, %d), visitCounts %d", localX, localY, visitCounts[localX][localY]);
+
+			#ifndef testing
 			result.nextMove = MOVE;
 			if (atend) {  // transion: Atend (S5->S9)
 				cs = Goal;
@@ -404,6 +412,8 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			} else if (visitCounts[localX][localY] == 1) {  // transion: visitCounts == 1 && localMap == 0b1111  (S5->S3)
 				cs = CheckWall;
 			}
+			#endif
+
 			break;
 
 		case Goal: // S9. Goal

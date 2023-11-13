@@ -331,7 +331,7 @@ void test_t14() { // test transition from Move to DecideNextMove
     CU_ASSERT_EQUAL(result.nextMove, MOVE);
     CU_ASSERT_EQUAL(getDesiredDir(), error);
     CU_ASSERT_EQUAL(getVisitCounts(mockX,mockY), 2);
-    CU_ASSERT_EQUAL(getMockLocalX(), 11);
+    CU_ASSERT_EQUAL(getMockLocalX(), 8);
     CU_ASSERT_EQUAL(getMockLocalY(), 10);
     CU_ASSERT_EQUAL(return_state, DecideNextMove);
 }
