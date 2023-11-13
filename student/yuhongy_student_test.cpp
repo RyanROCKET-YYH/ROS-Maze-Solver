@@ -427,10 +427,24 @@ void test_t17() { // test transition from DecidNextMove with an invalid desired 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
     CU_ASSERT_EQUAL(return_state, DecideNextMove);
 } 
-// test 7-10 covers all 4 transitions from DecideNextMove to other states
+// test 7-10 and 17 covers all 4 transitions from DecideNextMove to other states
 
 void test_t11() { // test transition from leftTwice to leftOnce
     mock_set_bump(false);
+    mock_set_atend(false);
+    setTurtleState(leftTwice);
+    setTurtleOrientation(east);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+
+    CU_ASSERT_EQUAL(result.nextMove, TURN_LEFT);
+    CU_ASSERT_EQUAL(getSpinCounter(), 1);
+    CU_ASSERT_EQUAL(getTurtleOrientation(), north);
+    CU_ASSERT_EQUAL(return_state, leftOnce);
+}
+
+void test_t11_1() { // test transition from leftTwice to leftOnce
+    mock_set_bump(true);
     mock_set_atend(false);
     setTurtleState(leftTwice);
     setTurtleOrientation(east);
@@ -469,7 +483,7 @@ void test_t13() { // test transition from rightOnce to Move
     CU_ASSERT_EQUAL(getSpinCounter(), 0);
     CU_ASSERT_EQUAL(getTurtleOrientation(), west);
     CU_ASSERT_EQUAL(return_state, Move);
-}
+} // test 11-13 covers all situations for leftOnce, leftTwice, rightOnce
 
 void test_t14() { // test transition from Move to DecideNextMove
     mock_set_bump(false);
@@ -561,7 +575,7 @@ void test_t14_3() { // test transition from Move to DecideNextMove
     CU_ASSERT_EQUAL(getMockLocalX(), 10);
     CU_ASSERT_EQUAL(getMockLocalY(), 11);
     CU_ASSERT_EQUAL(return_state, DecideNextMove);
-}
+} // need 4 tests for this transition
 
 void test_t15() { // test transition from Move to Goal
     mock_set_bump(false);
@@ -585,8 +599,19 @@ void test_t15_1() { // test transition from Move to Goal
     CU_ASSERT_EQUAL(return_state, Goal);
 }
 
+void test_t15_2() { // test transition from Move to Goal
+    mock_set_bump(true);
+    mock_set_atend(false);
+    setTurtleState(Move);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+
+    CU_ASSERT_EQUAL(result.nextMove, MOVE);
+    CU_ASSERT_NOT_EQUAL(return_state, Goal);
+} // need 3 tests for this transition
+
 void test_t16() { // test transition from Move to CheckWall
-    mock_set_bump(false);
+    mock_set_bump(true);
     mock_set_atend(false);
     setTurtleState(Move);
     int32_t x = 11;
@@ -650,8 +675,18 @@ void test_t16_2() { // test transition from Move to CheckWall
     CU_ASSERT_EQUAL(getMockLocalX(), 11);
     CU_ASSERT_EQUAL(getMockLocalY(), 10);
     CU_ASSERT_NOT_EQUAL(return_state, CheckWall);
-}
+} // need 3 tests for this transition
 
+void test_t18() { // test invalide state
+    mock_set_bump(false);
+    mock_set_atend(false);
+    mock_error = false;
+    setTurtleState(Invalid);
+    turtleResult result = studentTurtleStep(will_bump(), at_end());
+    TurtleState return_state = getTurtleState();
+
+    CU_ASSERT_TRUE(mock_error);
+} // need 1 test for this transition
 
 int init() {
   // Any test initialization code goes here
@@ -711,6 +746,7 @@ int main() {
         (NULL == CU_add_test(pSuite, "test of transition S4 -> S5", test_t9)) ||
         (NULL == CU_add_test(pSuite, "test of transition S4 -> S8", test_t10)) ||
         (NULL == CU_add_test(pSuite, "test of transition S7 -> S6", test_t11)) ||
+        (NULL == CU_add_test(pSuite, "test of transition S7 -> S6", test_t11_1)) ||
         (NULL == CU_add_test(pSuite, "test of transition S6 -> S5", test_t12)) ||
         (NULL == CU_add_test(pSuite, "test of transition S8 -> S5", test_t13)) ||
         (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t14)) ||
@@ -719,10 +755,12 @@ int main() {
         (NULL == CU_add_test(pSuite, "test of transition S5 -> S4", test_t14_3)) ||
         (NULL == CU_add_test(pSuite, "test of transition S5 -> S9", test_t15)) ||
         (NULL == CU_add_test(pSuite, "test of transition S5 -> S9", test_t15_1)) ||
+        (NULL == CU_add_test(pSuite, "test of transition S5 -> S9", test_t15_2)) ||
         (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t16)) ||
         (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t16_1)) ||
         (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t16_2)) ||
-        (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t17)))
+        (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t17)) ||
+        (NULL == CU_add_test(pSuite, "test of default turtleState case", test_t18)))
 
 
     {
