@@ -18,6 +18,7 @@ enum TurtleState {
 	leftTwice,
 	rightOnce,
 	Goal,
+	Invalid,
 };
 
 enum TurtleOrientation {
