@@ -687,8 +687,6 @@ void test_t18() { // test invalide state
 } // need 1 test for this transition
 
 void test_NextMove() {  // test subrotine in the state of DecideNextMove
-    mock_set_bump(false);
-    mock_set_atend(false);
     TurtleOrientation currDir = north;
     int32_t mockVisitCounts[23][23] = {0};
     int32_t mockLocalMap[23][23];
@@ -708,7 +706,73 @@ void test_NextMove() {  // test subrotine in the state of DecideNextMove
     TurtleOrientation desiredDIR = NextMove(currDir, mockVisitCounts, mockLocalMap, x, y);
 
     CU_ASSERT_EQUAL(desiredDIR, north);
-}   
+} 
+
+void test_NextMove_1() {  // test subrotine in the state of DecideNextMove
+    TurtleOrientation currDir = north;
+    int32_t mockVisitCounts[23][23] = {0};
+    int32_t mockLocalMap[23][23];
+    for (int i = 0; i < 23; ++i) {
+        for (int j = 0; j < 23; ++j) {
+            mockLocalMap[i][j] = 0x0F;
+        }
+	}
+    int32_t x = 11;
+    int32_t y = 11;
+    mockLocalMap[x][y] = 0x1;
+     // Set up the conditions of the surrounding cells
+    mockVisitCounts[x][y-1] = 2; // North
+    mockVisitCounts[x+1][y] = 3; // East
+    mockVisitCounts[x][y+1] = 4; // South
+    mockVisitCounts[x-1][y] = 5; // West
+    TurtleOrientation desiredDIR = NextMove(currDir, mockVisitCounts, mockLocalMap, x, y);
+
+    CU_ASSERT_EQUAL(desiredDIR, east);
+} 
+
+void test_NextMove_2() {  // test subrotine in the state of DecideNextMove
+    TurtleOrientation currDir = north;
+    int32_t mockVisitCounts[23][23] = {0};
+    int32_t mockLocalMap[23][23];
+    for (int i = 0; i < 23; ++i) {
+        for (int j = 0; j < 23; ++j) {
+            mockLocalMap[i][j] = 0x0F;
+        }
+	}
+    int32_t x = 11;
+    int32_t y = 11;
+    mockLocalMap[x][y] = 0x00;
+     // Set up the conditions of the surrounding cells
+    mockVisitCounts[x][y-1] = 3; // North
+    mockVisitCounts[x+1][y] = 3; // East
+    mockVisitCounts[x][y+1] = 3; // South
+    mockVisitCounts[x-1][y] = 3; // West
+    TurtleOrientation desiredDIR = NextMove(currDir, mockVisitCounts, mockLocalMap, x, y);
+
+    CU_ASSERT_EQUAL(desiredDIR, east);
+}
+
+void test_NextMove_3() {  // test subrotine in the state of DecideNextMove
+    TurtleOrientation currDir = north;
+    int32_t mockVisitCounts[23][23] = {0};
+    int32_t mockLocalMap[23][23];
+    for (int i = 0; i < 23; ++i) {
+        for (int j = 0; j < 23; ++j) {
+            mockLocalMap[i][j] = 0x0F;
+        }
+	}
+    int32_t x = 11;
+    int32_t y = 11;
+    mockLocalMap[x][y] = 0x6;
+     // Set up the conditions of the surrounding cells
+    mockVisitCounts[x][y-1] = 2; // North
+    mockVisitCounts[x+1][y] = 2; // East
+    mockVisitCounts[x][y+1] = 2; // South
+    mockVisitCounts[x-1][y] = 2; // West
+    TurtleOrientation desiredDIR = NextMove(currDir, mockVisitCounts, mockLocalMap, x, y);
+
+    CU_ASSERT_EQUAL(desiredDIR, west);
+}  
 
 int init() {
   // Any test initialization code goes here
