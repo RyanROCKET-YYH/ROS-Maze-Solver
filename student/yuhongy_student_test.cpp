@@ -680,13 +680,15 @@ void test_t16_2() { // test transition from Move to CheckWall
 void test_t18() { // test invalide state
     mock_set_bump(false);
     mock_set_atend(false);
-    bool mock_error = false;
     setTurtleState(Invalid);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
-    TurtleState return_state = getTurtleState();
 
     CU_ASSERT_TRUE(mock_error);
 } // need 1 test for this transition
+
+// void test_NextMove() {  // test subrotine in the state of DecideNextMove
+
+// }
 
 int init() {
   // Any test initialization code goes here
