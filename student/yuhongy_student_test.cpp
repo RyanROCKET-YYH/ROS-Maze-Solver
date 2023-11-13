@@ -847,7 +847,10 @@ int main() {
         (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t16_2)) ||
         (NULL == CU_add_test(pSuite, "test of transition S5 -> S3", test_t17)) ||
         (NULL == CU_add_test(pSuite, "test of default turtleState case", test_t18)) ||
-        (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove)))
+        (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove))
+        (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_1)) ||
+        (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_2)) ||
+        (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_3)))
 
 
     {
