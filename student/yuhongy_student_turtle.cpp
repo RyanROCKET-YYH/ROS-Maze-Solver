@@ -393,6 +393,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			visitCounts[localX][localY]++;
 			#ifdef testing
 			visitCounts[mock_localX][mock_localY]++;
+			ROS_INFO("Current position: (%d, %d), visitCounts %d", mock_localX, mock_localY, visitCounts[mock_localX][mock_localY]);
 			#endif
 			ROS_INFO("Current position: (%d, %d), visitCounts %d", localX, localY, visitCounts[localX][localY]);
 			result.nextMove = MOVE;
