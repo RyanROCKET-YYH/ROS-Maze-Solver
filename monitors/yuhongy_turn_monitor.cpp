@@ -56,8 +56,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
     ROS_INFO("[[%ld ns]] 'Pose' was sent. Data: x = %d, y=%d, o=%s", t.toNSec(), x, y, o_str.c_str());
   }
 
-  // Check that the turtle has moved before and that the Manhattan
-  // distance between the positions does not exceed 1
+  // Check that the turtle has turned before and that the degree is not more than 90
   if (turned && (abs(last_orientation - o)) == 2) {
     std::string last_o_str = orientationToString(last_orientation);
     ROS_WARN("VIOLATION: Difference between last orientation: %s and current orientation: %s is more than 90 degrees!", last_o_str.c_str(), o_str.c_str());
