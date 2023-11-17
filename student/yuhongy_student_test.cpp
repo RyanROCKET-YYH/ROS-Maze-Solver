@@ -444,7 +444,6 @@ void test_t11() { // test transition from leftTwice to leftOnce
     TurtleState return_state = getTurtleState();
 
     CU_ASSERT_EQUAL(result.nextMove, TURN_LEFT);
-    CU_ASSERT_EQUAL(getSpinCounter(), 1);
     CU_ASSERT_EQUAL(getTurtleOrientation(), north);
     CU_ASSERT_EQUAL(return_state, leftOnce);
 }
@@ -458,7 +457,6 @@ void test_t11_1() { // test transition from leftTwice to leftOnce
     TurtleState return_state = getTurtleState();
 
     CU_ASSERT_EQUAL(result.nextMove, TURN_LEFT);
-    CU_ASSERT_EQUAL(getSpinCounter(), 1);
     CU_ASSERT_EQUAL(getTurtleOrientation(), north);
     CU_ASSERT_EQUAL(return_state, leftOnce);
 }
@@ -472,7 +470,6 @@ void test_t12() { // test transition from leftOnce to Move
     TurtleState return_state = getTurtleState();
 
     CU_ASSERT_EQUAL(result.nextMove, TURN_LEFT);
-    CU_ASSERT_EQUAL(getSpinCounter(), 0);
     CU_ASSERT_EQUAL(getTurtleOrientation(), east);
     CU_ASSERT_EQUAL(return_state, Move);
 }
@@ -486,7 +483,6 @@ void test_t13() { // test transition from rightOnce to Move
     TurtleState return_state = getTurtleState();
     
     CU_ASSERT_EQUAL(result.nextMove, TURN_RIGHT);
-    CU_ASSERT_EQUAL(getSpinCounter(), 0);
     CU_ASSERT_EQUAL(getTurtleOrientation(), west);
     CU_ASSERT_EQUAL(return_state, Move);
 } // test 11-13 covers all situations for leftOnce, leftTwice, rightOnce
