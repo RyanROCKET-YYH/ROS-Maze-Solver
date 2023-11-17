@@ -868,6 +868,79 @@ void test_NextMove_7() {  // test subrotine in the state of DecideNextMove
     CU_ASSERT_EQUAL(desiredDIR, south);
 }  // 8 test cases (can be more) for NextMove
 
+void test_WallUpdate() { // test wall update
+    int32_t mockLocalMap[23][23];
+    for (int i = 0; i < 23; ++i) {
+        for (int j = 0; j < 23; ++j) {
+            mockLocalMap[i][j] = 0x0F;
+        }
+    }
+    int32_t x = 11;
+    int32_t y = 11;
+    WallUpdate(north, mockLocalMap, x, y, false);
+    CU_ASSERT_EQUAL(mockLocalMap[x][y], 0xE);
+    WallUpdate(east, mockLocalMap, x, y, false);
+    CU_ASSERT_EQUAL(mockLocalMap[x][y], 0xC);
+    WallUpdate(south, mockLocalMap, x, y, false);
+    CU_ASSERT_EQUAL(mockLocalMap[x][y], 0x8);
+    WallUpdate(west, mockLocalMap, x, y, false);
+    CU_ASSERT_EQUAL(mockLocalMap[x][y], 0x0);
+    WallUpdate(north, mockLocalMap, x, y, true);
+    CU_ASSERT_EQUAL(mockLocalMap[x][y], 0x1);
+    WallUpdate(east, mockLocalMap, x, y, true);
+    CU_ASSERT_EQUAL(mockLocalMap[x][y], 0x3);
+    WallUpdate(south, mockLocalMap, x, y, true);
+    CU_ASSERT_EQUAL(mockLocalMap[x][y], 0x7);
+    WallUpdate(west, mockLocalMap, x, y, true);
+    CU_ASSERT_EQUAL(mockLocalMap[x][y], 0xF);
+}
+
+void test_getNextDir() {    // test getNextDir
+    TurtleOrientation currDir = north;
+    TurtleOrientation desiredDIR = getNextDir(currDir, left);
+    CU_ASSERT_EQUAL(desiredDIR, west);
+}
+
+void test_getNextDir_1() {
+    TurtleOrientation currDir = north;
+    TurtleOrientation desiredDIR = getNextDir(currDir, right);
+    CU_ASSERT_EQUAL(desiredDIR, east);
+}
+
+int8_t getTurns(TurtleOrientation currentDir, TurtleOrientation desiredDir) {
+	int8_t cycle = 4;
+	int8_t difference = static_cast<int8_t>((desiredDir - currentDir + cycle) % cycle);
+	return difference;
+}
+
+void test_getTurns() {  // test getTurns
+    TurtleOrientation currDir = north;
+    TurtleOrientation desiredDir = east;
+    int8_t turns = getTurns(currDir, desiredDir);
+    CU_ASSERT_EQUAL(turns, 1);
+}
+
+void test_getTurns_1() {
+    TurtleOrientation currDir = north;
+    TurtleOrientation desiredDir = west;
+    int8_t turns = getTurns(currDir, desiredDir);
+    CU_ASSERT_EQUAL(turns, 3);
+}
+
+void test_getTurns_2() {
+    TurtleOrientation currDir = north;
+    TurtleOrientation desiredDir = north;
+    int8_t turns = getTurns(currDir, desiredDir);
+    CU_ASSERT_EQUAL(turns, 0);
+}
+
+void test_getTurns_3() {
+    TurtleOrientation currDir = north;
+    TurtleOrientation desiredDir = south;
+    int8_t turns = getTurns(currDir, desiredDir);
+    CU_ASSERT_EQUAL(turns, 2);
+}
+
 int init() {
   // Any test initialization code goes here
   return 0;
@@ -948,7 +1021,14 @@ int main() {
         (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_4)) ||
         (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_5)) ||
         (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_6)) ||
-        (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_7)))
+        (NULL == CU_add_test(pSuite, "test of NextMove subroutine", test_NextMove_7)) ||
+        (NULL == CU_add_test(pSuite, "test of WallUpdate subroutine", test_WallUpdate)) ||
+        (NULL == CU_add_test(pSuite, "test of getNextDir subroutine", test_getNextDir)) ||
+        (NULL == CU_add_test(pSuite, "test of getNextDir subroutine", test_getNextDir_1)) ||
+        (NULL == CU_add_test(pSuite, "test of getTurns subroutine", test_getTurns)) ||
+        (NULL == CU_add_test(pSuite, "test of getTurns subroutine", test_getTurns_1)) ||
+        (NULL == CU_add_test(pSuite, "test of getTurns subroutine", test_getTurns_2)) ||
+        (NULL == CU_add_test(pSuite, "test of getTurns subroutine", test_getTurns_3)))
 
 
     {
