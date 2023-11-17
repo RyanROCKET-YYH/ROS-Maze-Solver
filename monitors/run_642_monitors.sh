@@ -6,26 +6,27 @@
 kill_processes() {
     touch VIOLATIONS.txt
     rm VIOLATIONS.txt
+    # First loop: kill all monitors
+    for m in "$@"; do
+        if [[ -n $(pgrep -x ${m:0:15}) ]]; then
+            echo "Killing monitor $m"
+            kill $(pgrep -x ${m:0:15})
+            sleep 1
+        fi
+    done
+    # Second loop: process outputs
     total_viol=0
-    while [[ $# -gt 0 ]]; do
-	m=$1
-	shift
-	if [[ -n $(pgrep -x ${m:0:15}) ]]; then
-	    echo "Killing monitor $m"
-	    kill $(pgrep -x ${m:0:15})
-	    sleep 1
-	    # Process any non-empty monitor file
-	    if [ -s "$m.output.tmp" ]; then
-		echo "" >> VIOLATIONS.txt
-		echo "Monitor $m Violations:" >> VIOLATIONS.txt
-		echo "" >> VIOLATIONS.txt
-		grep -C 5 "\[ WARN\]" $m.output.tmp >> VIOLATIONS.txt
-		m_viol=`grep "\[ WARN\]" $m.output.tmp | wc -l`
-		total_viol=$(( total_viol + m_viol))
-		rm $m.output.tmp
-		echo "" >> VIOLATIONS.txt
-	    fi
-	fi
+    for m in "$@"; do
+        if [ -s "$m.output.tmp" ]; then
+            echo "" >> VIOLATIONS.txt
+            echo "Monitor $m Violations:" >> VIOLATIONS.txt
+            echo "" >> VIOLATIONS.txt
+            grep -C 5 "\[ WARN\]" $m.output.tmp >> VIOLATIONS.txt
+            m_viol=`grep "\[ WARN\]" $m.output.tmp | wc -l`
+            total_viol=$(( total_viol + m_viol))
+            rm $m.output.tmp
+            echo "" >> VIOLATIONS.txt
+        fi
     done
     echo "TOTAL VIOLATIONS: $total_viol"
     echo "Any violations logged in VIOLATIONS.txt"
