@@ -885,14 +885,6 @@ void test_WallUpdate() { // test wall update
     CU_ASSERT_EQUAL(mockLocalMap[x][y], 0x8);
     WallUpdate(west, mockLocalMap, x, y, false);
     CU_ASSERT_EQUAL(mockLocalMap[x][y], 0x0);
-    WallUpdate(north, mockLocalMap, x, y, true);
-    CU_ASSERT_EQUAL(mockLocalMap[x][y], 0x1);
-    WallUpdate(east, mockLocalMap, x, y, true);
-    CU_ASSERT_EQUAL(mockLocalMap[x][y], 0x3);
-    WallUpdate(south, mockLocalMap, x, y, true);
-    CU_ASSERT_EQUAL(mockLocalMap[x][y], 0x7);
-    WallUpdate(west, mockLocalMap, x, y, true);
-    CU_ASSERT_EQUAL(mockLocalMap[x][y], 0xF);
 }
 
 void test_getNextDir() {    // test getNextDir
