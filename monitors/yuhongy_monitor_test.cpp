@@ -6,7 +6,7 @@
 
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
-#include "monitor_interface.h"
+#include "yuhongy_mock.h"
 
 
 extern void poseInterrupt(ros::Time t, int x, int y, Orientation o);
