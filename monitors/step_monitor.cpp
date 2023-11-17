@@ -41,7 +41,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
 
   // Check that the turtle has moved before and that the Manhattan
   // distance between the positions does not exceed 1
-  if (moved && (abs(last_pose.x - x) + abs(last_pose.y - y)) > 1) {
+  if (moved && (abs(last_pose.x - x) + abs(last_pose.y - y)) > 0) {
     ROS_WARN("VIOLATION: Difference between last coordinate (%d,%d) and current coordinate (%d,%d) is more than 1 square!", last_pose.x, last_pose.y, x, y);
   }
 
