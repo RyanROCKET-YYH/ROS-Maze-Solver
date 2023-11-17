@@ -33,7 +33,7 @@
 
 
 #ifdef testing
-static int32_t visitCounts[23][23];
+static int32_t visitCounts[23][23] = {0};
 static int32_t localMap[23][23];
 static int8_t spinCounter = 0;
 static TurtleOrientation desiredDir = error;
@@ -243,12 +243,11 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	// Current state of the turtle
 	static TurtleState cs = Initialized;
 	static TurtleOrientation direction = north;
-	static int32_t visitCounts[23][23];
+	static int32_t visitCounts[23][23] = {0};
 	static int32_t localMap[23][23];
 	static int8_t spinCounter = 0;
 	static TurtleOrientation desiredDir = error;
 	#endif
-	visitCounts[23][23] = {0};
 	static bool isInitialized = false;
 	if (!isInitialized) {
 		for (int i = 0; i < 23; ++i) {
@@ -261,18 +260,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 	// Starting position of the turtle		
 	static int32_t localX = 11;
 	static int32_t localY = 11;
-	// printLocalMapCell(localMap, localX, localY);
-
-	// Current orientation of the turtle
-	// static TurtleOrientation direction = north;
-
-	// Current state of the turtle
-	// static TurtleState cs = Initialized;
-
-	// static int8_t spinCounter = 0;
-
 	static int8_t turns = -1;
-	desiredDir = error;
 	// ROS_INFO("Current state: %d", cs);
 	turtleResult result;
 	result.nextMove = STOP;
@@ -346,26 +334,26 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 			break;
 
 		case leftTwice: // S7. leftTwice
-			spinCounter = 2;
+			// spinCounter = 2;
 			direction = getNextDir(direction, left);
 			result.nextMove = TURN_LEFT;
-			spinCounter = static_cast<int8_t>(spinCounter - 1);
+			// spinCounter = static_cast<int8_t>(spinCounter - 1);
 			cs = leftOnce; // transion: Ture (S7->S6)
 			break;
 
 		case leftOnce: // S6. leftOnce
-			spinCounter = 1;
+			// spinCounter = 1;
 			direction = getNextDir(direction, left);
 			result.nextMove = TURN_LEFT;
-			spinCounter = static_cast<int8_t>(spinCounter - 1);
+			// spinCounter = static_cast<int8_t>(spinCounter - 1);
 			cs = Move; // transion: Ture (S6->S5)
 			break;
 
 		case rightOnce: // S8. RightOnce
-			spinCounter = 1;
+			// spinCounter = 1;
 			direction = getNextDir(direction, right);
 			result.nextMove = TURN_RIGHT;
-			spinCounter = static_cast<int8_t>(spinCounter - 1);
+			// spinCounter = static_cast<int8_t>(spinCounter - 1);
 			cs = Move; // transion: Ture (S7->S6)
 			break;
 
@@ -419,7 +407,7 @@ turtleResult studentTurtleStep(bool bumped, bool atend) {
 				cs = Goal;
 			} else if (visitCounts[localX][localY] != 1 && localMap[localX][localY] != 0x0F) {  // transion: visitCounts > 1 && localMap != 0b1111  (S5->S4)
 				cs = DecideNextMove;
-			} else if (visitCounts[localX][localY] == 1) {  // transion: visitCounts == 1 && localMap == 0b1111  (S5->S3)
+			} else if (visitCounts[localX][localY] == 1) {  // transion: visitCounts == 1 (S5->S3)
 				cs = CheckWall;
 			}
 			#endif
