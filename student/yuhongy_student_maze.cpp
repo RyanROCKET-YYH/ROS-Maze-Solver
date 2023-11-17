@@ -117,7 +117,7 @@ QPointF translatePos(QPointF pos_, turtleMove nextMove, int32_t nw_or) {
         case MOVE:
             switch (nw_or) {
 				case east:
-					pos_.setY(--pos_.ry());
+					pos_.setY(pos_.ry() - 2);
 					break;
 				case south:
 					pos_.setX(++pos_.rx());
