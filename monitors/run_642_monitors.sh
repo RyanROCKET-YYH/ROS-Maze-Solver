@@ -37,6 +37,11 @@ kill_processes() {
     exit 0
 }
 
+if [ "$1" == "--kill" ]; then
+    kill_processes
+    exit 0
+fi
+
 if [[ $# -eq 0 ]]; then
     echo "Must provide at least one argument"
     echo "Usage: ./run_642_monitors.sh [-h|--help] MONITOR_1_NAME ..."
