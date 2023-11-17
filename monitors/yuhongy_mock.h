@@ -1,9 +1,3 @@
-#include <ece642rtle/PoseOrntBundle.h>
-#include <ece642rtle/timeInt8.h>
-#include <ece642rtle/RTIbump.h>
-#include <ece642rtle/RTIatend.h>
-#include <ece642rtle/bumpEcho.h>
-#include <ece642rtle/aendEcho.h>
 
 // (x,y) coordinates of a turtle pose
 typedef struct{int x; int y;} Pose;
