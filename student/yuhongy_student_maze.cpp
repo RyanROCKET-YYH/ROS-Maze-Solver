@@ -76,7 +76,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 	static int32_t wait;
 	const int32_t TIMEOUT = 30;
 	static int32_t GOAL_Check = 0;
-	static const GOAL_Limit = 12;
+	static const int32_t GOAL_Limit = 12;
 
 	ROS_INFO("Turtle update Called  w=%d", wait);
 	ROS_INFO("Current Orientation: %d", nw_or);
