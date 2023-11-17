@@ -7,8 +7,12 @@
  * It keeps track of the previous diretion of the turtle and compares it
  * to the current direction to check the invariant.
  */
-
+#ifdef testing
+#include "yuhongy_mock.h"
+#endif
+#ifndef testing
 #include "monitor_interface.h"
+#endif
 
 // Keeps track of the last pose received
 // moved is true if at least one pose has been received, false otherwise
