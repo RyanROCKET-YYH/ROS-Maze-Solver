@@ -907,12 +907,6 @@ void test_getNextDir_1() {
     CU_ASSERT_EQUAL(desiredDIR, east);
 }
 
-int8_t getTurns(TurtleOrientation currentDir, TurtleOrientation desiredDir) {
-	int8_t cycle = 4;
-	int8_t difference = static_cast<int8_t>((desiredDir - currentDir + cycle) % cycle);
-	return difference;
-}
-
 void test_getTurns() {  // test getTurns
     TurtleOrientation currDir = north;
     TurtleOrientation desiredDir = east;
