@@ -61,6 +61,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
   }
 
   // Check that the turtle has turned before and that the degree is not more than 90
+  // take advantage of the fact that the enum is ordered in a circle
   if (turned && (abs(last_orientation - o)) == 2) {
     std::string last_o_str = orientationToString(last_orientation);
     ROS_WARN("VIOLATION: Difference between last orientation: %s and current orientation: %s is more than 90 degrees!", last_o_str.c_str(), o_str.c_str());
