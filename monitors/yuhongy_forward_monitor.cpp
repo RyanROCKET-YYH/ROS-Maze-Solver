@@ -18,9 +18,6 @@ static Pose last_pose;
 static bool moved = false;
 static Orientation last_orientation;
 
-// Flag that doesn't print pose updates if the turtle has turned 0 steps
-static const bool suppress_double_visits = true;
-
 std::string orientationToString(Orientation o) {
   switch(o) {
   case NORTH:
@@ -46,7 +43,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
   // Print pose info
   // Last conditional makes sure that if suppress_double_visits is
   // true, that the same pose isn't printed twice
-  if ((last_pose.x != x || last_pose.y != y) && moved) {
+  if (last_pose.x != x || last_pose.y != y) {
     bool isForwardMovement = false;
     switch(last_orientation) {
       case NORTH:
@@ -78,11 +75,6 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
   last_pose.y = y;
    // store last Orientation in memory
   last_orientation = o;
-
-  // Update this flag the first time the turtle moved
-  if (!moved) {
-    moved = true;
-  }
 }
 
 /*
