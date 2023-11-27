@@ -67,12 +67,12 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
         break;
     }
     ROS_INFO("[[%ld ns]] 'Pose' was sent. Data: x = %d, y=%d, o=%s", t.toNSec(), x, y, o_str.c_str());
-  }
 
     if (!isForwardMovement) {
       std::string last_o_str = orientationToString(last_orientation);
       ROS_WARN("VIOLATION: Turtle is facing %s but moved %s!", o_str.c_str(), last_o_str.c_str());
     }
+  }
 
   // store last Orientation in memory
   last_orientation = o;
