@@ -17,6 +17,7 @@
 static Pose last_pose;
 static bool moved = false;
 static Orientation last_orientation;
+static bool isForwardMovement = false;
 
 // Flag that doesn't print pose updates if the turtle has turned 0 steps
 static const bool suppress_double_visits = true;
@@ -47,7 +48,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
   // Last conditional makes sure that if suppress_double_visits is
   // true, that the same pose isn't printed twice
   if ((last_pose.x != x || last_pose.y != y) && moved) {
-    bool isForwardMovement = false;
+    
     switch(last_orientation) {
       case NORTH:
         isForwardMovement = (last_pose.y + 1 == y);
@@ -62,6 +63,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
         isForwardMovement = (last_pose.x - 1 == x);
         break;
       default:
+        isForwardMovement = false;
         break;
     }
     ROS_INFO("[[%ld ns]] 'Pose' was sent. Data: x = %d, y=%d, o=%s", t.toNSec(), x, y, o_str.c_str());
