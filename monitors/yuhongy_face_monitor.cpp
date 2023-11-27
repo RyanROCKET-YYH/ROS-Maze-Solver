@@ -77,7 +77,8 @@ void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
     ROS_INFO("[[%ld ns]] 'Bump' was sent. Data: x1 = %d, y1=%d, x2=%d, y2=%d, bumped=%d", t.toNSec(), x1, y1, x2, y2, bumped);
 
     // Check if the turtle is moving across the wall
-    if (!(curr_endpoints.x1 == x1 && curr_endpoints.y1 == y1 && curr_endpoints.x2 == x2 && curr_endpoints.y2 == y2)) {
+    if (!(curr_endpoints.x1 == x1 && curr_endpoints.y1 == y1 && curr_endpoints.x2 == x2 && curr_endpoints.y2 == y2) 
+    && poseUpdated) {
       ROS_WARN("VIOLATION: Turtle is not checking the wall in the forward orientation, instead checking %s", orientationToString(curr_orientation).c_str());
     }
 
