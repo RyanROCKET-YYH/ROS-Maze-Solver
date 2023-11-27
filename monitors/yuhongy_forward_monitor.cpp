@@ -22,45 +22,65 @@ static Orientation last_orientation;
 static const bool suppress_double_visits = true;
 
 std::string orientationToString(Orientation o) {
-    switch(o) {
-    case NORTH:
-      return "NORTH";
-    case WEST:  
-      return "WEST";
-    case SOUTH: 
-      return "SOUTH";
-    case EAST:  
-      return "EAST";
-    default:    
-      return "ERROR";
-    }
+  switch(o) {
+  case NORTH:
+    return "NORTH";
+  case WEST:  
+    return "WEST";
+  case SOUTH: 
+    return "SOUTH";
+  case EAST:  
+    return "EAST";
+  default:    
+    return "ERROR";
+  }
 }
 
 /*
- * Whenever the turtle turned, compare the current orientation
+ * Whenever the turtle turned, compare the current orientation  
  * to the previous orientation and throw an invariant violation
  * if the orientations is differed by 2.
  */
 void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
   std::string o_str = orientationToString(o);
   // Print pose info
-  // Last conditional makes sure that if suppress_double_turns is
+  // Last conditional makes sure that if suppress_double_visits is
   // true, that the same pose isn't printed twice
   if (!suppress_double_visits || !moved || (last_pose.x != x || last_pose.y != y)) {
     ROS_INFO("[[%ld ns]] 'Pose' was sent. Data: x = %d, y=%d, o=%s", t.toNSec(), x, y, o_str.c_str());
   }
 
-  // Check that the turtle has turned before and that the degree is not more than 90
-  // take advantage of the fact that the enum is ordered in a circle
-  if (moved && (last_orientation != o)) {
-    std::string last_o_str = orientationToString(last_orientation);
-    ROS_WARN("VIOLATION: Turtle is facing %s but moved in the %s!", last_o_str.c_str(), o_str.c_str());
+  // Check if the turtle has moved forward based on its orientation
+  if (moved) {
+    bool isForwardMovement = false;
+    switch(last_orientation) {
+      case NORTH:
+        isForwardMovement = (last_pose.y + 1 == y);
+        break;
+      case SOUTH:
+        isForwardMovement = (last_pose.y - 1 == y);
+        break;
+      case EAST:
+        isForwardMovement = (last_pose.x + 1 == x);
+        break;
+      case WEST:
+        isForwardMovement = (last_pose.x - 1 == x);
+        break;
+    }
+
+    if (!isForwardMovement) {
+      std::string last_o_str = orientationToString(last_orientation);
+      ROS_WARN("VIOLATION: Turtle is facing %s but moved %s!", o_str.c_str(), last_o_str.c_str());
+    }
   }
 
   // store last Orientation in memory
   last_orientation = o;
+  // store last Pose in memory
+  last_pose.x = x;
+  last_pose.y = y;
 
-  // Update this flag the first time the turtle turned
+  // Update this flag the first time the turtle moved
   if (!moved) {
     moved = true;
   }
