@@ -43,14 +43,14 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
   // Print pose info
   // Last conditional makes sure that if suppress_double_visits is
   // true, that the same pose isn't printed twice
-  if (last_pose.x != x || last_pose.y != y) {
+  if ((last_pose.x != x || last_pose.y != y) && moved) {
     bool isForwardMovement = false;
     switch(last_orientation) {
       case NORTH:
-        isForwardMovement = (last_pose.y + 1 == y);
+        isForwardMovement = (last_pose.y - 1 == y);
         break;
       case SOUTH:
-        isForwardMovement = (last_pose.y - 1 == y);
+        isForwardMovement = (last_pose.y + 1 == y);
         break;
       case EAST:
         isForwardMovement = (last_pose.x + 1 == x);
@@ -75,6 +75,11 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
   last_pose.y = y;
    // store last Orientation in memory
   last_orientation = o;
+
+  // Update this flag the first time the turtle moved
+  if (!moved) {
+    moved = true;
+  }
 }
 
 /*
