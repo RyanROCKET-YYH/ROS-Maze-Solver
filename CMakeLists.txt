@@ -55,6 +55,7 @@ set(monitor_TARGETS_SRCS
   "ece642rtle_tick_monitor monitors/yuhongy_tick_monitor.cpp"
   "ece642rtle_forward_monitor monitors/yuhongy_forward_monitor.cpp"
   "ece642rtle_wall_monitor monitors/yuhongy_wall_monitor.cpp"
+  "ece642rtle_face_monitor monitors/yuhongy_face_monitor.cpp"
   )
 
 set(ece642rtle_monitor_main monitors/ros_monitor_interface.cpp)
