@@ -20,6 +20,9 @@ static Pose curr_pose;
 static Endpoints curr_endpoints;
 static Orientation curr_orientation;
 
+// Flag that doesn't print pose updates if the turtle has moved 0 steps
+static const bool suppress_double_bumps = true;
+
 /*
  * get the current pose of the turtle
  */
@@ -32,7 +35,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
 /*
  * get the endpoints of the turtle based on its current position and orientation
  */
-Endpoints getEndpoints(int x, int y, Orientation o) {
+static Endpoints getEndpoints(int x, int y, Orientation o) {
   switch(o) {
     case NORTH:
       curr_endpoints.x1 = x;
@@ -69,7 +72,10 @@ Endpoints getEndpoints(int x, int y, Orientation o) {
 void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
     // Print bump info
     curr_endpoints = getEndpoints(curr_pose.x, curr_pose.y, curr_orientation);
-    ROS_INFO("[[%ld ns]] 'Bump' was sent. Data: x1 = %d, y1=%d, x2=%d, y2=%d, bumped=%d", t.toNSec(), x1, y1, x2, y2, bumped);
+    if (!suppress_double_bumps || 
+    (curr_endpoints.x1 != x1 || curr_endpoints.y1 != y1 || curr_endpoints.x2 != x2 || curr_endpoints.y2 != y2)) {
+      ROS_INFO("[[%ld ns]] 'Bump' was sent. Data: x1 = %d, y1=%d, x2=%d, y2=%d, bumped=%d", t.toNSec(), x1, y1, x2, y2, bumped);
+    }
     // Check if the turtle is moving across the wall
     if (!(curr_endpoints.x1 == x1 && curr_endpoints.y1 == y1 && curr_endpoints.x2 == x2 && curr_endpoints.y2 == y2)) {
       ROS_WARN("VIOLATION: Turtle is not checking the wall in the forward orientation");
