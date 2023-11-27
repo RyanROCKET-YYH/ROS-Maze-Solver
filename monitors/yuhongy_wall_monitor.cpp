@@ -18,7 +18,7 @@
 // moved is true if at least one pose has been received, false otherwise
 static Pose last_pose;
 static bool moved = false;
-static bool bumped = false;
+static bool last_bumped = false;
 
 
 /*
@@ -26,7 +26,6 @@ static bool bumped = false;
  * it will check if the turtle is moving across the wall
  */
 void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
-  std::string o_str = orientationToString(o);
   if (moved && last_bumped) {
     ROS_WARN("VIOLATION: Turtle is moving across the wall!");
   }
