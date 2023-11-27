@@ -12,6 +12,7 @@
 #endif
 #ifndef testing
 #include "monitor_interface.h"
+#include <cstdint>
 #endif
 
 // Keeps track of the each interrupt are being called
@@ -23,7 +24,12 @@ static bool bump_call = false;
  * Whenever the turtle turned, compare the current orientation
  */
 void tickInterrupt(ros::Time t) {
-    ROS_INFO("[[%ld ns]] 1 Tick is sent", t.toNSec());
+    static int32_t tick_count = 0;
+    tick_count++;
+    if (tick_count == 128) {
+        ROS_INFO("[[%ld ns]] 128 ticks have passed",t.toNSec());
+        tick_count = 0;
+    }
     // reset the flag in the tickInterrupt
     pose_call = false;
     visits_call = false;
