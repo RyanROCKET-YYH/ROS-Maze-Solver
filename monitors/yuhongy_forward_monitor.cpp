@@ -46,12 +46,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
   // Print pose info
   // Last conditional makes sure that if suppress_double_visits is
   // true, that the same pose isn't printed twice
-  if (!suppress_double_visits || !moved || (last_pose.x != x || last_pose.y != y)) {
-    ROS_INFO("[[%ld ns]] 'Pose' was sent. Data: x = %d, y=%d, o=%s", t.toNSec(), x, y, o_str.c_str());
-  }
-
-  // Check if the turtle has moved forward based on its orientation
-  if (moved) {
+  if ((last_pose.x != x || last_pose.y != y) && moved) {
     bool isForwardMovement = false;
     switch(last_orientation) {
       case NORTH:
@@ -66,13 +61,16 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
       case WEST:
         isForwardMovement = (last_pose.x - 1 == x);
         break;
+      default:
+        break;
     }
+    ROS_INFO("[[%ld ns]] 'Pose' was sent. Data: x = %d, y=%d, o=%s", t.toNSec(), x, y, o_str.c_str());
+  }
 
     if (!isForwardMovement) {
       std::string last_o_str = orientationToString(last_orientation);
       ROS_WARN("VIOLATION: Turtle is facing %s but moved %s!", o_str.c_str(), last_o_str.c_str());
     }
-  }
 
   // store last Orientation in memory
   last_orientation = o;
