@@ -34,7 +34,6 @@ void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
     }
 
     if (atEnd) {
-        endCounter++;
         ROS_INFO("Successful at end of the maze");
         solved = true;
     } else {
