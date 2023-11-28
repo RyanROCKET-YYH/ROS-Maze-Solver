@@ -42,7 +42,7 @@ void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
 
 void tickInterrupt(ros::Time t) {
     if (solved) {
-        ROS_WARN("Turetle has solved the MAZE needs stop!");
+        ROS_WARN("Turetle at the end of MAZE needs stop!");
     }
 }
 
