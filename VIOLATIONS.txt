@@ -1,0 +1,41 @@
+Monitor step_monitor Violations:
+
+Monitor turn_monitor Violations:
+
+Monitor tick_monitor Violations:
+
+Monitor forward_monitor Violations:
+
+Monitor wall_monitor Violations:
+
+Monitor face_monitor Violations:
+
+Monitor solved_monitor Violations:
+
+Monitor atend_monitor Violations:
+[0m[ INFO] [1701148304.571046615]: [[1701148304553752517 ns]] 'Atend' was sent. Data: x = 7, y=3[0m
+[0m[ INFO] [1701148304.892473220]: [[1701148304875146717 ns]] 'Atend' was sent. Data: x = 7, y=3[0m
+[0m[ INFO] [1701148304.997122275]: [[1701148304952377761 ns]] 'Atend' was sent. Data: x = 7, y=3[0m
+[0m[ INFO] [1701148305.079224050]: [[1701148305038610788 ns]] 'Atend' was sent. Data: x = 7, y=3[0m
+[0m[ INFO] [1701148305.366194322]: Successful at end of the maze[0m
+[33m[ WARN] [1701148305.383061549]: Turetle at the end of MAZE needs stop![0m
+[0m[ INFO] [1701148305.426609542]: Successful at end of the maze[0m
+[33m[ WARN] [1701148305.443017214]: Turetle at the end of MAZE needs stop![0m
+[0m[ INFO] [1701148305.496590224]: Successful at end of the maze[0m
+[33m[ WARN] [1701148305.516404474]: Turetle at the end of MAZE needs stop![0m
+[0m[ INFO] [1701148305.620399535]: Successful at end of the maze[0m
+[33m[ WARN] [1701148305.650156390]: Turetle at the end of MAZE needs stop![0m
+[0m[ INFO] [1701148305.712634721]: Successful at end of the maze[0m
+[33m[ WARN] [1701148305.733968997]: Turetle at the end of MAZE needs stop![0m
+[0m[ INFO] [1701148305.822545338]: Successful at end of the maze[0m
+[33m[ WARN] [1701148305.845183970]: Turetle at the end of MAZE needs stop![0m
+[0m[ INFO] [1701148305.895795430]: Successful at end of the maze[0m
+[33m[ WARN] [1701148305.920598303]: Turetle at the end of MAZE needs stop![0m
+[0m[ INFO] [1701148305.975911758]: Successful at end of the maze[0m
+[33m[ WARN] [1701148305.977823453]: Turetle at the end of MAZE needs stop![0m
+[0m[ INFO] [1701148306.013102797]: Successful at end of the maze[0m
+[33m[ WARN] [1701148306.023470316]: Turetle at the end of MAZE needs stop![0m
+[0m[ INFO] [1701148306.097438376]: Successful at end of the maze[0m
+[33m[ WARN] [1701148306.109004092]: Turetle at the end of MAZE needs stop![0m
+[0m[ INFO] [1701148306.147490827]: Successful at end of the maze[0m
+
