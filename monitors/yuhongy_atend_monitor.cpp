@@ -28,7 +28,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
  */
 void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
     if (poseUpdated && (curr_pose.x != x || curr_pose.y != y)) {
-        ROS_WARN("VIOLATION: Turtle is not calling atend based on current location!");
+        ROS_WARN("VIOLATION: Turtle is not calling atend (%d, %d) based on current location (%d, %d)!", x, y, curr_pose.x, curr_pose.y);
     }
 
     if (atEnd) {
