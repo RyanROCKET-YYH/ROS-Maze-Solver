@@ -14,6 +14,8 @@ static Pose curr_pose;
 static bool solved = false;
 static ros::Time lastPoseUpdateTime; // Timestamp of the last pose update   
 static bool poseUpdated = false; // Flag to indicate if the pose has been updated since the last atend call
+static const int endThreshold = 10; // Threshold for the distance between the current pose and the end pose
+static int endCounter = 0;
 
 /*
  * Update the current pose of the turtle
@@ -34,8 +36,12 @@ void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
     }
 
     if (atEnd) {
+        endCounter++;
         ROS_INFO("Successful at end of the maze");
         solved = true;
+        if (endCounter > endThreshold) {
+            ros::shutdown();
+        }
     } else {
         ROS_INFO("[[%ld ns]] 'Atend' was sent. Data: x = %d, y=%d", t.toNSec(), x, y);
         if (poseUpdated && (curr_pose.x != x || curr_pose.y != y)) {
