@@ -34,8 +34,9 @@ void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
     if (atEnd) {
         ROS_WARN("Successful at end of the maze");
         solved = true;
+    } else {
+        ROS_INFO("[[%ld ns]] 'Atend' was sent. Data: x = %d, y=%d", t.toNSec(), x, y);
     }
-    ROS_INFO("[[%ld ns]] 'Atend' was sent. Data: x = %d, y=%d", t.toNSec(), x, y);
     poseUpdated = false;
 }
 
