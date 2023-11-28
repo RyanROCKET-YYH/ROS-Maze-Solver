@@ -96,7 +96,6 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 			}
 		} else {
 			atendCounter = 0;
-			ros::param::set("/maze_solved_signal", false);
 		}
 		// ROS_INFO("Bumped: %d", bp);
 		turtleResult result = studentTurtleStep(bp, aend);
