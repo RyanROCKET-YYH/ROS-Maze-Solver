@@ -76,8 +76,8 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 	static int32_t wait;
 	const int32_t TIMEOUT = 1;
 
-	ROS_INFO("Turtle update Called  w=%d", wait);
-	ROS_INFO("Current Orientation: %d", nw_or);
+	// ROS_INFO("Turtle update Called  w=%d", wait);
+	// ROS_INFO("Current Orientation: %d", nw_or);
 	bool aend;
   	if (!wait) {
 		Point2D startPoint, endPoint;
@@ -86,7 +86,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 		updateEndPosition(pos_, nw_or, endPoint, startPoint);
 		bool bp = bumped(startPoint.x, startPoint.y, endPoint.x, endPoint.y);  // if there is a bump (boolean)
 		aend = atend(static_cast<int32_t>(pos_.x()), static_cast<int32_t>(pos_.y()));
-		ROS_INFO("Bumped: %d", bp);
+		// ROS_INFO("Bumped: %d", bp);
 		turtleResult result = studentTurtleStep(bp, aend);
 		turtleMove nextMove = result.nextMove;
 		int32_t visits = result.visits;
