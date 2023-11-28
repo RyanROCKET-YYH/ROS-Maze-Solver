@@ -94,6 +94,9 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 			if (atendCounter > atendThreshold) {
 				ros::param::set("/maze_solved_signal", true);
 			}
+		} else {
+			atendCounter = 0;
+			ros::param::set("/maze_solved_signal", false);
 		}
 		// ROS_INFO("Bumped: %d", bp);
 		turtleResult result = studentTurtleStep(bp, aend);
