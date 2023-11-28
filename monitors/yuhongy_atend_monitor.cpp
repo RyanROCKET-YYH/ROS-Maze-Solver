@@ -32,7 +32,7 @@ void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
     }
 
     if (atEnd) {
-        ROS_WARN("Successful at end of the maze");
+        ROS_INFO("Successful at end of the maze");
         solved = true;
     } else {
         ROS_INFO("[[%ld ns]] 'Atend' was sent. Data: x = %d, y=%d", t.toNSec(), x, y);
@@ -40,6 +40,11 @@ void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
     poseUpdated = false;
 }
 
+void tickInterrupt(ros::Time t) {
+    if (solved) {
+        ROS_WARN("Turetle has solved the MAZE needs stop!");
+    }
+}
 
 /*
  * Empty interrupt handlers beyond this point
@@ -51,5 +56,4 @@ void visitInterrupt(ros::Time t, int visits) {
 void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
 }
 
-void tickInterrupt(ros::Time t) {
-}
+
