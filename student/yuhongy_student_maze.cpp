@@ -92,7 +92,7 @@ bool moveTurtle(QPointF& pos_, int& nw_or) {
 		if (aend) {
 			atendCounter++;
 			if (atendCounter > atendThreshold) {
-				ros::param::set("SIG_SHUTDOWN_MAZE", true);
+				ros::param::set("/SIG_SHUTDOWN_MAZE", true);
 			}
 		}
 		// ROS_INFO("Bumped: %d", bp);
