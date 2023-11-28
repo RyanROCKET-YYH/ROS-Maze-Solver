@@ -12,7 +12,8 @@
 // Keeps track of the last pose received
 static Pose curr_pose;
 static bool solved = false;
-static ros::Time lastPoseUpdateTime; // Timestamp of the last pose update    
+static ros::Time lastPoseUpdateTime; // Timestamp of the last pose update   
+static bool poseUpdated = false; // Flag to indicate if the pose has been updated since the last atend call
 
 /*
  * Update the current pose of the turtle
@@ -21,6 +22,7 @@ void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
     curr_pose.x = x;
     curr_pose.y = y;
     lastPoseUpdateTime = t; 
+    poseUpdated = true;
 }
 
 /*
@@ -36,10 +38,11 @@ void atEndInterrupt(ros::Time t, int x, int y, bool atEnd) {
         solved = true;
     } else {
         ROS_INFO("[[%ld ns]] 'Atend' was sent. Data: x = %d, y=%d", t.toNSec(), x, y);
-        if (curr_pose.x != x || curr_pose.y != y) {
+        if (poseUpdated && (curr_pose.x != x || curr_pose.y != y)) {
             ROS_WARN("VIOLATION: Turtle is calling atend(%d, %d) but current location is (%d, %d)!", x, y, curr_pose.x, curr_pose.y);
         }
     }
+    poseUpdated = false;
 }
 
 void tickInterrupt(ros::Time t) {
