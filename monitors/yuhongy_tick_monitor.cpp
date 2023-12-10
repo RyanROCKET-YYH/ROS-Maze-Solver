@@ -26,7 +26,7 @@ static bool bump_call = false;
 void tickInterrupt(ros::Time t) {
     static int32_t tick_count = 0;
     tick_count++;
-    if (tick_count == 128) {
+    if (tick_count == 127) {
         ROS_INFO("[[%ld ns]] 128 ticks have passed",t.toNSec());
         tick_count = 0;
     }

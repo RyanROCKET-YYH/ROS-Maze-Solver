@@ -19,6 +19,7 @@
 static Pose curr_pose;
 static Orientation curr_orientation;
 static bool poseUpdated = false; // flag that indicates if the pose has been updated
+static bool orientationUpdated = false;
 
 std::string orientationToString(Orientation o) {
   switch(o) {
@@ -39,7 +40,10 @@ std::string orientationToString(Orientation o) {
  * get the current pose of the turtle
  */
 void poseInterrupt(ros::Time t, int x, int y, Orientation o) {
-  curr_orientation = o;
+  if (curr_orientation != o) {
+    curr_orientation = o;
+    orientationUpdated = true;
+  }
   curr_pose.x = x;
   curr_pose.y = y;
   poseUpdated = true;
@@ -78,11 +82,12 @@ void bumpInterrupt(ros::Time t, int x1, int y1, int x2, int y2, bool bumped) {
 
     // Check if the turtle is moving across the wall
     if (!(curr_endpoints.x1 == x1 && curr_endpoints.y1 == y1 && curr_endpoints.x2 == x2 && curr_endpoints.y2 == y2) 
-    && poseUpdated) {
+    && poseUpdated && orientationUpdated) {
       ROS_WARN("VIOLATION: Turtle is not checking the wall in the forward orientation, instead checking %s", orientationToString(curr_orientation).c_str());
     }
 
     poseUpdated = false;
+    orientationUpdated = false;
 }
 
 /*

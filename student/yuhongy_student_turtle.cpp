@@ -17,21 +17,6 @@
 #include "student.h"
 #endif
 
-// enum for turtle's current state
-// enum TurtleState {				 
-// 	Initialized,
-// 	CheckWall,
-// 	Right,
-// 	DecideNextMove,
-// 	Move,
-// 	leftOnce,
-// 	leftTwice,
-// 	rightOnce, // unnecessary
-// 	Goal,
-// };
-
-
-
 #ifdef testing
 static int32_t visitCounts[23][23] = {0};
 static int32_t localMap[23][23];
@@ -108,6 +93,13 @@ int32_t getMockLocalY() {
 }
 #endif
 
+enum wall {
+	northWall = 0x01,
+	eastWall = 0x02,
+	southWall = 0x04,
+	westWall = 0x08,
+};
+
 /**
  * @brief Get the next direction for the turtle based on its current orientation and intended turn direction.
  *
@@ -116,8 +108,8 @@ int32_t getMockLocalY() {
  * @return TurtleOrientation representing the new orientation after turning.
  */
 TurtleOrientation getNextDir(TurtleOrientation direction, TurnDirection turn){
-	int32_t cycle = 4;
-	int32_t nextDir = (direction + turn + cycle)%4;
+	uint8_t cycle = 4;
+	uint8_t nextDir = (direction + turn + cycle)%4;
 	return static_cast<TurtleOrientation>(nextDir);
 }
 
@@ -133,16 +125,16 @@ void WallUpdate(TurtleOrientation direction, int32_t (&localMap)[23][23], int32_
 	if (!bumped) {
 		switch (direction) {
 			case north:
-				localMap[x][y] &= ~0x01;
+				localMap[x][y] &= ~northWall;
 				break;
 			case east:
-				localMap[x][y] &= ~0x02;
+				localMap[x][y] &= ~eastWall;
 				break;
 			case south:
-				localMap[x][y] &= ~0x04;
+				localMap[x][y] &= ~southWall;
 				break;
 			case west:
-				localMap[x][y] &= ~0x08;
+				localMap[x][y] &= ~westWall;
 				break;
 			default:
 				ROS_ERROR("Invalid orientation");
@@ -184,19 +176,19 @@ TurtleOrientation NextMove(TurtleOrientation currentDir, int32_t (&visitCounts)[
 		switch (direction) {
 			case north:
 				count = northCount;
-				hasWall = ((walls & 0x01) != 0);
+				hasWall = ((walls & northWall) != 0);
 				break;
 			case east:
 				count = eastCount;
-				hasWall = ((walls & 0x02) != 0);
+				hasWall = ((walls & eastWall) != 0);
 				break;
 			case south:
 				count = southCount;
-				hasWall = ((walls & 0x04) != 0);
+				hasWall = ((walls & southWall) != 0);
 				break;
 			case west:
 				count = westCount;
-				hasWall = ((walls & 0x08) != 0);
+				hasWall = ((walls & westWall) != 0);
 				break;
 			default:
 				ROS_ERROR("Invalid orientation");
