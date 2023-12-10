@@ -84,9 +84,10 @@ void test_t2() { // test transition from CheckWall to Right
     TurtleState return_state = getTurtleState();
     int32_t x = 11;
     int32_t y = 11;
+    const int32_t WALL_CHECKED = 0xE;
 
     CU_ASSERT_EQUAL(result.nextMove, STOP);
-    CU_ASSERT_EQUAL(getLocalMap(x, y), 0xE);
+    CU_ASSERT_EQUAL(getLocalMap(x, y), WALL_CHECKED);
     CU_ASSERT_EQUAL(return_state, Right);
 }
 
@@ -101,9 +102,10 @@ void test_t2_1() { // test transition from CheckWall to Right
     setLocalMap(x, y, 0xF);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
-    
+    const int32_t WALL_CHECKED = 0xD; 
+
     CU_ASSERT_EQUAL(result.nextMove, STOP);
-    CU_ASSERT_EQUAL(getLocalMap(x, y), 0xD);
+    CU_ASSERT_EQUAL(getLocalMap(x, y), WALL_CHECKED);
     CU_ASSERT_EQUAL(return_state, Right);
 }
 
@@ -118,9 +120,10 @@ void test_t2_2() { // test transition from CheckWall to Right
     setLocalMap(x, y, 0xF);
     turtleResult result = studentTurtleStep(will_bump(), at_end());
     TurtleState return_state = getTurtleState();
-    
+    const int32_t WALL_CHECKED = 0xB;  // Replace 0xE with a descriptive name
+
     CU_ASSERT_EQUAL(result.nextMove, STOP);
-    CU_ASSERT_EQUAL(getLocalMap(x, y), 0xB);
+    CU_ASSERT_EQUAL(getLocalMap(x, y), WALL_CHECKED);
     CU_ASSERT_EQUAL(return_state, Right);
 }
 
